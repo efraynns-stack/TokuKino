@@ -1,4 +1,4 @@
-// Toku Kino 0.1.1: UnlimitedSubs is the first source, with one series for the TV test.
+// Toku Kino 0.1.2: UnlimitedSubs is the first source, with one series for the TV test.
 // Public metadata only. Video addresses are discovered again at play time.
 const SITE = "https://www.subsunlimiteds.com";
 const API_URL = "https://ulsapi.unlimiteds.workers.dev/search?q=Gavv";
@@ -7,6 +7,11 @@ const SERIES_REF = "series:" + SERIES_ID;
 const CACHE_KEY = "gavv-metadata-v1";
 const CACHE_TTL = 5 * 60 * 1000;
 const VIDEO_HOSTS = ["vk.com", "vkvideo.ru"];
+// VK's progressive video URLs can have no file extension. Keep the normal
+// media patterns and add only the observed signed VK CDN forms, not all assets.
+const VK_FILE_MATCH = "^https://vkvd[0-9]+\\.mycdn\\.me/(?:\\?(?=[^#]*\\bid=[0-9]+(?:&|$))(?=[^#]*\\bexpires=[0-9]+(?:&|$))[^#]*|expires/[0-9]+/[^#]*/id/[0-9]+(?:/[^#]*)?)$";
+const VIDEO_MATCH = "\\.(?:m3u8|mpd|mp4)(?:[/?#]|$)|master\\.txt|videoplayback|/hls/|" + VK_FILE_MATCH;
+const VK_FILE_RE = new RegExp(VK_FILE_MATCH, "i");
 
 function log(level, message) {
   try { kino.log(level, message); } catch { /* Logging must not break a call. */ }
@@ -244,8 +249,10 @@ async function captureStream(embed, referer) {
   await null;
   let captured;
   try {
-    log("info", "ULS_CAPTURE started");
-    captured = await kino.browser.capture(embed, { timeoutMs: 18000, headers: { Referer: referer } });
+    log("info", "ULS_CAPTURE started version=0.1.2 filter=vk timeout_ms=25000");
+    captured = await kino.browser.capture(embed, {
+      timeoutMs: 25000, autoplay: true, match: VIDEO_MATCH, headers: { Referer: referer },
+    });
   } catch (e) {
     const code = e.code || "network";
     log("warn", "ULS_CAPTURE " + code);
@@ -273,7 +280,11 @@ async function captureStream(embed, referer) {
     log("warn", "ULS_CAPTURE empty");
     throw error("unavailable", "VK no entregó un enlace de video");
   }
-  const copy = (m) => ({ url: safeHttps(m.url), mime: m.mime || undefined, headers: m.headers || {} });
+  const copy = (m) => ({
+    url: safeHttps(m.url),
+    mime: m.mime || (VK_FILE_RE.test(m.url) ? "video/mp4" : undefined),
+    headers: m.headers || {},
+  });
   // Captured request headers and session cookies must reach the player unchanged.
   const stream = { ...copy(usable[0]), label: "VK", expiresInSeconds: 180 };
   if (usable.length > 1) stream.alternatives = usable.slice(1, 9).map(copy);
