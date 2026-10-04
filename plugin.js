@@ -1,4 +1,4 @@
-// UnlimitedSubs 0.1.0: one series for the first TV test.
+// Toku Kino 0.1.1: UnlimitedSubs is the first source, with one series for the TV test.
 // Public metadata only. Video addresses are discovered again at play time.
 const SITE = "https://www.subsunlimiteds.com";
 const API_URL = "https://ulsapi.unlimiteds.workers.dev/search?q=Gavv";
@@ -114,7 +114,7 @@ function item(data) {
 
 export async function home() {
   const data = await seriesData();
-  return [{ id: "unlimitedsubs-series", title: "UnlimitedSubs", genre: "series", items: [item(data)] }];
+  return [{ id: "unlimitedsubs-series", title: "Toku Kino", genre: "series", items: [item(data)] }];
 }
 
 export async function search(query) {
@@ -242,25 +242,10 @@ function directStream(html, embed) {
 
 async function captureStream(embed, referer) {
   await null;
+  let captured;
   try {
-    const captured = await kino.browser.capture(embed, { timeoutMs: 18000, headers: { Referer: referer } });
-    const media = Array.isArray(captured.media) ? captured.media : [];
-    const seen = new Set();
-    const usable = media.filter((m) => {
-      const url = m && safeHttps(m.url);
-      if (!url || seen.has(url)) return false;
-      seen.add(url);
-      return true;
-    });
-    if (!usable.length) throw error("unavailable", "VK no entregó un enlace de video");
-    const copy = (m) => ({ url: safeHttps(m.url), mime: m.mime || undefined, headers: m.headers || {} });
-    // Captured request headers and session cookies must reach the player unchanged.
-    const stream = { ...copy(usable[0]), label: "VK", expiresInSeconds: 180 };
-    if (usable.length > 1) stream.alternatives = usable.slice(1, 9).map(copy);
-    const subtitles = subtitlesOf(captured.subtitles);
-    if (subtitles.length) stream.subtitles = subtitles;
-    log("info", "ULS_RESOLVE browser media=" + usable.length);
-    return stream;
+    log("info", "ULS_CAPTURE started");
+    captured = await kino.browser.capture(embed, { timeoutMs: 18000, headers: { Referer: referer } });
   } catch (e) {
     const code = e.code || "network";
     log("warn", "ULS_CAPTURE " + code);
@@ -272,8 +257,30 @@ async function captureStream(embed, referer) {
       not_allowed: "El permiso de navegador del plugin no está activo",
     };
     const detail = details[code] || "No se pudo abrir el video de VK";
-    throw kino.error("unavailable", detail, { userMessage: detail + "." });
+    // Kino rejects custom userMessage text when the plugin name contains "Kino".
+    // Keep the requested name; the native debug panel and Registro show this detail.
+    throw error("unavailable", detail);
   }
+  const media = captured && Array.isArray(captured.media) ? captured.media : [];
+  const seen = new Set();
+  const usable = media.filter((m) => {
+    const url = m && safeHttps(m.url);
+    if (!url || seen.has(url)) return false;
+    seen.add(url);
+    return true;
+  });
+  if (!usable.length) {
+    log("warn", "ULS_CAPTURE empty");
+    throw error("unavailable", "VK no entregó un enlace de video");
+  }
+  const copy = (m) => ({ url: safeHttps(m.url), mime: m.mime || undefined, headers: m.headers || {} });
+  // Captured request headers and session cookies must reach the player unchanged.
+  const stream = { ...copy(usable[0]), label: "VK", expiresInSeconds: 180 };
+  if (usable.length > 1) stream.alternatives = usable.slice(1, 9).map(copy);
+  const subtitles = subtitlesOf(captured.subtitles);
+  if (subtitles.length) stream.subtitles = subtitles;
+  log("info", "ULS_RESOLVE browser media=" + usable.length);
+  return stream;
 }
 
 export async function resolve(ref) {
@@ -290,6 +297,7 @@ export async function resolve(ref) {
     response = await kino.fetch(embed, { timeoutMs: 8000, headers: { Referer: referer, Accept: "text/html" } });
   } catch (e) { log("warn", "ULS_VK_FETCH " + (e.code || "network")); }
   if (response) {
+    log("info", "ULS_VK_FETCH http=" + response.status);
     if ([404, 410, 429, 451].includes(response.status)) throw statusError(response.status, "VK");
     const html = response.text();
     const restriction = pageRestriction(html);

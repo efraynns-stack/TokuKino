@@ -1,10 +1,10 @@
 {
   "id": "unlimitedsubs",
-  "name": "UnlimitedSubs",
-  "version": "0.1.0",
+  "name": "Toku Kino",
+  "version": "0.1.1",
   "apiVersion": 6,
   "entry": "plugin.js",
-  "description": "Prueba con Kamen Rider Gavv de UnlimitedSubs: portada, capítulos y reproducción mediante VK. Necesita Kino 0.9.50 o superior.",
+  "description": "Tokusatsu en Kino. Primera fuente de prueba: Kamen Rider Gavv de UnlimitedSubs, con portada, capítulos y enlaces de VK. Necesita Kino 0.9.50 o superior.",
   "hosts": ["www.subsunlimiteds.com", "ulsapi.unlimiteds.workers.dev", "vk.com", "*.vk.com", "vkvideo.ru", "*.vkvideo.ru"],
   "browser": true,
   "streamHosts": "any",

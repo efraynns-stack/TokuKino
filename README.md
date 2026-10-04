@@ -1,7 +1,9 @@
-# UnlimitedSubs para Kino — prueba 0.1.0
+# Toku Kino — prueba 0.1.1
 
-Plugin de prueba con **Kamen Rider Gavv** de [UnlimitedSubs](https://www.subsunlimiteds.com/series/kamen-rider-gavv).
+Plugin de tokusatsu para Kino. Su primera fuente de prueba es **Kamen Rider Gavv** de [UnlimitedSubs](https://www.subsunlimiteds.com/series/kamen-rider-gavv).
 Consulta los datos de la propia web para mostrar portada, sinopsis y capítulos. La consulta verificada el 4 de octubre de 2026 devolvió 50 capítulos con enlaces de VK/VK Video.
+
+El nombre es **Toku Kino** para poder incorporar otras fuentes después de comprobar la reproducción. Esta entrega incluye solamente la serie de prueba. Conserva el identificador `unlimitedsubs` y todas las referencias publicadas, de modo que el cambio de nombre no rompe los títulos ni los capítulos guardados.
 
 **Requiere Kino 0.9.50 o superior.** El plugin declara API 6 porque puede usar el navegador integrado para encontrar el video. Kino 0.9.49 rechaza su instalación.
 
@@ -9,12 +11,12 @@ Consulta los datos de la propia web para mostrar portada, sinopsis y capítulos.
 
 1. Actualiza Kino desde la [publicación oficial 0.9.50](https://github.com/kinotvapp/kino-light/releases/tag/v0.9.50). El archivo `kino.apk` es la versión universal para Android y Android TV.
 2. Descomprime este ZIP en el computador.
-3. En GitHub, crea un repositorio **Public** en tu cuenta, llamado `KinoUnlimitedSubs`. Usa un repositorio nuevo para esta prueba.
+3. Si ya subiste la prueba anterior, abre ese mismo repositorio en GitHub. Si todavía no lo hiciste, crea uno **Public** en tu cuenta; por ejemplo, `KinoUnlimitedSubs`.
 4. Dentro del repositorio, pulsa **Add file → Upload files**. Sube los archivos descomprimidos y sus carpetas. `kino-plugin.json` y `plugin.js` deben quedar directamente en la raíz de la rama principal; no subas el ZIP como único archivo ni los dejes dentro de otra carpeta.
 5. Guarda con **Commit changes**.
-6. En la TV: **Ajustes → Plugins → Agregar**, escribe `efraynns-stack/KinoUnlimitedSubs` y continúa con **Agregar → Instalar**. Si elegiste otro nombre para el repositorio, usa ese nombre.
-7. La instalación mostrará los permisos para abrir páginas ocultas y reproducir video desde los servidores que entregue VK. Son necesarios para el método de captura y los servidores variables de video.
-8. Busca **Gavv** o abre la fila **UnlimitedSubs** del inicio.
+6. Si el plugin ya está instalado, en **Ajustes → Plugins** busca actualizaciones y aplica la versión **0.1.1**. Para una instalación nueva, usa **Ajustes → Plugins → Agregar**, escribe `efraynns-stack/KinoUnlimitedSubs` y continúa con **Agregar → Instalar**. Si elegiste otro nombre para el repositorio, usa ese nombre. El repositorio puede conservar su nombre aunque el plugin ahora se llame Toku Kino.
+7. En una instalación nueva, la pantalla de consentimiento de Kino incluye **«Puede abrir páginas web ocultas para encontrar el video»**. Se aprueba al instalar; no hay un permiso de navegador separado de Android. También muestra el permiso para reproducir video de cualquier servidor. La versión 0.1.1 conserva estos permisos de la 0.1.0, por lo que esa actualización no los vuelve a pedir.
+8. Busca **Gavv** o abre la fila **Toku Kino** del inicio.
 
 No hace falta configurar una cuenta ni escribir URLs para esta prueba.
 
@@ -48,9 +50,26 @@ Los resultados de la consulta real están en `test/source-results.json`. Los dat
 
 ## Si falla la reproducción
 
-Anota el mensaje completo que muestra Kino y el capítulo probado. En **Ajustes → Plugins → UnlimitedSubs**, activa **Modo debug**, vuelve a probar y revisa **Registro**.
+Comprueba la versión de Kino y la del plugin. Anota el mensaje completo que muestra Kino y el capítulo probado. En **Ajustes → Toku Kino**, activa **Modo debug**, vuelve a probar y revisa **Registro**. Todos los plugins habilitados tienen su propia pestaña en Ajustes desde Kino 0.9.50.
 
 Los eventos propios del plugin son `ULS_CATALOG`, `ULS_API_FETCH`, `ULS_VK_FETCH`, `ULS_RESOLVE` y `ULS_CAPTURE`. Solo registran etapas, cantidades y códigos de error. No incluyen cookies, hashes de video ni direcciones temporales.
+
+| Último evento de captura | Qué significa |
+| --- | --- |
+| `ULS_CAPTURE not_allowed` | El navegador no está aprobado o la llamada se inició fuera del contexto de reproducción permitido. |
+| `ULS_CAPTURE browser_unavailable` | No está disponible el WebView que necesita el navegador integrado en ese dispositivo. |
+| `ULS_CAPTURE timeout` | El reproductor no produjo un enlace dentro de 18 segundos. |
+| `ULS_CAPTURE blocked` | El navegador detuvo la página por un bloqueo o una verificación. |
+| `ULS_CAPTURE busy` | Otra página está usando el navegador integrado. |
+| `ULS_CAPTURE empty` | La captura terminó sin un enlace de video compatible. |
+
+Kino no muestra frases personalizadas de error cuando el nombre del plugin contiene la palabra «Kino». Por eso Toku Kino conserva el detalle del fallo en el panel de debug y en Registro, en lugar de depender de una frase personalizada que la app descartaría.
+
+## API oficial de VK
+
+El [esquema oficial de VK](https://github.com/VKCOM/vk-api-schema/blob/master/video/methods.json) declara el método `video.get` con un token de usuario. Sus [objetos de respuesta](https://github.com/VKCOM/vk-api-schema/blob/master/video/objects.json) incluyen enlaces MP4 opcionales bajo `files`. La presencia del método no garantiza que un video concreto permita obtener esos archivos.
+
+Esta entrega no utiliza la API autenticada: no tenemos una respuesta real con un token propio que confirme que devuelve un enlace reproducible para estos capítulos. Mantiene el reproductor público que publica la fuente. No escribas credenciales en el repositorio ni las envíes por el chat; si se incorpora autenticación después, deberá configurarse dentro de Kino.
 
 ## Comandos para desarrollo
 
@@ -70,6 +89,14 @@ node --test test/plugin.test.mjs
 El SDK y el contrato incluidos proceden de `kinotvapp/kino-plugin-own-server`, referencia `94d80528ae78509a4d3905464857218b1c2de7e6`. El formato público del reproductor se contrastó con la implementación VK de yt-dlp. El plugin usa código propio, sin ejecutar scripts extraídos del sitio.
 
 ## Cambios
+
+### 0.1.1
+
+- Nombre y fila de inicio cambiados a Toku Kino.
+- Identificador y referencias de capítulos conservados.
+- Registro del inicio de captura y del estado HTTP del reproductor.
+- Una captura sin video mantiene el detalle específico del error.
+- Instrucciones corregidas para el consentimiento y la pestaña de diagnóstico.
 
 ### 0.1.0
 
