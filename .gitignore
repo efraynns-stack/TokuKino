@@ -1,0 +1,6 @@
+# Local stand-ins the kit writes; never commit a real secret value.
+.kino-storage.json
+.kino-cookies.json
+.kino-secrets.json
+sdk/config.json
+*.pem
