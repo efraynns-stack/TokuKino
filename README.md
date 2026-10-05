@@ -1,6 +1,21 @@
-# Toku Kino — 0.1.7
+# Toku Kino — 0.1.9
 
 Catálogo de **Super Sentai** de [ShadowRangers](https://shadowrangers.live/genero/super-sentai/), para **Kino 0.9.50 o superior**. La categoría consultada publica **49 series**, desde **Himitsu Sentai Goranger (1975)** hasta **No. 1 Sentai Gozyuger (2025)**.
+
+## Categorías
+
+Toku Kino dispone de dos accesos separados, con las imágenes que proporcionaste:
+
+| Categoría | Contenido actual |
+| --- | --- |
+| Super Sentai | 49 series de ShadowRangers, ordenadas por año |
+| Kamen Rider | La prueba existente de Kamen Rider Gavv; preparada para ampliar después |
+
+En Android TV puedes entrar por **Toku Kino** en el menú lateral y elegir **Super Sentai** o **Kamen Rider**. También aparecen dos portadas en **Categorías → Toku Kino**, cada una abre exclusivamente su catálogo. **Ver más** abre la categoría correspondiente.
+
+La prueba de Gavv conserva su resolución anterior de VK y sigue sin confirmación de reproducción. Esta actualización organiza su acceso; no amplía todavía el catálogo de Kamen Rider.
+
+Las portadas se incluyen en `assets/super-sentai.jpg` y `assets/kamen-rider.jpg`. Sube también la carpeta `assets` al repositorio. Kino carga las imágenes desde esa carpeta pública en la rama predeterminada; no agrega permisos de red al plugin.
 
 ## Qué cambia
 
@@ -15,13 +30,28 @@ El catálogo se obtiene de la categoría publicada por la fuente y se renueva tr
 
 ## Instalar o actualizar
 
-1. Descomprime **Toku-Kino-0.1.7.zip**.
+1. Descomprime **Toku-Kino-0.1.9.zip**.
 2. En [efraynns-stack/TokuKino](https://github.com/efraynns-stack/TokuKino), abre **Add file → Upload files**. Sube el contenido descomprimido: `kino-plugin.json` y `plugin.js` deben quedar en la raíz de la rama principal. No subas solamente el ZIP ni una carpeta contenedora adicional.
 3. Guarda con **Commit changes**.
-4. En la TV: **Ajustes → Plugins → Toku Kino → Buscar actualización de Toku Kino**. Comprueba que muestre **0.1.7**. Para instalar desde cero, agrega `efraynns-stack/TokuKino`.
+4. En la TV: **Ajustes → Plugins → Toku Kino → Buscar actualización de Toku Kino**. Comprueba que muestre **0.1.9**. Para instalar desde cero, agrega `efraynns-stack/TokuKino`.
 5. Abre **Super Sentai · por año** o busca una serie. Elige su portada y un capítulo.
 
 Esta actualización conserva los dominios y permisos de 0.1.6.
+
+## Estado y actualización del catálogo
+
+En **Ajustes → Toku Kino** verás:
+
+- **Super Sentai:** `0% · sin carga registrada`, `100% · 49 series · última carga completa`, o el estado de error/interrupción de la última consulta.
+- **Última carga (UTC):** fecha y hora de la última carga completa. El porcentaje sigue describiendo esa carga aunque pasen los cinco minutos de la caché.
+- **Actualizar catálogo Super Sentai:** consulta nuevamente la categoría publicada, sin esperar a que venza la caché. Al terminar muestra la cantidad real de series. La consulta manual espera hasta 20 segundos por la respuesta de la web.
+- **Kamen Rider:** indica que actualmente hay una serie de prueba, Gavv. El botón de Super Sentai no amplía ese catálogo.
+
+El **100% se refiere al listado de series**. No indica que se descargaron todas las portadas, todos los capítulos o los videos. El total se cuenta en la respuesta real; no está fijado en 49.
+
+Kino 0.9.50 consulta estas líneas al abrir el formulario o al finalizar una acción. No existe una barra de porcentaje en tiempo real para el plugin: no se muestran porcentajes intermedios inventados. Durante la acción Kino muestra su estado de espera. Si una consulta falla se conserva la última lista válida, su cantidad y su fecha de carga.
+
+Tras actualizar, abre la sección **Toku Kino → Super Sentai** o **Categorías → Toku Kino → Super Sentai** para consultar el catálogo. El Inicio general de Kino puede conservar sus filas anteriores durante hasta seis horas; esta acción no invalida esa caché de la app.
 
 ## Elegir fuente
 
@@ -45,11 +75,15 @@ Se entregan únicamente URLs públicas HTTPS de medios. La alternativa lleva una
 
 ## Verificación
 
-- **52 pruebas locales** y validador oficial de Kino: catálogo completo, orden anual, aislamiento de recomendaciones laterales, búsqueda, capítulos propios, referencias, caché, selección de fuentes y regresiones de VOE y Gavv.
+Los estados y el botón de 0.1.9 se comprobaron con el SDK. La primera consulta a la fuente superó el límite de 12 segundos y registró el error correctamente; la actualización manual dispone ahora de 20 segundos. La segunda consulta completó la carga con 49 series y devolvió 100%, cantidad y fecha. Los resultados de las consultas están separados en `test/catalog-status-live-first-attempt.json` y `test/catalog-status-live-results.json`.
+
+Los registros de 0.1.8 documentan consultas que aceptaron las dos categorías, ambos accesos al catálogo y las dos pestañas, sin elementos descartados. Ver `test/categories-live-results.json`. Las consultas de reproducción documentadas en `test/sentai-live-results.json` corresponden a 0.1.7.
+
+- **64 pruebas locales** y validador oficial de Kino: catálogo completo, orden anual, aislamiento de recomendaciones laterales, búsqueda, capítulos propios, referencias, caché, selección de fuentes y regresiones de VOE y Gavv.
 - HTML público mínimo real: 49 tarjetas, Goranger con 84 capítulos, Timeranger con 50 y Gozyuger con 49; fuentes de los primeros capítulos de Goranger y Timeranger.
 - Los datos de medios y sesiones en las pruebas offline son sintéticos. No se guardan enlaces firmados ni cookies de la fuente.
 - Las consultas nuevas con el SDK aceptaron las 49 series del inicio, la búsqueda de Gozyuger, las fichas de Goranger y Gozyuger y el HLS de VOE del capítulo 1 de Goranger, sin elementos descartados. Resultados: `test/sentai-live-results.json` y `test/validation-results.json`. Esto verifica la resolución HTTP, no imagen y sonido en Android TV.
-- **El usuario confirmó VOE en Timeranger con varios capítulos en Android TV, versión 0.1.6.** El catálogo ampliado de 0.1.7 todavía requiere instalarse y probarse en la TV; no se ha reproducido cada capítulo de cada serie. ShadowLiv continúa sin confirmación audiovisual.
+- **El usuario confirmó VOE en Timeranger con varios capítulos en Android TV, versión 0.1.6.** El catálogo ampliado, las categorías y el estado de 0.1.9 todavía requieren instalarse y probarse en la TV; no se ha reproducido cada capítulo de cada serie. ShadowLiv continúa sin confirmación audiovisual.
 - Los informes anteriores `shadow-*.json` documentan la investigación de 0.1.6; no sustituyen las pruebas del catálogo ampliado.
 
 La caché guarda metadatos durante cinco minutos, con un máximo de cuatro fichas y un límite de tamaño. Cada ficha tiene su propia fecha de vencimiento. Los enlaces de reproducción se consultan de nuevo al abrir el capítulo.
@@ -75,11 +109,21 @@ En **Ajustes → Toku Kino**, activa **Modo debug**, reproduce el capítulo y ab
 npm run validate
 npm test
 node test/check-sentai-source.mjs
+node test/check-sentai-source.mjs --categories
+node test/check-sentai-source.mjs --status
 ```
 
 El plugin instalado es un único módulo JavaScript y utiliza solamente las APIs de Kino. Los scripts de pruebas usan Node y el SDK oficial. No se incorpora descarga, P2P, credenciales ni resolución de verificaciones humanas.
 
 ## Cambios
+
+### 0.1.9
+
+Estado de carga del catálogo de Super Sentai, porcentaje de completitud del listado, cantidad real de series, fecha de la última carga completa y botón para actualizar sin esperar a la caché. Errores conservan el último catálogo válido. Los estados se registran también en las cargas automáticas. No cambia la reproducción.
+
+### 0.1.8
+
+Dos categorías con las portadas adjuntas, sección propia de Toku Kino con dos pestañas y navegación independiente por categoría. Super Sentai conserva sus 49 series; Kamen Rider contiene la prueba existente de Gavv. La reproducción no cambia.
 
 ### 0.1.7
 

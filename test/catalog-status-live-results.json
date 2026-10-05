@@ -1,0 +1,43 @@
+{
+  "version": "0.1.9",
+  "checkedAt": "2026-10-05T04:15:40.022Z",
+  "transport": "Fresh HTTPS through official SDK host gate",
+  "calls": [
+    {
+      "function": "settingsStatus",
+      "drops": 0,
+      "status": {
+        "catalogStatus": "0% · sin carga registrada",
+        "catalogUpdated": "Sin fecha registrada",
+        "riderStatus": "1 serie · prueba de Kamen Rider Gavv"
+      },
+      "outcome": "accepted"
+    },
+    {
+      "function": "action",
+      "argument": "refreshCatalog",
+      "drops": 0,
+      "message": "100% · 49 series de Super Sentai cargadas. Abre Toku Kino o Categorías para verlas.",
+      "outcome": "accepted"
+    },
+    {
+      "function": "settingsStatus",
+      "drops": 0,
+      "status": {
+        "catalogStatus": "100% · 49 series · última carga completa",
+        "catalogUpdated": "2026-10-05 04:15:49 UTC",
+        "riderStatus": "1 serie · prueba de Kamen Rider Gavv"
+      },
+      "outcome": "accepted"
+    }
+  ],
+  "androidTvPlayback": "0.1.6 VOE confirmed by user on Timeranger; current version 0.1.9 not yet verified on TV",
+  "requests": [
+    {
+      "host": "shadowrangers.live",
+      "path": "/genero/super-sentai/",
+      "status": 200,
+      "durationMs": 9730
+    }
+  ]
+}

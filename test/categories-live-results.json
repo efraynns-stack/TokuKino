@@ -1,0 +1,65 @@
+{
+  "version": "0.1.8",
+  "checkedAt": "2026-10-05T04:06:22.048Z",
+  "transport": "Fresh HTTPS through official SDK host gate",
+  "calls": [
+    {
+      "function": "categories",
+      "drops": 0,
+      "categories": [
+        "Super Sentai",
+        "Kamen Rider"
+      ],
+      "outcome": "accepted"
+    },
+    {
+      "function": "browse",
+      "argument": "category:super-sentai",
+      "drops": 0,
+      "series": 49,
+      "outcome": "accepted"
+    },
+    {
+      "function": "section",
+      "argument": {
+        "tab": "super-sentai"
+      },
+      "drops": 0,
+      "tab": "super-sentai",
+      "series": 49,
+      "outcome": "accepted"
+    },
+    {
+      "function": "browse",
+      "argument": "category:kamen-rider",
+      "drops": 0,
+      "series": 1,
+      "outcome": "accepted"
+    },
+    {
+      "function": "section",
+      "argument": {
+        "tab": "kamen-rider"
+      },
+      "drops": 0,
+      "tab": "kamen-rider",
+      "series": 1,
+      "outcome": "accepted"
+    }
+  ],
+  "androidTvPlayback": "0.1.6 VOE confirmed by user on Timeranger; 0.1.8 categories not yet verified on TV",
+  "requests": [
+    {
+      "host": "shadowrangers.live",
+      "path": "/genero/super-sentai/",
+      "status": 200,
+      "durationMs": 11780
+    },
+    {
+      "host": "ulsapi.unlimiteds.workers.dev",
+      "path": "/search",
+      "status": 200,
+      "durationMs": 10222
+    }
+  ]
+}

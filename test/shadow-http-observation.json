@@ -1,0 +1,32 @@
+{
+  "checkedDate": "2026-10-05",
+  "source": "public HTTP requests to the published website and player",
+  "seriesUrl": "https://shadowrangers.live/series/mirai-sentai-timeranger/",
+  "episodeCount": 50,
+  "episodesInspected": [
+    1,
+    2
+  ],
+  "publishedProviders": [
+    "VOE",
+    "ShadowLiv"
+  ],
+  "voe": {
+    "iframeHttp": 200,
+    "playerHttp": 200,
+    "playerPublishedHls": true,
+    "hlsMasterHttp": 200,
+    "hlsMasterBytes": 645,
+    "hlsVariants": 1,
+    "directDownloadUrlUsed": false
+  },
+  "shadowLiv": {
+    "shellHttp": 200,
+    "scriptsRequired": true,
+    "videoApiHttp": 400,
+    "apiImplemented": false,
+    "androidCaptureVerified": false
+  },
+  "videoSegmentsFetched": false,
+  "nativePlaybackVerified": false
+}

@@ -1,0 +1,18 @@
+{
+  "version": "0.1.6",
+  "checkedAt": "2026-10-05T03:29:34.013Z",
+  "mode": "Official SDK replay of actual HTTP responses observed on 2026-10-05; not a fresh network run",
+  "requests": 4,
+  "drops": 0,
+  "mime": "application/vnd.apple.mpegurl",
+  "label": "Server 2 · VOE",
+  "lazyAlternative": [
+    {
+      "ref": "shadow:timeranger:1x1:server:2",
+      "label": "Server 3 · ShadowLiv"
+    }
+  ],
+  "mediaHost": "ugc-cdn-caching-n3lkvxgheee2fzfh03.cloudwindow-route.com",
+  "headersHavePlayerReferer": true,
+  "nativePlaybackVerified": false
+}

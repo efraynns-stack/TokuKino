@@ -1,10 +1,10 @@
 {
   "id": "unlimitedsubs",
   "name": "Toku Kino",
-  "version": "0.1.7",
+  "version": "0.1.9",
   "apiVersion": 6,
   "entry": "plugin.js",
-  "description": "Super Sentai de ShadowRangers: catálogo por serie y año, con capítulos y fuentes VOE y ShadowLiv. Requiere Kino 0.9.50 o superior.",
+  "description": "Tokusatsu organizado en Super Sentai y Kamen Rider. Super Sentai de ShadowRangers por serie y año; prueba de Gavv en Kamen Rider. Requiere Kino 0.9.50 o superior.",
   "hosts": [
     "www.subsunlimiteds.com",
     "ulsapi.unlimiteds.workers.dev",
@@ -27,9 +27,36 @@
     "search",
     "home",
     "episodes",
-    "resolve"
+    "resolve",
+    "browse"
   ],
   "settings": [
+    {
+      "key": "catalog",
+      "type": "section",
+      "label": "Catálogo",
+      "hint": "Estado al abrir Ajustes o terminar la carga del catálogo."
+    },
+    {
+      "key": "catalogStatus",
+      "type": "status",
+      "label": "Super Sentai"
+    },
+    {
+      "key": "catalogUpdated",
+      "type": "status",
+      "label": "Última carga (UTC)"
+    },
+    {
+      "key": "refreshCatalog",
+      "type": "action",
+      "label": "Actualizar catálogo Super Sentai"
+    },
+    {
+      "key": "riderStatus",
+      "type": "status",
+      "label": "Kamen Rider"
+    },
     {
       "key": "shadowServer",
       "type": "select",
@@ -46,5 +73,8 @@
         }
       ]
     }
-  ]
+  ],
+  "section": {
+    "label": "Toku Kino"
+  }
 }

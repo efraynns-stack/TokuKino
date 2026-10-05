@@ -1,0 +1,55 @@
+{
+  "reportedDate": "2026-10-04",
+  "pluginVersion": "0.1.1",
+  "evidence": "User screenshot of the native debug error panel",
+  "function": "resolve",
+  "pluginErrorCode": "unavailable",
+  "detail": "VK no inició el video dentro del tiempo disponible",
+  "captureErrorCode": "timeout",
+  "lastPluginLog": "ULS_CAPTURE timeout",
+  "episode": null,
+  "interpretation": "The capture was invoked but found no matching video before its timeout; the exact cause is not established.",
+  "followUpVersion": "0.1.2",
+  "followUp": "Recognize known signed VK URLs without a file extension and allow 25 seconds for one capture.",
+  "followUpPlayback": "The full Registro screenshot at 21:26 confirms version 0.1.2; one allowed capture of vkvideo.ru/video_ext.php timed out after 25 s.",
+  "latestReportedDate": "2026-10-04",
+  "latestReportedPluginVersion": "0.1.5",
+  "latestReportedCaptureError": "timeout",
+  "nextTestVersion": "0.1.5",
+  "nextTest": {
+    "version": "0.1.9",
+    "scope": "Catalog completion status, last successful date and manual Super Sentai refresh",
+    "androidTvPlayback": "not_yet_verified_on_tv"
+  },
+  "nextTestPlayback": "pending",
+  "latestReportedTimeZone": "America/Santiago",
+  "latestReportedTime": "21:56:54",
+  "latestEvidence": "User screenshot: one allowed capture of the original episode page, mode=web, timed out after 25 seconds; players=0.",
+  "latestLogs": [
+    "ULS_CATALOG episodes=50",
+    "ULS_RESOLVE started version=0.1.4 episode=1 host=vk.com",
+    "ULS_VK_FETCH http=200",
+    "ULS_VK_PUBLIC_FETCH http=200",
+    "ULS_VK_PUBLIC reply code=8 reason=none parts=3",
+    "ULS_VK_PUBLIC refused code=8 reason=unclassified",
+    "ERROR resolve [unavailable] VK rechazó la consulta del reproductor público (código 8)",
+    "kino:play outcome=failed players=0"
+  ],
+  "latestInterpretation": "The original episode page did not yield a matching media request within the capture window. No specific cause was established.",
+  "sourceWebsitePlayback": {
+    "episode": 1,
+    "withoutLogin": true,
+    "evidence": "User answer to the current question on 2026-10-04"
+  },
+  "currentTest": {
+    "version": "0.1.6",
+    "series": "Mirai Sentai Timeranger",
+    "source": "ShadowRangers",
+    "provider": "VOE",
+    "androidTvPlayback": "confirmed_by_user",
+    "multipleEpisodes": "User reports testing several episodes, then confirms everything works",
+    "reportedDate": "2026-10-05",
+    "reportTimeZone": "America/Santiago",
+    "notIndependentlyObserved": true
+  }
+}

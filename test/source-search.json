@@ -1,0 +1,28 @@
+{
+  "items": [
+    {
+      "id": "uls-kamen-rider-gavv",
+      "ref": "series:kamen-rider-gavv",
+      "title": "Kamen Rider Gavv",
+      "kind": "series",
+      "year": "2024",
+      "poster": "https://cdnuls.xougarith.workers.dev/0:/zeztz/KamenRiderGavv/kamen-rider-gavv.webp",
+      "backdrop": "https://cdnuls.xougarith.workers.dev/0:/zeztz/KamenRiderGavv/kamen-rider-gavv.webp",
+      "overview": "La amenaza inminente de los monstruos. Granutes, monstruos de otro mundo. Los humanos no tienen ni idea de que están llegando en secreto a su mundo. Los humanos no tienen ni idea de que los de su especie están siendo cazados. Un joven da un paso adelante para proteger a la humanidad. Shoma es un joven al que le encanta comer. Al comer dulces, puede crear seres conocidos como los Gochizo, que se convierten en sus compañeros y en su principal fuente de poder como Kamen Rider Gavv. ¡La historia de Shoma, que lucha para proteger la felicidad de la gente de los Granute, comienza ahora!",
+      "lang": "ja",
+      "quality": "",
+      "originalTitle": "",
+      "genres": [
+        "Tokusatsu"
+      ],
+      "rating": null,
+      "runtimeMinutes": 0,
+      "tmdb": 0,
+      "imdb": "",
+      "badges": [
+        "Subtitulado"
+      ]
+    }
+  ],
+  "next": null
+}

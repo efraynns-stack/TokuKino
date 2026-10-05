@@ -1,0 +1,512 @@
+{
+  "series": {
+    "title": "Kamen Rider Gavv",
+    "poster": "https://cdnuls.xougarith.workers.dev/0:/zeztz/KamenRiderGavv/kamen-rider-gavv.webp",
+    "backdrop": "https://cdnuls.xougarith.workers.dev/0:/zeztz/KamenRiderGavv/kamen-rider-gavv.webp",
+    "overview": "La amenaza inminente de los monstruos. Granutes, monstruos de otro mundo. Los humanos no tienen ni idea de que están llegando en secreto a su mundo. Los humanos no tienen ni idea de que los de su especie están siendo cazados. Un joven da un paso adelante para proteger a la humanidad. Shoma es un joven al que le encanta comer. Al comer dulces, puede crear seres conocidos como los Gochizo, que se convierten en sus compañeros y en su principal fuente de poder como Kamen Rider Gavv. ¡La historia de Shoma, que lucha para proteger la felicidad de la gente de los Granute, comienza ahora!",
+    "year": "2024"
+  },
+  "episodes": [
+    {
+      "season": 1,
+      "number": 1,
+      "ref": "episode:kamen-rider-gavv-s39e01",
+      "title": "¡¿Un Kamen Rider extrañamente dulce?!",
+      "still": "https://cdnuls.xougarith.workers.dev/0:/zeztz/KamenRiderGavv/Episodio01.webp",
+      "overview": "",
+      "airDate": "2024-08-31",
+      "runtimeMinutes": 24
+    },
+    {
+      "season": 1,
+      "number": 2,
+      "ref": "episode:kamen-rider-gavv-s39e02",
+      "title": "Felices Zakuzaku Chips",
+      "still": "https://cdnuls.xougarith.workers.dev/0:/zeztz/KamenRiderGavv/Episodio02.webp",
+      "overview": "",
+      "airDate": "2024-09-07",
+      "runtimeMinutes": 24
+    },
+    {
+      "season": 1,
+      "number": 3,
+      "ref": "episode:kamen-rider-gavv-s39e03",
+      "title": "El golpe de soda sabe a pecado",
+      "still": "https://cdnuls.xougarith.workers.dev/0:/zeztz/KamenRiderGavv/Episodio03.webp",
+      "overview": "",
+      "airDate": "2024-09-15",
+      "runtimeMinutes": 24
+    },
+    {
+      "season": 1,
+      "number": 4,
+      "ref": "episode:kamen-rider-gavv-s39e04",
+      "title": "¡Más malvaviscos, por favor!",
+      "still": "https://cdnuls.xougarith.workers.dev/0:/zeztz/KamenRiderGavv/Episodio04.webp",
+      "overview": "",
+      "airDate": "2024-09-22",
+      "runtimeMinutes": 24
+    },
+    {
+      "season": 1,
+      "number": 5,
+      "ref": "episode:kamen-rider-gavv-s39e05",
+      "title": "Los recuerdos son dolorosos",
+      "still": "https://cdnuls.xougarith.workers.dev/0:/zeztz/KamenRiderGavv/Episodio05.webp",
+      "overview": "",
+      "airDate": "2024-09-29",
+      "runtimeMinutes": 24
+    },
+    {
+      "season": 1,
+      "number": 6,
+      "ref": "episode:kamen-rider-gavv-s39e06",
+      "title": "Un cambio chocolatoso y amargo",
+      "still": "https://cdnuls.xougarith.workers.dev/0:/zeztz/KamenRiderGavv/Episodio06.webp",
+      "overview": "",
+      "airDate": "2024-10-06",
+      "runtimeMinutes": 24
+    },
+    {
+      "season": 1,
+      "number": 7,
+      "ref": "episode:kamen-rider-gavv-s39e07",
+      "title": "¿Qué sabor se esconde bajo la máscara?",
+      "still": "https://cdnuls.xougarith.workers.dev/0:/zeztz/KamenRiderGavv/Episodio07.webp",
+      "overview": "",
+      "airDate": "2024-10-13",
+      "runtimeMinutes": 24
+    },
+    {
+      "season": 1,
+      "number": 8,
+      "ref": "episode:kamen-rider-gavv-s39e08",
+      "title": "Un dúo chocolatoso",
+      "still": "https://cdnuls.xougarith.workers.dev/0:/zeztz/KamenRiderGavv/Episodio08.webp",
+      "overview": "",
+      "airDate": "2024-10-20",
+      "runtimeMinutes": 24
+    },
+    {
+      "season": 1,
+      "number": 9,
+      "ref": "episode:kamen-rider-gavv-s39e09",
+      "title": "¡Truco o baile!",
+      "still": "https://cdnuls.xougarith.workers.dev/0:/zeztz/KamenRiderGavv/Episodio09.webp",
+      "overview": "",
+      "airDate": "2024-10-27",
+      "runtimeMinutes": 24
+    },
+    {
+      "season": 1,
+      "number": 10,
+      "ref": "episode:kamen-rider-gavv-s39e10",
+      "title": "¡Extra dulce! ¡Cañon de dulces!",
+      "still": "https://cdnuls.xougarith.workers.dev/0:/zeztz/KamenRiderGavv/Episodio10.webp",
+      "overview": "",
+      "airDate": "2024-11-10",
+      "runtimeMinutes": 24
+    },
+    {
+      "season": 1,
+      "number": 11,
+      "ref": "episode:kamen-rider-gavv-s39e11",
+      "title": "¡Cuidado con Las dulces palabras!",
+      "still": "https://cdnuls.xougarith.workers.dev/0:/zeztz/KamenRiderGavv/Episodio11.webp",
+      "overview": "",
+      "airDate": "2024-11-17",
+      "runtimeMinutes": 24
+    },
+    {
+      "season": 1,
+      "number": 12,
+      "ref": "episode:kamen-rider-gavv-s39e12",
+      "title": "Unidos por las donas",
+      "still": "https://cdnuls.xougarith.workers.dev/0:/zeztz/KamenRiderGavv/Episodio12.webp",
+      "overview": "",
+      "airDate": "2024-11-24",
+      "runtimeMinutes": 24
+    },
+    {
+      "season": 1,
+      "number": 13,
+      "ref": "episode:kamen-rider-gavv-s39e13",
+      "title": "La promesa del pastel casero",
+      "still": "https://cdnuls.xougarith.workers.dev/0:/zeztz/KamenRiderGavv/Episodio13.webp",
+      "overview": "",
+      "airDate": "2024-12-01",
+      "runtimeMinutes": 24
+    },
+    {
+      "season": 1,
+      "number": 14,
+      "ref": "episode:kamen-rider-gavv-s39e14",
+      "title": "El nacimiento del milagroso Caking",
+      "still": "https://cdnuls.xougarith.workers.dev/0:/zeztz/KamenRiderGavv/Episodio14.webp",
+      "overview": "",
+      "airDate": "2024-12-08",
+      "runtimeMinutes": 24
+    },
+    {
+      "season": 1,
+      "number": 15,
+      "ref": "episode:kamen-rider-gavv-s39e15",
+      "title": "Granute en fuga",
+      "still": "https://cdnuls.xougarith.workers.dev/0:/zeztz/KamenRiderGavv/Episodio15.webp",
+      "overview": "",
+      "airDate": "2024-12-15",
+      "runtimeMinutes": 24
+    },
+    {
+      "season": 1,
+      "number": 16,
+      "ref": "episode:kamen-rider-gavv-s39e16",
+      "title": "El regalo de Noel",
+      "still": "https://cdnuls.xougarith.workers.dev/0:/zeztz/KamenRiderGavv/Episodio16.webp",
+      "overview": "",
+      "airDate": "2024-12-22",
+      "runtimeMinutes": 24
+    },
+    {
+      "season": 1,
+      "number": 17,
+      "ref": "episode:kamen-rider-gavv-s39e17",
+      "title": "Los tentáculos de caramelo saben a felicidad",
+      "still": "https://cdnuls.xougarith.workers.dev/0:/zeztz/KamenRiderGavv/Episodio17.webp",
+      "overview": "",
+      "airDate": "2025-01-05",
+      "runtimeMinutes": 24
+    },
+    {
+      "season": 1,
+      "number": 18,
+      "ref": "episode:kamen-rider-gavv-s39e18",
+      "title": "¡Demasiado fuerte! El guardían de pudín",
+      "still": "https://cdnuls.xougarith.workers.dev/0:/zeztz/KamenRiderGavv/Episodio18.webp",
+      "overview": "",
+      "airDate": "2025-01-16",
+      "runtimeMinutes": 24
+    },
+    {
+      "season": 1,
+      "number": 19,
+      "ref": "episode:kamen-rider-gavv-s39e19",
+      "title": "El agridulce Secreto del pudín",
+      "still": "https://cdnuls.xougarith.workers.dev/0:/zeztz/KamenRiderGavv/Episodio19.webp",
+      "overview": "",
+      "airDate": "2025-01-23",
+      "runtimeMinutes": 24
+    },
+    {
+      "season": 1,
+      "number": 20,
+      "ref": "episode:kamen-rider-gavv-s39e20",
+      "title": "Viaje a la fábrica de Dulces Oscuros",
+      "still": "https://cdnuls.xougarith.workers.dev/0:/zeztz/KamenRiderGavv/Episodio20.webp",
+      "overview": "",
+      "airDate": "2025-01-30",
+      "runtimeMinutes": 24
+    },
+    {
+      "season": 1,
+      "number": 21,
+      "ref": "episode:kamen-rider-gavv-s39e21",
+      "title": "Un Gavv muy amargo",
+      "still": "https://cdnuls.xougarith.workers.dev/0:/zeztz/KamenRiderGavv/Episodio21.webp",
+      "overview": "",
+      "airDate": "2025-02-06",
+      "runtimeMinutes": 24
+    },
+    {
+      "season": 1,
+      "number": 22,
+      "ref": "episode:kamen-rider-gavv-s39e22",
+      "title": "La verdad Es agridulce",
+      "still": "https://cdnuls.xougarith.workers.dev/0:/zeztz/KamenRiderGavv/Episodio22.webp",
+      "overview": "",
+      "airDate": "2025-02-16",
+      "runtimeMinutes": 24
+    },
+    {
+      "season": 1,
+      "number": 23,
+      "ref": "episode:kamen-rider-gavv-s39e23",
+      "title": "Dulces rotos",
+      "still": "https://cdnuls.xougarith.workers.dev/0:/zeztz/KamenRiderGavv/Episodio23.webp",
+      "overview": "",
+      "airDate": "2025-02-20",
+      "runtimeMinutes": 24
+    },
+    {
+      "season": 1,
+      "number": 24,
+      "ref": "episode:kamen-rider-gavv-s39e24",
+      "title": "El helado de la resurrección",
+      "still": "https://cdnuls.xougarith.workers.dev/0:/zeztz/KamenRiderGavv/Episodio24.webp",
+      "overview": "",
+      "airDate": "2025-02-28",
+      "runtimeMinutes": 24
+    },
+    {
+      "season": 1,
+      "number": 25,
+      "ref": "episode:kamen-rider-gavv-s39e25",
+      "title": "Felicidad virtual, el sabor del néctar",
+      "still": "https://cdnuls.xougarith.workers.dev/0:/zeztz/KamenRiderGavv/Episodio25.webp",
+      "overview": "",
+      "airDate": "2025-03-08",
+      "runtimeMinutes": 24
+    },
+    {
+      "season": 1,
+      "number": 26,
+      "ref": "episode:kamen-rider-gavv-s39e26",
+      "title": "Pudín amargo",
+      "still": "https://cdnuls.xougarith.workers.dev/0:/zeztz/KamenRiderGavv/Episodio26.webp",
+      "overview": "",
+      "airDate": "2025-03-12",
+      "runtimeMinutes": 24
+    },
+    {
+      "season": 1,
+      "number": 27,
+      "ref": "episode:kamen-rider-gavv-s39e27",
+      "title": "Agridulce hasta la muerte",
+      "still": "https://cdnuls.xougarith.workers.dev/0:/zeztz/KamenRiderGavv/Episodio27.webp",
+      "overview": "",
+      "airDate": "2025-03-26",
+      "runtimeMinutes": 24
+    },
+    {
+      "season": 1,
+      "number": 28,
+      "ref": "episode:kamen-rider-gavv-s39e28",
+      "title": "El chocolatozo lazo del frapé",
+      "still": "https://cdnuls.xougarith.workers.dev/0:/zeztz/KamenRiderGavv/Episodio28.webp?v=2",
+      "overview": "",
+      "airDate": "2025-04-03",
+      "runtimeMinutes": 24
+    },
+    {
+      "season": 1,
+      "number": 29,
+      "ref": "episode:kamen-rider-gavv-s39e29",
+      "title": "¡La boda sorpresa de Jiip!",
+      "still": "https://cdnuls.xougarith.workers.dev/0:/zeztz/KamenRiderGavv/Episodio29.webp?v=2",
+      "overview": "",
+      "airDate": "2025-04-11",
+      "runtimeMinutes": 24
+    },
+    {
+      "season": 1,
+      "number": 30,
+      "ref": "episode:kamen-rider-gavv-s39e30",
+      "title": "La más temible hija presidencial",
+      "still": "https://cdnuls.xougarith.workers.dev/0:/zeztz/KamenRiderGavv/Episodio30.webp",
+      "overview": "",
+      "airDate": "2025-04-19",
+      "runtimeMinutes": 24
+    },
+    {
+      "season": 1,
+      "number": 31,
+      "ref": "episode:kamen-rider-gavv-s39e31",
+      "title": "Un matrimonio difícil",
+      "still": "https://cdnuls.xougarith.workers.dev/0:/zeztz/KamenRiderGavv/Episodio31.webp",
+      "overview": "",
+      "airDate": "2025-04-25",
+      "runtimeMinutes": 24
+    },
+    {
+      "season": 1,
+      "number": 32,
+      "ref": "episode:kamen-rider-gavv-s39e32",
+      "title": "¡Una copa de grandes emociones!",
+      "still": "https://cdnuls.xougarith.workers.dev/0:/zeztz/KamenRiderGavv/Episodio32.webp",
+      "overview": "",
+      "airDate": "2025-04-30",
+      "runtimeMinutes": 24
+    },
+    {
+      "season": 1,
+      "number": 33,
+      "ref": "episode:kamen-rider-gavv-s39e33",
+      "title": "¡¡Un golpe mortal!! ¡Over Gavv!",
+      "still": "https://cdnuls.xougarith.workers.dev/0:/zeztz/KamenRiderGavv/Episodio33.webp",
+      "overview": "",
+      "airDate": "2025-05-09",
+      "runtimeMinutes": 24
+    },
+    {
+      "season": 1,
+      "number": 34,
+      "ref": "episode:kamen-rider-gavv-s39e34",
+      "title": "¡La operación de 100 Gochizos!",
+      "still": "https://cdnuls.xougarith.workers.dev/0:/zeztz/KamenRiderGavv/Episodio34.webp",
+      "overview": "",
+      "airDate": "2025-05-15",
+      "runtimeMinutes": 24
+    },
+    {
+      "season": 1,
+      "number": 35,
+      "ref": "episode:kamen-rider-gavv-s39e35",
+      "title": "¡Cero dulzura! Lango desatado",
+      "still": "https://cdnuls.xougarith.workers.dev/0:/zeztz/KamenRiderGavv/Episodio35.webp",
+      "overview": "",
+      "airDate": "2025-05-26",
+      "runtimeMinutes": 24
+    },
+    {
+      "season": 1,
+      "number": 36,
+      "ref": "episode:kamen-rider-gavv-s39e36",
+      "title": "¡Vuelta! ¡Despierta! Master Gavv",
+      "still": "https://cdnuls.xougarith.workers.dev/0:/zeztz/KamenRiderGavv/Episodio36.webp",
+      "overview": "",
+      "airDate": "2025-06-01",
+      "runtimeMinutes": 24
+    },
+    {
+      "season": 1,
+      "number": 37,
+      "ref": "episode:kamen-rider-gavv-s39e37",
+      "title": "Nunca lo olvidaré",
+      "still": "https://cdnuls.xougarith.workers.dev/0:/zeztz/KamenRiderGavv/Episodio37.webp",
+      "overview": "",
+      "airDate": "2025-06-12",
+      "runtimeMinutes": 24
+    },
+    {
+      "season": 1,
+      "number": 38,
+      "ref": "episode:kamen-rider-gavv-s39e38",
+      "title": "La otra cara del odio",
+      "still": "https://cdnuls.xougarith.workers.dev/0:/zeztz/KamenRiderGavv/Episodio38.webp",
+      "overview": "",
+      "airDate": "2025-06-14",
+      "runtimeMinutes": 24
+    },
+    {
+      "season": 1,
+      "number": 39,
+      "ref": "episode:kamen-rider-gavv-s39e39",
+      "title": "Te estaba buscando",
+      "still": "https://cdnuls.xougarith.workers.dev/0:/zeztz/KamenRiderGavv/Episodio39.webp",
+      "overview": "",
+      "airDate": "2025-06-23",
+      "runtimeMinutes": 24
+    },
+    {
+      "season": 1,
+      "number": 40,
+      "ref": "episode:kamen-rider-gavv-s39e40",
+      "title": "El reminiscente À la mode",
+      "still": "https://cdnuls.xougarith.workers.dev/0:/zeztz/KamenRiderGavv/Episodio40.webp",
+      "overview": "",
+      "airDate": "2025-07-02",
+      "runtimeMinutes": 24
+    },
+    {
+      "season": 1,
+      "number": 41,
+      "ref": "episode:kamen-rider-gavv-s39e41",
+      "title": "Las gafas acechadoras",
+      "still": "https://cdnuls.xougarith.workers.dev/0:/zeztz/KamenRiderGavv/Episodio41.webp",
+      "overview": "",
+      "airDate": "2025-07-11",
+      "runtimeMinutes": 24
+    },
+    {
+      "season": 1,
+      "number": 42,
+      "ref": "episode:kamen-rider-gavv-s39e42",
+      "title": "El fin de los sentimientos rotos",
+      "still": "https://cdnuls.xougarith.workers.dev/0:/zeztz/KamenRiderGavv/Episodio42.webp",
+      "overview": "",
+      "airDate": "2025-07-12",
+      "runtimeMinutes": 24
+    },
+    {
+      "season": 1,
+      "number": 43,
+      "ref": "episode:kamen-rider-gavv-s39e43",
+      "title": "¿A qué sabe el mundo humano?",
+      "still": "https://cdnuls.xougarith.workers.dev/0:/zeztz/KamenRiderGavv/Episodio43.webp",
+      "overview": "",
+      "airDate": "2025-07-18",
+      "runtimeMinutes": 24
+    },
+    {
+      "season": 1,
+      "number": 44,
+      "ref": "episode:kamen-rider-gavv-s39e44",
+      "title": "Esos momentos tan brillantes a los que no puedo regresar",
+      "still": "https://cdnuls.xougarith.workers.dev/0:/zeztz/KamenRiderGavv/Episodio44.webp",
+      "overview": "",
+      "airDate": "2025-08-02",
+      "runtimeMinutes": 24
+    },
+    {
+      "season": 1,
+      "number": 45,
+      "ref": "episode:kamen-rider-gavv-s39e45",
+      "title": "No dejaré que nadie me los arrebate de nuevo",
+      "still": "https://cdnuls.xougarith.workers.dev/0:/zeztz/KamenRiderGavv/Episodio45.webp",
+      "overview": "",
+      "airDate": "2025-08-05",
+      "runtimeMinutes": 24
+    },
+    {
+      "season": 1,
+      "number": 46,
+      "ref": "episode:kamen-rider-gavv-s39e46",
+      "title": "La decisión de Shoma",
+      "still": "https://cdnuls.xougarith.workers.dev/0:/zeztz/KamenRiderGavv/Episodio46.webp",
+      "overview": "",
+      "airDate": "2025-03-12",
+      "runtimeMinutes": 24
+    },
+    {
+      "season": 1,
+      "number": 47,
+      "ref": "episode:kamen-rider-gavv-s39e47",
+      "title": "Una distopía feliz",
+      "still": "https://cdnuls.xougarith.workers.dev/0:/zeztz/KamenRiderGavv/Episodio47.webp",
+      "overview": "",
+      "airDate": "2025-08-17",
+      "runtimeMinutes": 24
+    },
+    {
+      "season": 1,
+      "number": 48,
+      "ref": "episode:kamen-rider-gavv-s39e48",
+      "title": "Ardiente Amazingummy",
+      "still": "https://cdnuls.xougarith.workers.dev/0:/zeztz/KamenRiderGavv/Episodio48.webp",
+      "overview": "",
+      "airDate": "2025-08-23",
+      "runtimeMinutes": 24
+    },
+    {
+      "season": 1,
+      "number": 49,
+      "ref": "episode:kamen-rider-gavv-s39e49",
+      "title": "Yo creo en los snacks",
+      "still": "https://cdnuls.xougarith.workers.dev/0:/zeztz/KamenRiderGavv/Episodio49.webp",
+      "overview": "",
+      "airDate": "2025-08-29",
+      "runtimeMinutes": 24
+    },
+    {
+      "season": 1,
+      "number": 50,
+      "ref": "episode:kamen-rider-gavv-s39e50",
+      "title": "¡A por un delicioso futuro!",
+      "still": "https://cdnuls.xougarith.workers.dev/0:/zeztz/KamenRiderGavv/Episodio50.webp",
+      "overview": "",
+      "airDate": "2025-08-31",
+      "runtimeMinutes": 24
+    }
+  ],
+  "seasons": []
+}

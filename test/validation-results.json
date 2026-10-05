@@ -1,0 +1,65 @@
+{
+  "pluginName": "Toku Kino",
+  "pluginVersion": "0.1.9",
+  "minimumKino": "0.9.50",
+  "checkedAt": "2026-10-05T04:16:47.158629+00:00",
+  "manifestAccepted": true,
+  "offlineTests": {
+    "total": 64,
+    "passed": 64,
+    "failed": 0
+  },
+  "catalogSeriesCount": 49,
+  "catalogYears": {
+    "first": 1975,
+    "last": 2025
+  },
+  "order": "Release year ascending",
+  "sampledRealEpisodeCounts": {
+    "Himitsu Sentai Goranger": 84,
+    "Mirai Sentai Timeranger": 50,
+    "No. 1 Sentai Gozyuger": 49
+  },
+  "sourceFixtures": "Minimal real public category/series/player-option HTML; synthetic media and session data for offline tests",
+  "sdkLiveEvidence": "test/catalog-status-live-results.json",
+  "sdkLiveCallsAccepted": true,
+  "primarySource": "VOE",
+  "lazyAlternative": "ShadowLiv where published",
+  "resolveBudgetMs": 70000,
+  "legacyTimerangerRefsPreserved": true,
+  "legacyGavvRefsPreserved": true,
+  "permissionsChangedFrom016": false,
+  "androidTvPlayback": {
+    "previousVersion": "0.1.6",
+    "TimerangerVOE": "confirmed_by_user_across_multiple_episodes",
+    "currentVersion": "0.1.9",
+    "expandedCatalog": "not_yet_installed_by_user",
+    "shadowLiv": "not_confirmed",
+    "categories": "not_yet_verified_on_tv",
+    "settingsStatus": "not_yet_verified_on_tv"
+  },
+  "categoryCount": 2,
+  "categoryTitles": [
+    "Super Sentai",
+    "Kamen Rider"
+  ],
+  "categoryItemCounts": {
+    "Super Sentai": 49,
+    "Kamen Rider": 1
+  },
+  "sectionTabs": [
+    "super-sentai",
+    "kamen-rider"
+  ],
+  "categoryArt": "Original user-provided JPEGs, unchanged, included in assets",
+  "permissionsChangedFrom017": false,
+  "settingsStatus": {
+    "realTimeProgress": false,
+    "nativeRefresh": "On settings open and after action",
+    "completionPercent": "100% means the series listing has loaded",
+    "timestampZone": "UTC",
+    "manualRefreshTimeoutMs": 20000,
+    "preserveLastCatalogOnFailure": true
+  },
+  "permissionsChangedFrom018": false
+}

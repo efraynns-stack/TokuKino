@@ -1,0 +1,83 @@
+{
+  "version": "0.1.7",
+  "checkedAt": "2026-10-05T03:57:53.059Z",
+  "transport": "Fresh HTTPS through official SDK host gate",
+  "calls": [
+    {
+      "function": "home",
+      "drops": 0,
+      "series": 49,
+      "outcome": "accepted"
+    },
+    {
+      "function": "search",
+      "argument": {
+        "q": "Gozyuger"
+      },
+      "drops": 0,
+      "series": 1,
+      "outcome": "accepted"
+    },
+    {
+      "function": "episodes",
+      "argument": "shadow:sentai:himitsu-sentai-goranger",
+      "drops": 0,
+      "episodes": 84,
+      "outcome": "accepted"
+    },
+    {
+      "function": "episodes",
+      "argument": "shadow:sentai:no-1-sentai-gozyuger",
+      "drops": 0,
+      "episodes": 49,
+      "outcome": "accepted"
+    },
+    {
+      "function": "resolve",
+      "argument": "shadow:sentai:himitsu-sentai-goranger:1x1:server:2",
+      "drops": 0,
+      "mime": "application/vnd.apple.mpegurl",
+      "label": "Server 2 · VOE",
+      "outcome": "accepted"
+    }
+  ],
+  "androidTvPlayback": "0.1.6 VOE confirmed by user on Timeranger; 0.1.7 not yet installed",
+  "requests": [
+    {
+      "host": "shadowrangers.live",
+      "path": "/genero/super-sentai/",
+      "status": 200,
+      "durationMs": 8569
+    },
+    {
+      "host": "shadowrangers.live",
+      "path": "/series/himitsu-sentai-goranger/",
+      "status": 200,
+      "durationMs": 9363
+    },
+    {
+      "host": "shadowrangers.live",
+      "path": "/series/no-1-sentai-gozyuger/",
+      "status": 200,
+      "durationMs": 9192
+    },
+    {
+      "host": "shadowrangers.live",
+      "path": "/capitulos/himitsu-sentai-goranger-1x1/",
+      "status": 200,
+      "durationMs": 10094
+    },
+    {
+      "host": "voe.sx",
+      "path": "/e/32onpc2nzayy",
+      "status": 200,
+      "durationMs": 6125
+    },
+    {
+      "host": "teresapoliticallearn.com",
+      "path": "/e/32onpc2nzayy",
+      "status": 200,
+      "durationMs": 8384
+    }
+  ]
+}

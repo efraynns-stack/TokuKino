@@ -1,0 +1,42 @@
+{
+  "version": "0.1.9",
+  "checkedAt": "2026-10-05T04:14:38.967Z",
+  "transport": "Fresh HTTPS through official SDK host gate",
+  "calls": [
+    {
+      "function": "settingsStatus",
+      "drops": 0,
+      "status": {
+        "catalogStatus": "0% · sin carga registrada",
+        "catalogUpdated": "Sin fecha registrada",
+        "riderStatus": "1 serie · prueba de Kamen Rider Gavv"
+      },
+      "outcome": "accepted"
+    },
+    {
+      "function": "action",
+      "argument": "refreshCatalog",
+      "outcome": "not_verified",
+      "code": "unavailable"
+    },
+    {
+      "function": "settingsStatus",
+      "drops": 0,
+      "status": {
+        "catalogStatus": "Error al actualizar · sin catálogo cargado",
+        "catalogUpdated": "Sin fecha registrada",
+        "riderStatus": "1 serie · prueba de Kamen Rider Gavv"
+      },
+      "outcome": "accepted"
+    }
+  ],
+  "androidTvPlayback": "0.1.6 VOE confirmed by user on Timeranger; current version 0.1.9 not yet verified on TV",
+  "requests": [
+    {
+      "host": "shadowrangers.live",
+      "path": "/genero/super-sentai/",
+      "outcome": "network_or_timeout",
+      "durationMs": 12006
+    }
+  ]
+}

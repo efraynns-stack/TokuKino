@@ -1,0 +1,61 @@
+{
+  "version": "0.1.6",
+  "checkedAt": "2026-10-05T03:27:53.271Z",
+  "transport": "Official SDK host gate with curl HTTPS transport",
+  "calls": {
+    "home": {
+      "outcome": "failed",
+      "code": "unavailable",
+      "detail": "No se pudo consultar la fuente de ShadowRangers"
+    },
+    "search": {
+      "outcome": "failed",
+      "code": "unavailable",
+      "detail": "No se pudo consultar la fuente de ShadowRangers"
+    },
+    "episodes": {
+      "outcome": "ok",
+      "drops": 0,
+      "count": 50
+    },
+    "resolve": {
+      "outcome": "not_verified",
+      "code": "unavailable",
+      "detail": "No se pudo consultar la fuente de ShadowRangers"
+    }
+  },
+  "playbackOnAndroidTv": "pending",
+  "shadowLivCapture": "Node SDK cannot run Android WebView",
+  "requests": [
+    {
+      "host": "shadowrangers.live",
+      "method": "GET",
+      "outcome": "network_or_timeout",
+      "durationMs": 12005
+    },
+    {
+      "host": "shadowrangers.live",
+      "method": "GET",
+      "outcome": "network_or_timeout",
+      "durationMs": 12009
+    },
+    {
+      "host": "shadowrangers.live",
+      "method": "GET",
+      "status": 200,
+      "durationMs": 10885
+    },
+    {
+      "host": "shadowrangers.live",
+      "method": "GET",
+      "status": 200,
+      "durationMs": 13182
+    },
+    {
+      "host": "voe.sx",
+      "method": "GET",
+      "outcome": "network_or_timeout",
+      "durationMs": 12004
+    }
+  ]
+}

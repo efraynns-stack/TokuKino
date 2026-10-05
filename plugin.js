@@ -1,6 +1,6 @@
-// Toku Kino 0.1.7: Super Sentai on ShadowRangers, ordered by release year.
+// Toku Kino 0.1.9: catalog load status and manual refresh in settings.
 // Public metadata only. Video addresses are discovered again at play time.
-const VERSION = "0.1.7";
+const VERSION = "0.1.9";
 const SITE = "https://www.subsunlimiteds.com";
 const API_URL = "https://ulsapi.unlimiteds.workers.dev/search?q=Gavv";
 const SERIES_ID = "kamen-rider-gavv";
@@ -19,8 +19,12 @@ const SHADOW_REF = "shadow:timeranger";
 const SHADOW_CACHE = "shadow-timeranger-v1";
 const SENTAI_URL = SHADOW_SITE + "/genero/super-sentai/";
 const SENTAI_CACHE = "shadow-sentai-catalog-v1";
+const CATALOG_STATE = "shadow-sentai-load-state-v1";
 const SERIES_CACHE = "shadow-sentai-series-v1";
 const TIMERANGER = "mirai-sentai-timeranger";
+const SENTAI_CATEGORY = "category:super-sentai";
+const RIDER_CATEGORY = "category:kamen-rider";
+const CATEGORY_ART = "https://raw.githubusercontent.com/efraynns-stack/TokuKino/HEAD/assets/";
 const SHADOW_PLAYERS = ["voe.sx", "teresapoliticallearn.com", "shadowliv.xyz"];
 
 function unescapeHtml(value) {
@@ -50,13 +54,40 @@ function shadowItem(data) {
     year: data.year, poster: data.poster, overview: data.overview, lang: "ja", badges: ["ShadowRangers"], genres: ["Super Sentai", "Tokusatsu"] };
 }
 
-async function sentaiCatalog() {
-  await null;
+function catalogState() {
   try {
+    const state = JSON.parse(kino.storage.get(CATALOG_STATE) || "null");
+    return state && typeof state === "object" && !Array.isArray(state) ? state : {};
+  } catch { return {}; }
+}
+
+function storeCatalogState(state) {
+  try { kino.storage.set(CATALOG_STATE, JSON.stringify(state), { ttlMs: 30 * 24 * 60 * 60 * 1000 }); }
+  catch { log("warn", "SENTAI_STATUS storage_unavailable"); }
+}
+
+async function sentaiCatalog(fresh = false, timeoutMs = 12000) {
+  await null;
+  if (!fresh) try {
     const cached = JSON.parse(kino.storage.get(SENTAI_CACHE) || "null");
     if (cached && Array.isArray(cached.items) && cached.items.length) return cached.items;
   } catch { /* Refresh malformed or expired metadata. */ }
-  const html = await shadowHtml(SENTAI_URL, 12000, SHADOW_SITE + "/");
+  const previous = catalogState();
+  storeCatalogState({ ...previous, phase: "loading", startedAt: Date.now(), failure: undefined });
+  try {
+    const items = await loadSentaiCatalog(timeoutMs);
+    storeCatalogState({ phase: "complete", count: items.length, loadedAt: Date.now() });
+    return items;
+  } catch (e) {
+    const failure = ["unavailable", "rate_limited", "geo_blocked", "not_found"].includes(e.code) ? e.code : "unavailable";
+    storeCatalogState({ ...previous, phase: "failed", failure, failedAt: Date.now() });
+    throw e;
+  }
+}
+
+async function loadSentaiCatalog(timeoutMs) {
+  await null;
+  const html = await shadowHtml(SENTAI_URL, timeoutMs, SHADOW_SITE + "/");
   // Scope to the category's cards, excluding unrelated sidebar recommendations.
   const start = /<div\b[^>]*class=["']content\b[^"']*["'][^>]*>/i.exec(html);
   if (!start) throw error("unavailable", "No se pudo reconocer el catálogo de Super Sentai");
@@ -82,9 +113,38 @@ async function sentaiCatalog() {
   }
   if (!items.length) throw error("unavailable", "El catálogo de Super Sentai no contiene series reconocibles");
   items.sort((a, b) => Number(a.year || 9999) - Number(b.year || 9999) || (a.title < b.title ? -1 : a.title > b.title ? 1 : 0));
-  try { kino.storage.set(SENTAI_CACHE, JSON.stringify({ items }), { ttlMs: CACHE_TTL }); } catch { /* Optional metadata cache. */ }
+  try { kino.storage.set(SENTAI_CACHE, JSON.stringify({ items, savedAt: Date.now() }), { ttlMs: CACHE_TTL }); } catch { /* Optional metadata cache. */ }
   log("info", "SENTAI_CATALOG version=" + VERSION + " series=" + items.length);
   return items;
+}
+
+export async function settingsStatus() {
+  await null;
+  const state = catalogState();
+  let count = Number.isInteger(state.count) && state.count > 0 ? state.count : 0;
+  let loadedAt = Number.isFinite(state.loadedAt) && state.loadedAt > 0 ? state.loadedAt : 0;
+  // Updating from 0.1.8 can retain a valid cache without the new status record.
+  if (!count) try {
+    const cached = JSON.parse(kino.storage.get(SENTAI_CACHE) || "null");
+    if (cached && Array.isArray(cached.items)) {
+      count = cached.items.length;
+      if (Number.isFinite(cached.savedAt)) loadedAt = cached.savedAt;
+    }
+  } catch { /* Status never performs network requests. */ }
+  let status = count ? "100% · " + count + " series · última carga completa" : "0% · sin carga registrada";
+  if (state.phase === "loading") status = Date.now() - state.startedAt > 35000
+    ? "Carga interrumpida · pulsa Actualizar catálogo" : "Actualizando catálogo…";
+  if (state.phase === "failed") status = "Error al actualizar" + (count ? " · " + count + " series de la última carga" : " · sin catálogo cargado");
+  return { catalogStatus: status,
+    catalogUpdated: loadedAt ? new Date(loadedAt).toISOString().slice(0, 19).replace("T", " ") + " UTC" : "Sin fecha registrada",
+    riderStatus: "1 serie · prueba de Kamen Rider Gavv" };
+}
+
+export async function action(key) {
+  await null;
+  if (key !== "refreshCatalog") throw error("not_found", "La acción no existe");
+  const items = await sentaiCatalog(true, 20000);
+  return { message: "100% · " + items.length + " series de Super Sentai cargadas. Abre Toku Kino o Categorías para verlas." };
 }
 
 function shadowTimeout(wanted, deadline) {
@@ -405,10 +465,43 @@ export async function home() {
   const rows = [];
   for (let i = 0; i < catalog.length && rows.length < 20; i += 60) {
     rows.push({ id: i === 0 ? "shadowrangers-series" : "shadowrangers-series-" + i,
-      title: "Super Sentai · por año" + (i ? " · continuación" : ""), genre: "series",
+      title: "Super Sentai · por año" + (i ? " · continuación" : ""), genre: "series", ref: SENTAI_CATEGORY,
       items: catalog.slice(i, i + 60).map(shadowItem) });
   }
   return rows;
+}
+
+export async function categories() {
+  await null;
+  return [
+    { id: "super-sentai", title: "Super Sentai", ref: SENTAI_CATEGORY, art: CATEGORY_ART + "super-sentai.jpg" },
+    { id: "kamen-rider", title: "Kamen Rider", ref: RIDER_CATEGORY, art: CATEGORY_ART + "kamen-rider.jpg" },
+  ];
+}
+
+export async function browse(ref, cursor = null) {
+  await null;
+  if (ref !== SENTAI_CATEGORY && ref !== RIDER_CATEGORY) throw error("not_found", "La categoría no existe");
+  // Category-bound cursors cannot accidentally continue into the other catalog.
+  const prefix = ref + ":offset:";
+  if (cursor !== null && (typeof cursor !== "string" || !cursor.startsWith(prefix) || !/^(0|[1-9]\d{0,5})$/.test(cursor.slice(prefix.length))))
+    throw error("not_found", "La página de la categoría no es válida");
+  const offset = cursor === null ? 0 : Number(cursor.slice(prefix.length));
+  const items = ref === SENTAI_CATEGORY ? (await sentaiCatalog()).map(shadowItem) : [item(await seriesData())];
+  return { items: items.slice(offset, offset + 100), next: offset + 100 < items.length ? prefix + (offset + 100) : null };
+}
+
+export async function section({ tab } = {}) {
+  await null;
+  const chosen = tab === "kamen-rider" ? "kamen-rider" : "super-sentai";
+  const tabs = [{ id: "super-sentai", label: "Super Sentai" }, { id: "kamen-rider", label: "Kamen Rider" }];
+  if (chosen === "super-sentai") return { tabs, tab: chosen,
+    hero: { title: "Super Sentai", image: CATEGORY_ART + "super-sentai.jpg", text: "Series ordenadas por año de estreno." },
+    rows: await home() };
+  return { tabs, tab: chosen,
+    hero: { title: "Kamen Rider", image: CATEGORY_ART + "kamen-rider.jpg", text: "Series de Kamen Rider." },
+    rows: [{ id: "kamen-rider-series", title: "Kamen Rider", genre: "series", ref: RIDER_CATEGORY,
+      items: [item(await seriesData())] }] };
 }
 
 function searchWords(value) {

@@ -1,0 +1,40 @@
+{
+  "pluginVersion": "0.1.5",
+  "checkedAt": "2026-10-05T00:51:28.817Z",
+  "transport": "SDK host gate + curl HTTPS transport",
+  "calls": {
+    "home": {
+      "drops": 0,
+      "count": 1
+    },
+    "search": {
+      "drops": 0,
+      "count": 1
+    },
+    "episodes": {
+      "drops": 0,
+      "count": 50
+    },
+    "resolve": {
+      "outcome": "not_verified",
+      "code": "unavailable",
+      "detail": "Este dispositivo no dispone del navegador integrado necesario para VK"
+    }
+  },
+  "requests": [
+    {
+      "host": "ulsapi.unlimiteds.workers.dev",
+      "method": "GET"
+    },
+    {
+      "host": "ulsapi.unlimiteds.workers.dev",
+      "method": "GET"
+    },
+    {
+      "host": "vk.com",
+      "method": "GET"
+    }
+  ],
+  "browserCapture": "Node SDK returns browser_unavailable; real capture must be checked on Android",
+  "playbackOnTv": "pending"
+}
