@@ -1,6 +1,6 @@
-// Toku Kino 0.3.1: recover category metadata when the source is unavailable.
+// Toku Kino 0.3.2: use the episode URLs and numbering published by each series.
 // Public metadata only. Video addresses are discovered again at play time.
-const VERSION = "0.3.1";
+const VERSION = "0.3.2";
 const SITE = "https://www.subsunlimiteds.com";
 const API_URL = "https://ulsapi.unlimiteds.workers.dev/search?q=Gavv";
 const SERIES_ID = "kamen-rider-gavv";
@@ -236,6 +236,38 @@ async function shadowHtml(url, timeoutMs, referer, deadline) {
   return html;
 }
 
+function shadowEpisodePage(value) {
+  const url = safeHttps(value);
+  if (!url) return null;
+  const u = new URL(url);
+  const ids = /^\/capitulos\/((?:[a-z0-9-]|%[0-9a-f]{2}){1,330})-([0-9]{1,2})x([0-9]{1,3})\/$/i.exec(u.pathname);
+  if (u.hostname !== "shadowrangers.live" || u.search || u.hash || !ids) return null;
+  let prefix;
+  try { prefix = decodeURIComponent(ids[1]); } catch { return null; }
+  // Permit the observed Japanese names; reject encoded separators, traversal
+  // and double encoding. Only a chapter on the same public source is accepted.
+  if (!/^[a-z0-9\u00c0-\u024f\u3040-\u30ff\u3400-\u9fff-]{1,110}$/i.test(prefix)) return null;
+  const season = Number(ids[2]), number = Number(ids[3]);
+  return season > 0 && number > 0 ? { url, prefix, season, number } : null;
+}
+
+function shadowEpisodeRegion(html) {
+  const start = /<div\b[^>]*\sid\s*=\s*(["'])episodes\1[^>]*>/i.exec(html);
+  if (!start) return { body: html, owned: false };
+  const offset = start.index + start[0].length;
+  let depth = 1;
+  for (const m of html.slice(offset).matchAll(/<div\b[^>]*>|<\/div\s*>/gi)) {
+    depth += /^<\//.test(m[0]) ? -1 : 1;
+    if (!depth) {
+      const region = html.slice(offset, offset + m.index), lists = [];
+      for (const list of region.matchAll(/(<ul\b[^>]*>)([\s\S]*?)<\/ul>/gi))
+        if (attribute(list[1], "class").split(/\s+/).includes("episodios")) lists.push(list[2]);
+      return { body: lists.join(""), owned: true };
+    }
+  }
+  return { body: "", owned: true };
+}
+
 async function shadowSeries(slug = TIMERANGER, family = "sentai", callDeadline) {
   await null;
   const deadline = callDeadline || Date.now() + 19500;
@@ -244,7 +276,7 @@ async function shadowSeries(slug = TIMERANGER, family = "sentai", callDeadline) 
     entries = JSON.parse(kino.storage.get(SERIES_CACHE) || "[]");
     if (!Array.isArray(entries)) entries = [];
     const cached = entries.find((e) => e.slug === slug && (e.family || "sentai") === family && Date.now() - e.savedAt < CACHE_TTL);
-    if (cached && Array.isArray(cached.episodes) && cached.episodes.length) return cached;
+    if (cached && cached.parserVersion === 2 && Array.isArray(cached.episodes) && cached.episodes.length) return cached;
     if (slug === TIMERANGER && family === "sentai") {
       const old = JSON.parse(kino.storage.get(SHADOW_CACHE) || "null");
       if (old && old.title === "Mirai Sentai Timeranger" && Array.isArray(old.episodes) && old.episodes.length)
@@ -255,32 +287,37 @@ async function shadowSeries(slug = TIMERANGER, family = "sentai", callDeadline) 
     : (await shadowCatalog(family, false, shadowTimeout(12000, deadline))).find((s) => s.slug === slug);
   if (!card) throw error("not_found", "La serie no está publicada en el catálogo de " + CATALOGS[family].title);
   const html = await shadowHtml(SHADOW_SITE + "/series/" + slug + "/", 18000, CATALOGS[family].url, deadline);
-  const episodes = [], seen = new Set();
-  for (const m of html.matchAll(/<li\b[^>]*>[\s\S]*?<\/li>/gi)) {
+  const episodes = [], seen = new Set(), region = shadowEpisodeRegion(html);
+  for (const m of region.body.matchAll(/<li\b[^>]*>[\s\S]*?<\/li>/gi)) {
     const block = m[0];
-    const link = /<a\b[^>]*href\s*=\s*(["'])([^"']+)\1[^>]*>([\s\S]*?)<\/a>/i.exec(block);
+    const heading = /<div\b[^>]*class\s*=\s*(["'])episodiotitle\1[^>]*>([\s\S]*?)<\/div>/i.exec(block);
+    if (region.owned && !heading) continue;
+    const link = /<a\b[^>]*href\s*=\s*(["'])([^"']+)\1[^>]*>([\s\S]*?)<\/a>/i.exec(heading ? heading[2] : block);
     if (!link) continue;
-    const url = safeHttps(unescapeHtml(link[2]));
-    if (!url) continue;
-    const u = new URL(url);
-    const ids = /^\/capitulos\/([a-z0-9-]+)-([0-9]{1,2})x([0-9]{1,3})\/$/.exec(u.pathname);
-    if (u.hostname !== "shadowrangers.live" || u.search || u.hash || !ids || ids[1] !== slug) continue;
-    const season = Number(ids[2]), number = Number(ids[3]);
+    const page = shadowEpisodePage(unescapeHtml(link[2]));
+    if (!page || (!region.owned && page.prefix !== slug)) continue;
+    const label = /<div\b[^>]*class\s*=\s*(["'])numerando\1[^>]*>([\s\S]*?)<\/div>/i.exec(block);
+    const display = label && /^([0-9]{1,2})\s*-\s*([0-9]{1,3})$/.exec(htmlText(label[2]));
+    if (region.owned && (!display || Number(display[2]) !== page.number)) continue;
+    const season = display ? Number(display[1]) : page.season, number = display ? Number(display[2]) : page.number;
     if (season < 1 || number < 1 || seen.has(season + ":" + number)) continue;
     seen.add(season + ":" + number);
     const img = /<img\b[^>]*>/i.exec(block);
-    episodes.push({ season, number, title: htmlText(link[3]) || "Capítulo " + number,
+    episodes.push({ season, number, page: page.url, title: htmlText(link[3]) || "Capítulo " + number,
       still: img ? safeHttps(attribute(img[0], "src")) || undefined : undefined });
   }
-  if (!episodes.length) throw error("unavailable", "La ficha de la serie no contiene capítulos reconocibles");
+  if (!episodes.length) {
+    log("warn", "SHADOW_EPISODES version=" + VERSION + " family=" + family + " series=" + slug + " unrecognized");
+    throw error("unavailable", "La ficha de la serie no contiene capítulos reconocibles");
+  }
   episodes.sort((a, b) => a.season - b.season || a.number - b.number);
   const poster = /<img\b[^>]*itemprop\s*=\s*(["'])image\1[^>]*>/i.exec(html);
   const synopsis = /<div\b[^>]*class\s*=\s*(["'])wp-content\1[^>]*>\s*<p\b[^>]*>([\s\S]*?)<\/p>/i.exec(html);
-  const data = { ...card, family, savedAt: Date.now(), poster: poster ? safeHttps(attribute(poster[0], "src")) || card.poster : card.poster,
+  const data = { ...card, family, parserVersion: 2, savedAt: Date.now(), poster: poster ? safeHttps(attribute(poster[0], "src")) || card.poster : card.poster,
     overview: synopsis ? htmlText(synopsis[2], 5000) : undefined, episodes: episodes.slice(0, 5000) };
   try {
     // Bound both entry count and serialized size within the shared 256 KB storage quota.
-    const next = [data, ...entries.filter((e) => (e.slug !== slug || (e.family || "sentai") !== family) && Date.now() - e.savedAt < CACHE_TTL)].slice(0, 4);
+    const next = [data, ...entries.filter((e) => e.parserVersion === 2 && (e.slug !== slug || (e.family || "sentai") !== family) && Date.now() - e.savedAt < CACHE_TTL)].slice(0, 4);
     while (next.length && JSON.stringify(next).length > 50000) next.pop();
     kino.storage.set(SERIES_CACHE, JSON.stringify(next), { ttlMs: CACHE_TTL });
   } catch { /* Optional metadata cache. */ }
@@ -394,7 +431,9 @@ async function resolveShadow(ref) {
   const data = await shadowSeries(slug, family, deadline);
   const episode = data.episodes.find((e) => e.season === Number(m[1]) && e.number === Number(m[2]));
   if (!episode) throw error("not_found", "Este capítulo no está publicado en la ficha de la serie");
-  const pageUrl = SHADOW_SITE + "/capitulos/" + slug + "-" + episode.season + "x" + episode.number + "/";
+  const page = shadowEpisodePage(episode.page || SHADOW_SITE + "/capitulos/" + slug + "-" + episode.season + "x" + episode.number + "/");
+  if (!page || page.number !== episode.number) throw error("unavailable", "La ficha no conserva un enlace válido para este capítulo");
+  const pageUrl = page.url;
   const html = await shadowHtml(pageUrl, 18000, SHADOW_SITE + "/series/" + slug + "/", deadline);
   let sources = shadowSources(html);
   log("info", "SHADOW_RESOLVE started version=" + VERSION + " episode=" + episode.number + " sources=" + sources.length);

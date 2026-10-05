@@ -1,4 +1,4 @@
-# Toku Kino — 0.3.1
+# Toku Kino — 0.3.2
 
 Catálogos de **Super Sentai**, **Kamen Rider** y **Tokusatsu** de ShadowRangers, para **Kino 0.9.50 o superior**. Las categorías consultadas publican **49 series de Super Sentai**, **38 de Kamen Rider** y **37 de Tokusatsu**. Cada serie abre su propia ficha de capítulos.
 
@@ -19,6 +19,14 @@ Kamen Rider muestra todas las tarjetas publicadas en esa categoría: desde **Kam
 Gavv en el catálogo y la búsqueda ahora abre **ShadowRangers**, con VOE y ShadowLiv cuando están publicados. Las referencias antiguas guardadas de Gavv/UnlimitedSubs siguen funcionando con su resolvedor anterior de VK, todavía sin confirmación audiovisual.
 
 Las portadas se incluyen en `assets/super-sentai.jpg`, `assets/kamen-rider.jpg` y `assets/tokusatsu.png`. La tercera usa la imagen adjunta de TOEI Tokusatsu sin modificarla. Sube también la carpeta `assets` al repositorio. Kino carga las imágenes desde esa carpeta pública en la rama predeterminada; no agrega permisos de red al plugin.
+
+## Corrección de capítulos de Kamen Rider
+
+La web separa las fichas de cada serie, pero no usa siempre su nombre en los enlaces de los capítulos. Por ejemplo, V3 publica el primer capítulo como `/capitulos/kamen-rider-2x1/`. Den-O, Ryuki y Wizard usan slugs japoneses codificados. Geats cambia al prefijo `/capitulos/kamen-rider-33x37/` desde el capítulo 37. El filtro anterior descartaba esos enlaces y el reproductor reconstruía la URL a partir del nombre de la ficha.
+
+La 0.3.2 toma la URL exacta del listado **Episodios** de cada ficha y la conserva como metadato público. Kino muestra la temporada y el número visibles en ese listado (temporada 1 en estas fichas); el índice de la franquicia presente en la URL no cambia la temporada mostrada. Los enlaces de servidor se siguen resolviendo desde la página real del capítulo seleccionado. Las referencias de series y capítulos ya disponibles se conservan. Las cachés de fichas del lector anterior se vuelven a consultar para recuperar listas incompletas, como Geats.
+
+Se consultaron las **38 fichas** de Kamen Rider: **13 estaban afectadas**, doce sin capítulos reconocidos y Geats con solo 36 de sus 49 capítulos. El nuevo lector aceptó los **1767 capítulos publicados** en esas fichas, sin descartes del SDK. Ese total describe los enlaces publicados, no una prueba audiovisual de todos sus videos. Solo se aceptan capítulos de ShadowRangers enlazados dentro del listado propio; los comentarios, publicidad y recomendaciones quedan fuera.
 
 ## Corrección de la pantalla sin catálogos
 
@@ -41,10 +49,10 @@ El catálogo se obtiene de la categoría publicada por la fuente y se renueva tr
 
 ## Instalar o actualizar
 
-1. Descomprime **Toku-Kino-0.3.1.zip**.
+1. Descomprime **Toku-Kino-0.3.2.zip**.
 2. En [efraynns-stack/TokuKino](https://github.com/efraynns-stack/TokuKino), abre **Add file → Upload files**. Sube el contenido descomprimido: `kino-plugin.json` y `plugin.js` deben quedar en la raíz de la rama principal. No subas solamente el ZIP ni una carpeta contenedora adicional.
 3. Guarda con **Commit changes**.
-4. En la TV: **Ajustes → Plugins → Toku Kino → Buscar actualización de Toku Kino**. Comprueba que muestre **0.3.1**. Para instalar desde cero, agrega `efraynns-stack/TokuKino`.
+4. En la TV: **Ajustes → Plugins → Toku Kino → Buscar actualización de Toku Kino**. Comprueba que muestre **0.3.2**. Para instalar desde cero, agrega `efraynns-stack/TokuKino`.
 5. Sal de Toku Kino y vuelve a entrar; elige **Toku Kino → Tokusatsu**. Si necesitas forzar una carga nueva, ve a **Ajustes → Toku Kino → Actualizar catálogo Tokusatsu**. Elige una serie y un capítulo.
 
 Esta actualización conserva los dominios y permisos de 0.1.6.
@@ -100,13 +108,14 @@ Se entregan únicamente URLs públicas HTTPS de medios. La alternativa lleva una
 ## Verificación
 
 - **0.3.1, consulta real desde cero:** Inicio devolvió las 124 series de las tres categorías en 12,9 segundos, sin descartes del SDK. `section(null)` devolvió las 49 de Super Sentai y sus pestañas; Categorías devolvió las tres portadas. Evidencia: `test/catalog-recovery-live-results.json`. No fue una prueba audiovisual en Android TV.
-- **94 pruebas locales** y validador oficial de Kino: tres categorías, años desconocidos, capítulos propios, búsqueda global sin duplicados, estados independientes, caché, alternativas por servidor y regresiones de Timeranger y Gavv.
+- **0.3.2, consulta real:** V3 devolvió 52 capítulos, Den-O 49 y Geats 49, sin descartes. El capítulo 1 de V3 se resolvió por VOE y entregó HLS aceptado por el SDK. Evidencia: `test/rider-links-live-results.json`. El análisis de las 38 páginas completas está en `test/rider-links-audit-results.json`; aún falta la comprobación audiovisual en la TV.
+- **103 pruebas locales** y validador oficial de Kino: tres categorías, años desconocidos, capítulos propios, búsqueda global sin duplicados, estados independientes, caché, alternativas por servidor y regresiones de Timeranger y Gavv.
 - HTML público mínimo real: 49 tarjetas de Super Sentai, 38 de Kamen Rider y 37 de Tokusatsu; fichas de Goranger (84 capítulos), Timeranger (50), Gozyuger (49), Kamen Rider (98), Gavv (50), MY-TH (5), Spider-Man (39 con huecos) y Gransazer (51). Los números describen las fichas observadas y pueden cambiar.
 - Las consultas reales aceptaron las 37 tarjetas, la pestaña Tokusatsu, las tres categorías, las fichas de Spider-Man (39) y Gransazer (51), el HLS de VOE del capítulo 1 de Spider-Man y el estado de actualización, sin datos descartados. Ver `test/tokusatsu-live-results.json` y el resumen en `test/validation-results.json`.
 - En esa prueba, las consultas de las otras dos categorías durante la búsqueda superaron los 12 segundos. Spider-Man siguió apareciendo desde la caché válida de Tokusatsu. Esos fallos se conservan en el informe y no se presentan como búsquedas completas; si no hay resultados y alguna familia falló, el plugin devuelve un error controlado.
 - Los otros informes conservan sus versiones originales como evidencia histórica.
 - Las pruebas offline de medios y sesiones usan datos sintéticos. No se incluyen enlaces firmados ni cookies de la fuente. La resolución HTTP no confirma imagen y sonido en Android TV.
-- **El usuario confirmó VOE en Timeranger con varios capítulos en Android TV, versión 0.1.6.** La versión 0.3.1 debe probarse en la TV; la 0.3.0 mostró una pantalla sin catálogos. No se ha reproducido cada capítulo de cada serie. ShadowLiv sigue sin confirmación audiovisual.
+- **El usuario confirmó VOE en Timeranger con varios capítulos en Android TV, versión 0.1.6.** La versión 0.3.2 debe probarse en la TV; la 0.3.0 mostró una pantalla sin catálogos. No se ha reproducido cada capítulo de cada serie. ShadowLiv sigue sin confirmación audiovisual.
 
 La caché corriente guarda metadatos durante cinco minutos; se conserva además un respaldo de las listas de categorías durante siete días. Las fichas se guardan durante cinco minutos, con un máximo de cuatro fichas y un límite de tamaño. Cada ficha tiene su propia fecha de vencimiento. Los enlaces de reproducción se consultan de nuevo al abrir el capítulo.
 
@@ -122,6 +131,7 @@ En **Ajustes → Toku Kino**, activa **Modo debug**, reproduce el capítulo y ab
 | `SHADOW_FETCH` | Estado de la consulta a la fuente |
 | `SHADOW_RESOLVE started` | Versión, capítulo y fuentes reconocidas |
 | `SHADOW_RESOLVE route=voe_hls` | VOE publicó HLS sin captura |
+| `SHADOW_EPISODES` | Identifica la familia y la ficha si no se reconocen capítulos |
 | `SHADOW_DISPLAY` | Categoría recuperada de una lista guardada o de la copia inicial |
 | `SHADOW_CAPTURE` | Inicio o error de captura por proveedor |
 | `SHADOW_SOURCE failed` | Fallo de una fuente |
@@ -143,6 +153,14 @@ node test/check-sentai-source.mjs --tokusatsu
 El plugin instalado es un único módulo JavaScript y utiliza solamente las APIs de Kino. Los scripts de pruebas usan Node y el SDK oficial. No se incorpora descarga, P2P, credenciales ni resolución de verificaciones humanas.
 
 ## Cambios
+
+### 0.3.2
+
+- Reconoce los enlaces de capítulos con índices de franquicia y nombres japoneses.
+- Conserva la URL publicada y muestra la numeración de la ficha; corrige las 13 series afectadas, incluidos los capítulos 37–49 de Geats.
+- Relee las fichas guardadas por el lector anterior; mantiene referencias, categorías, iconos y recuperación de catálogos de 0.3.1.
+- 38 fichas reales revisadas, 1767 capítulos aceptados y nueve pruebas adicionales de lectura y selección del enlace correcto.
+- Permisos sin cambios; videos y sesiones siguen sin almacenarse.
 
 ### 0.3.1
 
