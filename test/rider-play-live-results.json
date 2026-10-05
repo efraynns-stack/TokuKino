@@ -1,0 +1,62 @@
+{
+  "version": "0.2.0",
+  "checkedAt": "2026-10-05T04:35:54.887Z",
+  "transport": "Fresh HTTPS through official SDK host gate",
+  "calls": [
+    {
+      "function": "action",
+      "argument": "refreshRiderCatalog",
+      "drops": 0,
+      "message": "100% · 38 series de Kamen Rider cargadas. Abre Toku Kino o Categorías para verlas.",
+      "outcome": "accepted"
+    },
+    {
+      "function": "episodes",
+      "argument": "shadow:rider:kamen-rider-gavv",
+      "drops": 0,
+      "episodes": 50,
+      "outcome": "accepted"
+    },
+    {
+      "function": "resolve",
+      "argument": "shadow:rider:kamen-rider-gavv:1x1:server:2",
+      "drops": 0,
+      "mime": "application/vnd.apple.mpegurl",
+      "label": "Server 2 · VOE",
+      "outcome": "accepted"
+    }
+  ],
+  "androidTvPlayback": "0.1.6 VOE confirmed by user on Timeranger; current version 0.2.0 not yet verified on TV",
+  "requests": [
+    {
+      "host": "shadowrangers.live",
+      "path": "/genero/kamen-rider/",
+      "status": 200,
+      "durationMs": 12854
+    },
+    {
+      "host": "shadowrangers.live",
+      "path": "/series/kamen-rider-gavv/",
+      "status": 200,
+      "durationMs": 11990
+    },
+    {
+      "host": "shadowrangers.live",
+      "path": "/capitulos/kamen-rider-gavv-1x1/",
+      "status": 200,
+      "durationMs": 15531
+    },
+    {
+      "host": "voe.sx",
+      "path": "/e/lmwguphboixl",
+      "status": 200,
+      "durationMs": 11629
+    },
+    {
+      "host": "teresapoliticallearn.com",
+      "path": "/e/lmwguphboixl",
+      "status": 200,
+      "durationMs": 14155
+    }
+  ]
+}

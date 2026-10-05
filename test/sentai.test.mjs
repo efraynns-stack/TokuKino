@@ -19,6 +19,7 @@ function boot({ catalog = read("sentai-catalog.html"), pages = {}, onFetch } = {
   const { kino, servers } = createKino(manifest, { fetchImpl: async (url, options) => {
     url = String(url); requests.push({ url, options });
     if (onFetch) onFetch(url);
+    if (url === ROOT + "/genero/kamen-rider/") return new Response(read("rider-catalog.html"));
     if (url === CATEGORY) return new Response(catalog);
     if (url === "https://ulsapi.unlimiteds.workers.dev/search?q=Gavv") return new Response(gavv);
     if (pages[url] !== undefined) return new Response(pages[url]);
@@ -79,7 +80,7 @@ test("search finds every series and romanization variants, reusing category meta
   }
   assert.equal(checked("search", await plugin.search({ q: "Super Sentai" }), r.servers).items.length, 49);
   assert.equal((await plugin.search({ q: "Unknown", altTitles: ["Timeranger"] }))[0].ref, "shadow:timeranger");
-  assert.deepEqual(r.requests.map((x) => x.url), [CATEGORY]);
+  assert.deepEqual(r.requests.map((x) => x.url), [CATEGORY, ROOT + "/genero/kamen-rider/"]);
 });
 
 test("each real series opens its own ordered chapters, and Timeranger refs remain stable", async () => {
@@ -177,15 +178,15 @@ test("the two category tiles expose the supplied artwork without any network cal
   assert.equal(r.requests.length, 0);
 });
 
-test("category browsing isolates all Sentai series from the existing Gavv test", async () => {
+test("category browsing isolates all Sentai series from all Rider series", async () => {
   const r = boot();
   const sentai = checked("browse", await plugin.browse("category:super-sentai", null), r.servers);
   const rider = checked("browse", await plugin.browse("category:kamen-rider", null), r.servers);
   assert.equal(sentai.items.length, 49);
   assert.equal(sentai.items[0].year, "1975");
   assert.equal(sentai.next, null);
-  assert.equal(rider.items.length, 1);
-  assert.equal(rider.items[0].ref, "series:kamen-rider-gavv");
+  assert.equal(rider.items.length, 38);
+  assert.equal(rider.items[0].ref, "shadow:rider:kamen-rider");
   assert.equal(rider.next, null);
   assert.ok(sentai.items.every((i) => i.ref !== rider.items[0].ref));
   assert.equal(r.requests.length, 2);
@@ -210,7 +211,7 @@ test("the Toku Kino section has separate tabs with category-specific rows and ar
   assert.equal(sentai.rows[0].ref, "category:super-sentai");
   assert.equal(rider.tab, "kamen-rider");
   assert.equal(rider.rows[0].ref, "category:kamen-rider");
-  assert.equal(rider.rows[0].items[0].ref, "series:kamen-rider-gavv");
+  assert.equal(rider.rows[0].items[0].ref, "shadow:rider:kamen-rider");
   assert.notEqual(sentai.hero.image, rider.hero.image);
   assert.equal((await plugin.section({ tab: "unknown" })).tab, "super-sentai");
   assert.equal(r.requests.length, 2);

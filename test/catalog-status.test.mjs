@@ -37,7 +37,8 @@ test("settings status is immediate and offline before a catalog has been loaded"
   const s = settings("settingsStatus", await plugin.settingsStatus());
   assert.equal(s.catalogStatus, "0% · sin carga registrada");
   assert.equal(s.catalogUpdated, "Sin fecha registrada");
-  assert.match(s.riderStatus, /1 serie.*Gavv/);
+  assert.equal(s.riderStatus, "0% · sin carga registrada");
+  assert.equal(s.riderUpdated, "Sin fecha registrada");
   assert.equal(r.requests.length, 0);
 });
 

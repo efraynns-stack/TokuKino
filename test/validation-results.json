@@ -1,28 +1,40 @@
 {
   "pluginName": "Toku Kino",
-  "pluginVersion": "0.1.9",
+  "pluginVersion": "0.2.0",
   "minimumKino": "0.9.50",
-  "checkedAt": "2026-10-05T04:16:47.158629+00:00",
+  "checkedAt": "2026-10-05T04:37:50.818124+00:00",
   "manifestAccepted": true,
   "offlineTests": {
-    "total": 64,
-    "passed": 64,
+    "total": 75,
+    "passed": 75,
     "failed": 0
   },
-  "catalogSeriesCount": 49,
+  "catalogSeriesCount": 87,
   "catalogYears": {
-    "first": 1975,
-    "last": 2025
+    "Super Sentai": {
+      "first": 1975,
+      "last": 2025
+    },
+    "Kamen Rider": {
+      "first": 1971,
+      "last": 2026
+    }
   },
-  "order": "Release year ascending",
+  "order": "Release year, premiere date within the same year, then title; dates as published by source",
   "sampledRealEpisodeCounts": {
     "Himitsu Sentai Goranger": 84,
     "Mirai Sentai Timeranger": 50,
-    "No. 1 Sentai Gozyuger": 49
+    "No. 1 Sentai Gozyuger": 49,
+    "Kamen Rider": 98,
+    "Kamen Rider Gavv (ShadowRangers)": 50,
+    "Kamen Rider MY-TH": 5
   },
   "sourceFixtures": "Minimal real public category/series/player-option HTML; synthetic media and session data for offline tests",
-  "sdkLiveEvidence": "test/catalog-status-live-results.json",
-  "sdkLiveCallsAccepted": true,
+  "sdkLiveEvidence": [
+    "test/rider-live-first-attempt.json",
+    "test/rider-live-results.json",
+    "test/rider-play-live-results.json"
+  ],
   "primarySource": "VOE",
   "lazyAlternative": "ShadowLiv where published",
   "resolveBudgetMs": 70000,
@@ -32,7 +44,7 @@
   "androidTvPlayback": {
     "previousVersion": "0.1.6",
     "TimerangerVOE": "confirmed_by_user_across_multiple_episodes",
-    "currentVersion": "0.1.9",
+    "currentVersion": "0.2.0",
     "expandedCatalog": "not_yet_installed_by_user",
     "shadowLiv": "not_confirmed",
     "categories": "not_yet_verified_on_tv",
@@ -45,7 +57,7 @@
   ],
   "categoryItemCounts": {
     "Super Sentai": 49,
-    "Kamen Rider": 1
+    "Kamen Rider": 38
   },
   "sectionTabs": [
     "super-sentai",
@@ -59,7 +71,30 @@
     "completionPercent": "100% means the series listing has loaded",
     "timestampZone": "UTC",
     "manualRefreshTimeoutMs": 20000,
-    "preserveLastCatalogOnFailure": true
+    "preserveLastCatalogOnFailure": true,
+    "independentFamilies": [
+      "sentai",
+      "rider"
+    ]
   },
-  "permissionsChangedFrom018": false
+  "permissionsChangedFrom018": false,
+  "sdkLiveCalls": {
+    "riderCatalog": "38 accepted, zero drops",
+    "categoryTiles": "accepted, zero drops",
+    "riderSection": "38 accepted, zero drops",
+    "riderEpisodeSamples": "98/50/5 accepted, zero drops",
+    "gavvSearch": "accepted from Rider, while Sentai request timed out",
+    "gavvVOEChapter1": "HLS accepted, zero drops",
+    "failedAttempts": "Preserved in evidence files; initial series and VOE 12-second requests timed out before timeout adjustments"
+  },
+  "metadataFetchBudgetsMs": {
+    "home": 18000,
+    "browse": 18000,
+    "section": 18000,
+    "searchEachInParallel": 12000,
+    "series": "up to 18000, clipped to the native call time remaining",
+    "voePlayer": "up to 18000 per fetch, clipped to the resolve deadline",
+    "manualCatalogRefresh": 20000
+  },
+  "permissionsChangedFrom019": false
 }

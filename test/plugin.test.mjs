@@ -17,12 +17,14 @@ const EP = "episode:kamen-rider-gavv-s39e01";
 const EMBED = "https://vk.com/video_ext.php?oid=-229718195&id=456239339&hash=344941078a42a3be";
 const EPISODE_PAGE = "https://www.subsunlimiteds.com/series/kamen-rider-gavv/kamen-rider-gavv-s39e01";
 const shadowSeries = readFileSync(root + "test/shadow-series.html", "utf8");
+const riderCatalog = readFileSync(root + "test/rider-catalog.html", "utf8");
 const sentaiCatalog = readFileSync(root + "test/sentai-catalog.html", "utf8");
 
 function boot({ html = "<html>Dynamic player</html>", status = 200, browser, api = apiBody, apiStatus = 200, vkFails = false } = {}) {
   const requests = [], captures = [], logs = [];
   const fetchImpl = async (url, options) => {
     requests.push({ url: String(url), options });
+    if (String(url) === "https://shadowrangers.live/genero/kamen-rider/") return new Response(riderCatalog);
     if (String(url) === API) return new Response(api, { status: apiStatus, headers: { "Content-Type": "application/json" } });
     if (String(url) === "https://shadowrangers.live/series/mirai-sentai-timeranger/") return new Response(shadowSeries);
     if (String(url) === "https://shadowrangers.live/genero/super-sentai/") return new Response(sentaiCatalog);
@@ -77,22 +79,22 @@ for (const [fn, args] of [["search", ["Gavv"]], ["home", []], ["episodes", ["ser
   });
 }
 
-test("empty searches make no requests; irrelevant searches query only the category", async () => {
+test("empty searches make no requests; irrelevant searches query both categories", async () => {
   const r = boot();
   assert.deepEqual(await plugin.search({ q: "" }), []);
   assert.deepEqual(await plugin.search({ q: "***" }), []);
   assert.equal(r.requests.length, 0);
   assert.deepEqual(await plugin.search({ q: "Ultraman" }), []);
-  assert.equal(r.requests.length, 1);
+  assert.equal(r.requests.length, 2);
 });
 
 test("stable refs and metadata cache; playback refreshes the public source", async () => {
   const r = boot({ html: player({ url720: "https://cdn.example.com/gavv.mp4" }) });
   const rows = await plugin.home();
   const results = await plugin.search({ q: "Gavv" });
-  const eps = await plugin.episodes(results[0].ref);
+  const eps = await plugin.episodes("series:kamen-rider-gavv");
   assert.equal(rows[0].items[0].title, "Himitsu Sentai Goranger");
-  assert.equal(results[0].id, "uls-kamen-rider-gavv");
+  assert.equal(results[0].id, "shadow-kamen-rider-gavv");
   assert.equal(r.requests.filter((x) => x.url === API).length, 1);
   await plugin.resolve(eps.episodes[0].ref);
   assert.equal(r.requests.filter((x) => x.url === API).length, 2);
@@ -155,7 +157,7 @@ test("one browser capture preserves playback headers and does not fetch the vide
   assert.equal(r.requests.length, 2);
   assert.ok(r.requests.every((request) => request.options.method === "GET"));
   assert.ok(r.requests.every((request) => !request.url.includes("al_video.php")));
-  assert.ok(r.logs.some((l) => l.message === "ULS_RESOLVE fallback=web_page version=0.1.9"));
+  assert.ok(r.logs.some((l) => l.message === "ULS_RESOLVE fallback=web_page version=0.2.0"));
   assert.ok(r.logs.some((l) => l.message.includes("ULS_CAPTURE started version=" + manifest.version + " mode=web")));
 });
 
@@ -249,6 +251,6 @@ test("bad references make no calls; absent and upcoming episodes cannot play", a
 test("API failures and invalid responses never become a fake empty catalog", async () => {
   for (const opts of [{ api: "not JSON" }, { api: '{}' }, { api: '{"results":[]}' }, { apiStatus: 429 }]) {
     boot(opts);
-    await assert.rejects(plugin.search({ q: "Gavv" }), (e) => ["unavailable", "not_found", "rate_limited"].includes(e.code));
+    await assert.rejects(plugin.episodes("series:kamen-rider-gavv"), (e) => ["unavailable", "not_found", "rate_limited"].includes(e.code));
   }
 });

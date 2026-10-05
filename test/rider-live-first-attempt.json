@@ -1,0 +1,135 @@
+{
+  "version": "0.2.0",
+  "checkedAt": "2026-10-05T04:31:40.959Z",
+  "transport": "Fresh HTTPS through official SDK host gate",
+  "calls": [
+    {
+      "function": "settingsStatus",
+      "drops": 0,
+      "status": {
+        "catalogStatus": "0% · sin carga registrada",
+        "catalogUpdated": "Sin fecha registrada",
+        "riderStatus": "0% · sin carga registrada",
+        "riderUpdated": "Sin fecha registrada"
+      },
+      "outcome": "accepted"
+    },
+    {
+      "function": "action",
+      "argument": "refreshRiderCatalog",
+      "drops": 0,
+      "message": "100% · 38 series de Kamen Rider cargadas. Abre Toku Kino o Categorías para verlas.",
+      "outcome": "accepted"
+    },
+    {
+      "function": "categories",
+      "drops": 0,
+      "categories": [
+        "Super Sentai",
+        "Kamen Rider"
+      ],
+      "outcome": "accepted"
+    },
+    {
+      "function": "browse",
+      "argument": "category:kamen-rider",
+      "drops": 0,
+      "series": 38,
+      "outcome": "accepted"
+    },
+    {
+      "function": "section",
+      "argument": {
+        "tab": "kamen-rider"
+      },
+      "drops": 0,
+      "tab": "kamen-rider",
+      "series": 38,
+      "outcome": "accepted"
+    },
+    {
+      "function": "episodes",
+      "argument": "shadow:rider:kamen-rider",
+      "outcome": "not_verified",
+      "code": "unavailable"
+    },
+    {
+      "function": "episodes",
+      "argument": "shadow:rider:kamen-rider-gavv",
+      "outcome": "not_verified",
+      "code": "unavailable"
+    },
+    {
+      "function": "episodes",
+      "argument": "shadow:rider:kamen-rider-my-th",
+      "drops": 0,
+      "episodes": 5,
+      "outcome": "accepted"
+    },
+    {
+      "function": "resolve",
+      "argument": "shadow:rider:kamen-rider-gavv:1x1:server:2",
+      "outcome": "not_verified",
+      "code": "unavailable"
+    },
+    {
+      "function": "search",
+      "argument": {
+        "q": "Gavv"
+      },
+      "drops": 0,
+      "series": 1,
+      "outcome": "accepted"
+    },
+    {
+      "function": "settingsStatus",
+      "drops": 0,
+      "status": {
+        "catalogStatus": "Error al actualizar · sin catálogo cargado",
+        "catalogUpdated": "Sin fecha registrada",
+        "riderStatus": "100% · 38 series · última carga completa",
+        "riderUpdated": "2026-10-05 04:31:54 UTC"
+      },
+      "outcome": "accepted"
+    }
+  ],
+  "androidTvPlayback": "0.1.6 VOE confirmed by user on Timeranger; current version 0.2.0 not yet verified on TV",
+  "requests": [
+    {
+      "host": "shadowrangers.live",
+      "path": "/genero/kamen-rider/",
+      "status": 200,
+      "durationMs": 13852
+    },
+    {
+      "host": "shadowrangers.live",
+      "path": "/series/kamen-rider/",
+      "outcome": "network_or_timeout",
+      "durationMs": 12002
+    },
+    {
+      "host": "shadowrangers.live",
+      "path": "/series/kamen-rider-gavv/",
+      "outcome": "network_or_timeout",
+      "durationMs": 12006
+    },
+    {
+      "host": "shadowrangers.live",
+      "path": "/series/kamen-rider-my-th/",
+      "status": 200,
+      "durationMs": 2165
+    },
+    {
+      "host": "shadowrangers.live",
+      "path": "/series/kamen-rider-gavv/",
+      "outcome": "network_or_timeout",
+      "durationMs": 12003
+    },
+    {
+      "host": "shadowrangers.live",
+      "path": "/genero/super-sentai/",
+      "outcome": "network_or_timeout",
+      "durationMs": 12007
+    }
+  ]
+}

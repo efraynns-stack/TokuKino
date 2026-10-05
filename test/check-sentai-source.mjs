@@ -31,7 +31,14 @@ const report = { version: manifest.version, checkedAt: new Date().toISOString(),
   transport: "Fresh HTTPS through official SDK host gate", calls: [], androidTvPlayback: "0.1.6 VOE confirmed by user on Timeranger; current version " + manifest.version + " not yet verified on TV" };
 const categoryCheck = process.argv.includes("--categories");
 const statusCheck = process.argv.includes("--status");
-const calls = statusCheck ? [["settingsStatus", undefined], ["action", "refreshCatalog"], ["settingsStatus", undefined]] : categoryCheck ? [["categories", undefined], ["browse", "category:super-sentai"], ["section", { tab: "super-sentai" }], ["browse", "category:kamen-rider"], ["section", { tab: "kamen-rider" }]] : [["home", undefined], ["search", { q: "Gozyuger" }],
+const riderCheck = process.argv.includes("--rider");
+const riderPlayCheck = process.argv.includes("--rider-play");
+const calls = riderPlayCheck ? [["action", "refreshRiderCatalog"], ["episodes", "shadow:rider:kamen-rider-gavv"],
+  ["resolve", "shadow:rider:kamen-rider-gavv:1x1:server:2"]] : riderCheck ? [["settingsStatus", undefined], ["action", "refreshRiderCatalog"],
+  ["categories", undefined], ["browse", "category:kamen-rider"], ["section", { tab: "kamen-rider" }],
+  ["episodes", "shadow:rider:kamen-rider"], ["episodes", "shadow:rider:kamen-rider-gavv"],
+  ["episodes", "shadow:rider:kamen-rider-my-th"], ["resolve", "shadow:rider:kamen-rider-gavv:1x1:server:2"],
+  ["search", { q: "Gavv" }], ["settingsStatus", undefined]] : statusCheck ? [["settingsStatus", undefined], ["action", "refreshCatalog"], ["settingsStatus", undefined]] : categoryCheck ? [["categories", undefined], ["browse", "category:super-sentai"], ["section", { tab: "super-sentai" }], ["browse", "category:kamen-rider"], ["section", { tab: "kamen-rider" }]] : [["home", undefined], ["search", { q: "Gozyuger" }],
   ["episodes", "shadow:sentai:himitsu-sentai-goranger"], ["episodes", "shadow:sentai:no-1-sentai-gozyuger"],
   ["resolve", "shadow:sentai:himitsu-sentai-goranger:1x1:server:2"]];
 for (const [fn, argument] of calls) {
@@ -54,4 +61,4 @@ for (const [fn, argument] of calls) {
   console.log(JSON.stringify(entry));
 }
 report.requests = requests;
-writeFileSync(new URL(statusCheck ? "catalog-status-live-results.json" : categoryCheck ? "categories-live-results.json" : "sentai-live-results.json", import.meta.url), JSON.stringify(report, null, 2) + "\n");
+writeFileSync(new URL(riderPlayCheck ? "rider-play-live-results.json" : riderCheck ? "rider-live-results.json" : statusCheck ? "catalog-status-live-results.json" : categoryCheck ? "categories-live-results.json" : "sentai-live-results.json", import.meta.url), JSON.stringify(report, null, 2) + "\n");
