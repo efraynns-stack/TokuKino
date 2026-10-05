@@ -144,7 +144,7 @@ test("Rider loading ignores duplicate, foreign and sidebar series cards", async 
 
 test("manual Rider refresh records a real count and date without changing Sentai status", async () => {
   const r = boot();
-  await plugin.home();
+  await plugin.section({ tab: "super-sentai" });
   const before = status(await plugin.settingsStatus());
   assert.equal(before.riderStatus, "0% · sin carga registrada");
   const message = checkSettingsOutput("action", await plugin.action("refreshRiderCatalog"), manifest);

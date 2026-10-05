@@ -1,12 +1,12 @@
 {
   "pluginName": "Toku Kino",
-  "pluginVersion": "0.3.0",
+  "pluginVersion": "0.3.1",
   "minimumKino": "0.9.50",
-  "checkedAt": "2026-10-05T04:50:39.596811+00:00",
+  "checkedAt": "2026-10-05T05:11:57.952799+00:00",
   "manifestAccepted": true,
   "offlineTests": {
-    "total": 86,
-    "passed": 86,
+    "total": 94,
+    "passed": 94,
     "failed": 0
   },
   "catalogSeriesCount": 124,
@@ -38,7 +38,8 @@
   },
   "sourceFixtures": "Minimal real public category/series/player-option HTML; synthetic media and session data for offline tests",
   "sdkLiveEvidence": [
-    "test/tokusatsu-live-results.json"
+    "test/tokusatsu-live-results.json",
+    "test/catalog-recovery-live-results.json"
   ],
   "primarySource": "VOE",
   "lazyAlternative": "ShadowLiv where published",
@@ -49,10 +50,10 @@
   "androidTvPlayback": {
     "previousVersion": "0.1.6",
     "TimerangerVOE": "confirmed_by_user_across_multiple_episodes",
-    "currentVersion": "0.3.0",
-    "expandedCatalog": "not_yet_installed_by_user",
+    "currentVersion": "0.3.1",
+    "expandedCatalog": "0.3.0 installed by user: empty catalog screen; 0.3.1 pending TV verification",
     "shadowLiv": "not_confirmed",
-    "categories": "not_yet_verified_on_tv",
+    "categories": "0.3.0 empty catalog screenshot; 0.3.1 pending",
     "settingsStatus": "not_yet_verified_on_tv"
   },
   "categoryCount": 3,
@@ -84,7 +85,8 @@
       "sentai",
       "rider",
       "tokusatsu"
-    ]
+    ],
+    "lastGoodListingTtlMs": 604800000
   },
   "permissionsChangedFrom018": false,
   "sdkLiveCalls": {
@@ -118,5 +120,61 @@
       "juuko-tokusou-dinnovator"
     ],
     "adultEvidence": "Public series synopsis identifies final episode as adults-only; whole series is marked for Kino native filtering"
+  },
+  "catalogRecovery": {
+    "displayOnly": true,
+    "bootstrapDate": "2026-10-05",
+    "bootstrapSource": "Real recorded category fixtures",
+    "lastGoodListingTtlMs": 604800000,
+    "fallbackDoesNotMarkRefreshComplete": true,
+    "homeFamiliesLoadedInParallel": true,
+    "nullSectionQueryAccepted": true,
+    "nativePhoto": "Empty generic plugin catalog screen; exact device fetch failure not available in screenshot",
+    "reproduction": "0.3.0 home/section throws when initial Sentai source fails; cold offline 0.3.1 Home/section/browse returns labeled real metadata"
+  },
+  "sdkRecoveryLive": {
+    "home": {
+      "function": "home",
+      "drops": 0,
+      "series": 124,
+      "catalogs": [
+        {
+          "title": "Super Sentai · por año",
+          "series": 49
+        },
+        {
+          "title": "Kamen Rider · por año",
+          "series": 38
+        },
+        {
+          "title": "Tokusatsu · por año",
+          "series": 37
+        }
+      ],
+      "outcome": "accepted",
+      "durationMs": 12906
+    },
+    "section": {
+      "function": "section",
+      "argument": null,
+      "drops": 0,
+      "tab": "super-sentai",
+      "series": 49,
+      "message": "Series ordenadas por año de estreno.",
+      "outcome": "accepted",
+      "durationMs": 1
+    },
+    "categories": {
+      "function": "categories",
+      "drops": 0,
+      "categories": [
+        "Super Sentai",
+        "Kamen Rider",
+        "Tokusatsu"
+      ],
+      "outcome": "accepted",
+      "durationMs": 0
+    },
+    "noMediaCalls": true
   }
 }

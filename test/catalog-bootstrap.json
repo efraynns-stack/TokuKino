@@ -1,0 +1,996 @@
+{
+  "source": "https://shadowrangers.live",
+  "observedAt": "2026-10-05",
+  "catalogs": {
+    "sentai": [
+      {
+        "slug": "himitsu-sentai-goranger",
+        "title": "Himitsu Sentai Goranger",
+        "family": "sentai",
+        "year": "1975",
+        "premiere": "1975-04-05",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2023/04/gore-185x278.png"
+      },
+      {
+        "slug": "j-a-k-q-dengekitai",
+        "title": "J.A.K.Q. Dengekitai",
+        "family": "sentai",
+        "year": "1977",
+        "premiere": "1977-04-02",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2023/05/kq-185x278.png"
+      },
+      {
+        "slug": "battle-fever-j",
+        "title": "Battle Fever J",
+        "family": "sentai",
+        "year": "1979",
+        "premiere": "1979-02-03",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2023/04/fever-185x278.png"
+      },
+      {
+        "slug": "denshi-sentai-denjiman",
+        "title": "Denshi Sentai Denjiman",
+        "family": "sentai",
+        "year": "1980",
+        "premiere": "1980-02-02",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2023/04/coooovwe-185x278.jpg"
+      },
+      {
+        "slug": "taiyo-sentai-sun-vulcan",
+        "title": "Taiyo Sentai Sun Vulcan",
+        "family": "sentai",
+        "year": "1981",
+        "premiere": "1981-02-07",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2023/04/deznj81-9935d8b7-4435-4eb8-afc0-b305795872f3-185x278.png"
+      },
+      {
+        "slug": "dai-sentai-goggle-v",
+        "title": "Dai Sentai Goggle-V",
+        "family": "sentai",
+        "year": "1982",
+        "premiere": "1982-02-06",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2023/04/google-185x278.png"
+      },
+      {
+        "slug": "kagaku-sentai-dynaman",
+        "title": "Kagaku Sentai Dynaman",
+        "family": "sentai",
+        "year": "1983",
+        "premiere": "1983-02-05",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2023/04/kagaku_sentai_dynaman___the_complete_series_dvd_co_by_powerman68_deznjk4-pre-185x278.jpg"
+      },
+      {
+        "slug": "choudenshi-bioman",
+        "title": "Choudenshi Bioman",
+        "family": "sentai",
+        "year": "1984",
+        "premiere": "1984-02-04",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2023/04/bio-185x278.jpg"
+      },
+      {
+        "slug": "dengeki-sentai-changeman",
+        "title": "Dengeki Sentai Changeman",
+        "family": "sentai",
+        "year": "1985",
+        "premiere": "1985-02-02",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2023/04/changeman-185x278.jpg"
+      },
+      {
+        "slug": "choushinsei-flashman",
+        "title": "Choushinsei Flashman",
+        "family": "sentai",
+        "year": "1986",
+        "premiere": "1986-03-01",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2023/04/flash-cover-185x278.png"
+      },
+      {
+        "slug": "hikari-sentai-maskman",
+        "title": "Hikari Sentai Maskman",
+        "family": "sentai",
+        "year": "1987",
+        "premiere": "1987-02-28",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2023/04/mask-185x278.png"
+      },
+      {
+        "slug": "choujuu-sentai-liveman",
+        "title": "Choujuu Sentai Liveman",
+        "family": "sentai",
+        "year": "1988",
+        "premiere": "1988-02-27",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2023/04/images-185x266.jpg"
+      },
+      {
+        "slug": "kousoku-sentai-turboranger",
+        "title": "Kousoku Sentai Turboranger",
+        "family": "sentai",
+        "year": "1989",
+        "premiere": "1989-02-25",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2023/04/deznkec-01ac8cc2-0d00-4f59-b507-257740f7b06d-185x278.png"
+      },
+      {
+        "slug": "chikyuu-sentai-fiveman",
+        "title": "Chikyuu Sentai Fiveman",
+        "family": "sentai",
+        "year": "1990",
+        "premiere": "1990-03-02",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2023/04/6hopyZxmgL9vTuvCr56kFhv0k42-185x278.jpg"
+      },
+      {
+        "slug": "chojin-sentai-jetman",
+        "title": "Choujin Sentai Jetman",
+        "family": "sentai",
+        "year": "1991",
+        "premiere": "1991-02-15",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2023/04/jetma-185x278.jpg"
+      },
+      {
+        "slug": "kyoryu-sentai-zyuranger",
+        "title": "Kyoryu Sentai Zyuranger",
+        "family": "sentai",
+        "year": "1992",
+        "premiere": "1992-02-21",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2023/04/eipXPO8a6qxczRxrgjv7McVJ5Kq-185x278.jpg"
+      },
+      {
+        "slug": "gosei-sentai-dairanger",
+        "title": "Gosei Sentai Dairanger",
+        "family": "sentai",
+        "year": "1993",
+        "premiere": "1993-02-19",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2023/04/sa9srBtZSIYq7JRU6jz8t0S4STX-185x278.jpg"
+      },
+      {
+        "slug": "ninja-sentai-kakuranger",
+        "title": "Ninja Sentai Kakuranger",
+        "family": "sentai",
+        "year": "1994",
+        "premiere": "1994-02-17",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2023/04/zxInqzS33cyk9Af2m9ftfi6cMQS-185x278.jpg"
+      },
+      {
+        "slug": "chouriki-sentai-ohranger",
+        "title": "Chouriki Sentai Ohranger",
+        "family": "sentai",
+        "year": "1995",
+        "premiere": "1995-03-03",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2023/04/sENIuEmoVNDYIDkeQf4DS7q6YEr-185x278.jpg"
+      },
+      {
+        "slug": "gekisou-sentai-carranger",
+        "title": "Gekisou Sentai Carranger",
+        "family": "sentai",
+        "year": "1996",
+        "premiere": "1996-03-01",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2023/04/6ptpR09s6N1dV6gPcn36HqOs4D2-185x278.jpg"
+      },
+      {
+        "slug": "denji-sentai-megaranger",
+        "title": "Denji Sentai Megaranger",
+        "family": "sentai",
+        "year": "1997",
+        "premiere": "1997-02-14",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2023/04/gKtYenCKKsf69xDPXDIpdpt9iT2-185x278.jpg"
+      },
+      {
+        "slug": "seijuu-sentai-gingaman",
+        "title": "Seijuu Sentai Gingaman",
+        "family": "sentai",
+        "year": "1998",
+        "premiere": "1998-02-22",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2023/04/k4akv3Eu90mR0E0WP6TlAzQBPym-185x278.jpg"
+      },
+      {
+        "slug": "kyuukyuu-sentai-gogofive",
+        "title": "Kyuukyuu Sentai GoGoFive",
+        "family": "sentai",
+        "year": "1999",
+        "premiere": "1999-02-21",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2023/04/tY97Q3HvnookkJHzZzPlfoUrJdm-185x278.jpg"
+      },
+      {
+        "slug": "mirai-sentai-timeranger",
+        "title": "Mirai Sentai Timeranger",
+        "family": "sentai",
+        "year": "2000",
+        "premiere": "2000-02-13",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2023/04/dMbH4Uij9gwi0NqLCFatjl28SrG-185x278.jpg"
+      },
+      {
+        "slug": "hyakujuu-sentai-gaoranger",
+        "title": "Hyakujuu Sentai Gaoranger",
+        "family": "sentai",
+        "year": "2001",
+        "premiere": "2001-02-18",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2023/04/mDTG3RYT6LzNxuJypkG43ICyIEM-185x278.jpg"
+      },
+      {
+        "slug": "ninpuu-sentai-hurricaneger",
+        "title": "Ninpuu Sentai Hurricaneger",
+        "family": "sentai",
+        "year": "2002",
+        "premiere": "2002-02-17",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2023/04/21E4J55vH9bCqZt2NKk8IUw87z8-185x278.jpg"
+      },
+      {
+        "slug": "bakuryu-sentai-abaranger",
+        "title": "Bakuryu Sentai Abaranger",
+        "family": "sentai",
+        "year": "2003",
+        "premiere": "2003-02-16",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2023/04/oKvauf15zNdThK2HqhG4cBe4b2C-185x278.jpg"
+      },
+      {
+        "slug": "tokusou-sentai-dekaranger",
+        "title": "Tokusou Sentai Dekaranger",
+        "family": "sentai",
+        "year": "2004",
+        "premiere": "2004-02-15",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2023/04/gnJMQ4u7lkySxahhuwZ96u69Vx2-185x278.jpg"
+      },
+      {
+        "slug": "mahou-sentai-magiranger",
+        "title": "Mahou Sentai Magiranger",
+        "family": "sentai",
+        "year": "2005",
+        "premiere": "2005-02-13",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2023/04/xFej8bFfOqQ0bKnN8utNB37061O-185x278.jpg"
+      },
+      {
+        "slug": "gogo-sentai-boukenger",
+        "title": "GoGo Sentai Boukenger",
+        "family": "sentai",
+        "year": "2006",
+        "premiere": "2006-02-19",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2023/04/lRck72WaFFbKnG6npT3froaXCze-185x278.jpg"
+      },
+      {
+        "slug": "juken-sentai-gekiranger",
+        "title": "Juken Sentai Gekiranger",
+        "family": "sentai",
+        "year": "2007",
+        "premiere": "2007-02-18",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2023/04/5QPOclZyTfX9tX9E5N1dr769GQl-185x278.jpg"
+      },
+      {
+        "slug": "engine-sentai-go-onger",
+        "title": "Engine Sentai Go-onger",
+        "family": "sentai",
+        "year": "2008",
+        "premiere": "2008-02-17",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2023/04/rWPP8EMxUqClViiIrAlWGWdhOXD-185x278.jpg"
+      },
+      {
+        "slug": "samurai-sentai-shinkenger",
+        "title": "Samurai Sentai Shinkenger",
+        "family": "sentai",
+        "year": "2009",
+        "premiere": "2009-02-15",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2023/04/bWuIUqUDZ0FIf1ipu7k2YT0cAL6-185x278.jpg"
+      },
+      {
+        "slug": "tensou-sentai-goseiger",
+        "title": "Tensou Sentai Goseiger",
+        "family": "sentai",
+        "year": "2010",
+        "premiere": "2010-02-14",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2023/04/3G7a4bmf1nog4GsPQMRzavlxe2A-185x278.jpg"
+      },
+      {
+        "slug": "kaizoku-sentai-gokaiger",
+        "title": "Kaizoku Sentai Gokaiger",
+        "family": "sentai",
+        "year": "2011",
+        "premiere": "2011-02-13",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2023/04/iJ7x9IeP9mjWJvL4BkgggRW0eT-185x278.jpg"
+      },
+      {
+        "slug": "tokumei-sentai-go-busters",
+        "title": "Tokumei Sentai Go-Busters",
+        "family": "sentai",
+        "year": "2012",
+        "premiere": "2012-02-26",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2023/04/p2pWVLLfKOCk4kMcVJoKSkJSWMK-185x278.jpg"
+      },
+      {
+        "slug": "zyuden-sentai-kyoryuger",
+        "title": "Zyuden Sentai Kyoryuger",
+        "family": "sentai",
+        "year": "2013",
+        "premiere": "2013-02-17",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2023/04/2MvXon7RIj3j2nO94ydGAXssdqZ-185x278.jpg"
+      },
+      {
+        "slug": "ressha-sentai-toqger",
+        "title": "Ressha Sentai ToQger",
+        "family": "sentai",
+        "year": "2014",
+        "premiere": "2014-02-16",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2023/04/yIWOrgqSiFtjHIpiKlkNMwfI1O-185x278.jpg"
+      },
+      {
+        "slug": "shuriken-sentai-ninninger",
+        "title": "Shuriken Sentai Ninninger",
+        "family": "sentai",
+        "year": "2015",
+        "premiere": "2015-02-22",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2023/04/zdqFXkv5BV394xpv82QgqvCf0p1-185x278.jpg"
+      },
+      {
+        "slug": "doubutsu-sentai-zyuohger",
+        "title": "Doubutsu Sentai Zyuohger",
+        "family": "sentai",
+        "year": "2016",
+        "premiere": "2016-02-14",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2023/04/v7EHJ7p4DgdbFmpCPphB4WjJ7Bz-185x278.jpg"
+      },
+      {
+        "slug": "uchuu-sentai-kyuranger",
+        "title": "Uchuu Sentai Kyuranger",
+        "family": "sentai",
+        "year": "2017",
+        "premiere": "2017-02-12",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2023/04/enWFB50QuVX7XITdZ6LSpLfzeiX-185x278.jpg"
+      },
+      {
+        "slug": "kaitou-sentai-lupinranger-vs-keisatsu-sentai-patranger",
+        "title": "Kaitou Sentai Lupinranger VS Keisatsu Sentai Patranger",
+        "family": "sentai",
+        "year": "2018",
+        "premiere": "2018-02-11",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2023/04/xbHkw1MZVy8RNf6rgxYqqopnOqL-185x278.jpg"
+      },
+      {
+        "slug": "kishiryu-sentai-ryusoulger",
+        "title": "Kishiryu Sentai Ryusoulger",
+        "family": "sentai",
+        "year": "2019",
+        "premiere": "2019-03-17",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2023/04/2eMAzfcQTUTBzbB4lgThi1m20gY-185x278.jpg"
+      },
+      {
+        "slug": "mashin-sentai-kiramager",
+        "title": "Mashin Sentai Kiramager",
+        "family": "sentai",
+        "year": "2020",
+        "premiere": "2020-03-08",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2023/04/lsx4nKbJZDgZ9lz5RGMdydQfsig-185x278.jpg"
+      },
+      {
+        "slug": "kikai-sentai-zenkaiger",
+        "title": "Kikai Sentai Zenkaiger",
+        "family": "sentai",
+        "year": "2021",
+        "premiere": "2021-03-07",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2023/04/zkWCnOVHK1IKXuFHf5EVdW3gkJ3-185x278.jpg"
+      },
+      {
+        "slug": "avataro-sentai-donbrothers",
+        "title": "Avatarō Sentai Donbrothers",
+        "family": "sentai",
+        "year": "2022",
+        "premiere": "2022-03-06",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2023/04/qFu4THkPaCJiHMBT6YzEFKCsfV1-185x278.jpg"
+      },
+      {
+        "slug": "osama-sentai-kingu-oja",
+        "title": "Ohsama Sentai King-Ohger",
+        "family": "sentai",
+        "year": "2023",
+        "premiere": "2023-03-05",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2023/04/bekHqhMZn5XWJjvNs4k3y7N2zzj-185x278.jpg"
+      },
+      {
+        "slug": "bakuage-sentai-boonboomger",
+        "title": "Bakuage Sentai Boonboomger",
+        "family": "sentai",
+        "year": "2024",
+        "premiere": "2024-03-03",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2024/03/sF4iozfFt9R6PgPPmhM16i0PLGy-185x278.jpg"
+      },
+      {
+        "slug": "no-1-sentai-gozyuger",
+        "title": "No. 1 Sentai Gozyuger",
+        "family": "sentai",
+        "year": "2025",
+        "premiere": "2025-02-16",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2025/02/hw0EYA0lS6DRYjMq24xdluFIZsu-185x278.jpg"
+      }
+    ],
+    "rider": [
+      {
+        "slug": "kamen-rider",
+        "title": "Kamen Rider",
+        "family": "rider",
+        "year": "1971",
+        "premiere": "1971-04-03",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2023/05/sss-185x278.jpg"
+      },
+      {
+        "slug": "kamen-rider-v3",
+        "title": "Kamen Rider V3",
+        "family": "rider",
+        "year": "1973",
+        "premiere": "1973-02-17",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2023/05/Kamen_Rider_V3-185x278.webp"
+      },
+      {
+        "slug": "kamen-rider-x",
+        "title": "Kamen Rider X",
+        "family": "rider",
+        "year": "1974",
+        "premiere": "1974-02-16",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2023/05/x-185x278.jpg"
+      },
+      {
+        "slug": "kamen-rider-amazon",
+        "title": "Kamen Rider Amazon",
+        "family": "rider",
+        "year": "1974",
+        "premiere": "1974-10-19",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2023/05/pdCX6wFdh5d4Iv6aU7XskC5WOgy-185x278.jpg"
+      },
+      {
+        "slug": "kamen-rider-stronger",
+        "title": "Kamen Rider Stronger",
+        "family": "rider",
+        "year": "1975",
+        "premiere": "1975-04-05",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2023/05/stromger-185x278.jpg"
+      },
+      {
+        "slug": "kamen-rider-skyrider",
+        "title": "Kamen Rider (Skyrider)",
+        "family": "rider",
+        "year": "1979",
+        "premiere": "1979-10-05",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2023/05/ski-185x278.jpg"
+      },
+      {
+        "slug": "kamen-rider-super-1",
+        "title": "Kamen Rider Super-1",
+        "family": "rider",
+        "year": "1980",
+        "premiere": "1980-10-17",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2023/05/super-185x278.webp"
+      },
+      {
+        "slug": "kamen-rider-black",
+        "title": "Kamen Rider Black",
+        "family": "rider",
+        "year": "1987",
+        "premiere": "1987-10-04",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2023/05/8Wk7oznk3dLyxSQnfXqNp2vnLbf-185x278.jpg"
+      },
+      {
+        "slug": "kamen-rider-black-rx",
+        "title": "Kamen Rider Black RX",
+        "family": "rider",
+        "year": "1988",
+        "premiere": "1988-10-23",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2023/05/rx-185x278.webp"
+      },
+      {
+        "slug": "kamen-rider-kuuga",
+        "title": "Kamen Rider Kuuga",
+        "family": "rider",
+        "year": "2000",
+        "premiere": "2000-01-30",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2023/05/uJzI95mXdIgF9rGf7z05BxAQBq5-185x278.jpg"
+      },
+      {
+        "slug": "kamen-rider-agito",
+        "title": "Kamen Rider Agito",
+        "family": "rider",
+        "year": "2001",
+        "premiere": "2001-01-28",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2023/05/s5MM902gf0mZT0eWWbx3m6XnZ7D-185x278.jpg"
+      },
+      {
+        "slug": "kamen-rider-ryuki",
+        "title": "Kamen Rider Ryuki",
+        "family": "rider",
+        "year": "2002",
+        "premiere": "2002-02-03",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2023/05/5gjhbeZjvGBLLLiEmk67kqUt5kP-185x278.jpg"
+      },
+      {
+        "slug": "kamen-rider-555",
+        "title": "Kamen Rider 555",
+        "family": "rider",
+        "year": "2003",
+        "premiere": "2003-01-26",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2023/05/Kamen_Rider_555-185x278.webp"
+      },
+      {
+        "slug": "kamen-rider-blade",
+        "title": "Kamen Rider Blade",
+        "family": "rider",
+        "year": "2004",
+        "premiere": "2004-01-25",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2023/05/h6CCjF35kwsV5ycKxDjbz4YihAO-185x278.jpg"
+      },
+      {
+        "slug": "kamen-rider-hibiki",
+        "title": "Kamen Rider HIBIKI",
+        "family": "rider",
+        "year": "2005",
+        "premiere": "2005-01-30",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2023/05/hibiki-185x278.jpg"
+      },
+      {
+        "slug": "kamen-rider-kabuto",
+        "title": "Kamen Rider Kabuto",
+        "family": "rider",
+        "year": "2006",
+        "premiere": "2006-01-29",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2023/05/v2KeiTVUXMnJKXV6E7kMB2hz08a-185x278.jpg"
+      },
+      {
+        "slug": "kamen-rider-den-o",
+        "title": "Kamen Rider Den-O",
+        "family": "rider",
+        "year": "2007",
+        "premiere": "2007-01-28",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2023/05/bqVqEv6irjFpneh90P7fDH9Xe3d-185x278.jpg"
+      },
+      {
+        "slug": "kamen-rider-kiva",
+        "title": "Kamen Rider Kiva",
+        "family": "rider",
+        "year": "2008",
+        "premiere": "2008-01-27",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2023/05/iPEW1HEFyK0gq6PhBKRXW4i9OG4-185x278.jpg"
+      },
+      {
+        "slug": "kamen-rider-decade",
+        "title": "Kamen Rider Decade",
+        "family": "rider",
+        "year": "2009",
+        "premiere": "2009-01-25",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2023/05/hmQj8b3fwUu8XuXqe2bZF5GnO3A-185x278.jpg"
+      },
+      {
+        "slug": "kamen-rider-w",
+        "title": "Kamen Rider W",
+        "family": "rider",
+        "year": "2009",
+        "premiere": "2009-09-06",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2023/05/y49LM8F9nXTLKeLm7wZx1WVPzgX-185x278.jpg"
+      },
+      {
+        "slug": "kamen-rider-ooo",
+        "title": "Kamen Rider OOO",
+        "family": "rider",
+        "year": "2010",
+        "premiere": "2010-09-05",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2023/05/mCSrv6GBpNWDdR09bpQqlJw7Lum-185x278.jpg"
+      },
+      {
+        "slug": "kamen-rider-fourze",
+        "title": "Kamen Rider Fourze",
+        "family": "rider",
+        "year": "2011",
+        "premiere": "2011-09-04",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2023/05/wfmGdLwUP6XSfoGSJoh2ehJTBbQ-185x278.jpg"
+      },
+      {
+        "slug": "kamen-rider-wizard",
+        "title": "Kamen Rider Wizard",
+        "family": "rider",
+        "year": "2012",
+        "premiere": "2012-09-02",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2023/05/7ss8g1vGuUi3JpseiWDq2dQlgTF-185x278.jpg"
+      },
+      {
+        "slug": "kamen-rider-gaim",
+        "title": "Kamen Rider Gaim",
+        "family": "rider",
+        "year": "2013",
+        "premiere": "2013-10-06",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2023/05/ngwLD1HSpWWevX7gyPvZ5jEm2Si-185x278.jpg"
+      },
+      {
+        "slug": "kamen-rider-drive",
+        "title": "Kamen Rider Drive",
+        "family": "rider",
+        "year": "2014",
+        "premiere": "2014-10-05",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2023/05/jl9zUyl2NCW7nUgTIpqNmlUtiE9-185x278.jpg"
+      },
+      {
+        "slug": "kamen-rider-ghost",
+        "title": "Kamen Rider Ghost",
+        "family": "rider",
+        "year": "2015",
+        "premiere": "2015-10-04",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2023/05/fMJ6qEdiOcBk6A1Qn9KkdxmtRTM-185x278.jpg"
+      },
+      {
+        "slug": "kamen-rider-ex-aid",
+        "title": "Kamen Rider Ex-Aid",
+        "family": "rider",
+        "year": "2016",
+        "premiere": "2016-10-02",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2023/05/l1Cb3oeol09WqeGhPTDuxggeXqw-185x278.jpg"
+      },
+      {
+        "slug": "kamen-rider-build",
+        "title": "Kamen Rider Build",
+        "family": "rider",
+        "year": "2017",
+        "premiere": "2017-09-03",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2023/05/dbkkwdh-9769a745-e617-4481-8e97-869deb65ee66-185x278.png"
+      },
+      {
+        "slug": "kamen-rider-zi-o",
+        "title": "Kamen Rider Zi-O",
+        "family": "rider",
+        "year": "2018",
+        "premiere": "2018-09-02",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2023/05/Zi-O_Poster-185x278.webp"
+      },
+      {
+        "slug": "kamen-rider-zero-one",
+        "title": "Kamen Rider Zero-One",
+        "family": "rider",
+        "year": "2019",
+        "premiere": "2019-09-01",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2023/05/Zero-One_Poster-185x278.webp"
+      },
+      {
+        "slug": "kamen-rider-saber",
+        "title": "Kamen Rider Saber",
+        "family": "rider",
+        "year": "2020",
+        "premiere": "2020-09-06",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2023/05/Kamen_Rider_Saber_Poster-185x278.webp"
+      },
+      {
+        "slug": "kamen-rider-revice",
+        "title": "Kamen Rider Revice",
+        "family": "rider",
+        "year": "2021",
+        "premiere": "2021-09-05",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2023/05/oxH65phIuemXFGOFl2XGl44Q3qG-185x278.jpg"
+      },
+      {
+        "slug": "kamen-rider-geats",
+        "title": "Kamen Rider Geats",
+        "family": "rider",
+        "year": "2022",
+        "premiere": "2022-09-04",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2023/05/76XG16HAwifKYm9llqNXgCJCuPf-185x278.jpg"
+      },
+      {
+        "slug": "kamen-rider-black-sun",
+        "title": "Kamen Rider Black Sun",
+        "family": "rider",
+        "year": "2022",
+        "premiere": "2022-10-28",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2025/09/euD7DIigoWVI1iS3f5l3HnCGirL-185x278.jpg"
+      },
+      {
+        "slug": "kamen-rider-gotchard",
+        "title": "Kamen Rider Gotchard",
+        "family": "rider",
+        "year": "2023",
+        "premiere": "2023-09-03",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2023/09/x1QKfnoteeqbcOeUpBXZlafiOQ8-768x1082-1-185x278.jpg"
+      },
+      {
+        "slug": "kamen-rider-gavv",
+        "title": "Kamen Rider Gavv",
+        "family": "rider",
+        "year": "2024",
+        "premiere": "2024-09-01",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2024/09/3iHHmX7txgjptGkdqY3Q6V0r0Fk-185x278.jpg"
+      },
+      {
+        "slug": "kamen-rider-zeztz",
+        "title": "Kamen Rider ZEZTZ",
+        "family": "rider",
+        "year": "2025",
+        "premiere": "2025-09-07",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2025/09/hmx4Oxsg3g1WDA0fffMzMUBh7Y2-185x278.jpg"
+      },
+      {
+        "slug": "kamen-rider-my-th",
+        "title": "Kamen Rider MY-TH",
+        "family": "rider",
+        "year": "2026",
+        "premiere": "2026-09-06",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2026/09/rP5msGG1CTXsbqDhKt9pxF0V7qV-185x278.jpg"
+      }
+    ],
+    "tokusatsu": [
+      {
+        "slug": "blitz-strada-5",
+        "title": "Blitz!! Strada 5",
+        "family": "tokusatsu",
+        "year": "1974",
+        "premiere": "1974-04-05",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2024/01/strada-185x278.jpg"
+      },
+      {
+        "slug": "spider-man",
+        "title": "Spider-Man",
+        "family": "tokusatsu",
+        "year": "1978",
+        "premiere": "1978-05-17",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2024/01/SPER-185x278.jpg"
+      },
+      {
+        "slug": "message-from-space-galactic-wars",
+        "title": "Sankuokai",
+        "family": "tokusatsu",
+        "year": "1978",
+        "premiere": "1978-07-08",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2024/01/i6UDws8x1D2Jk9KkYBuSWkyWi3A-1-185x278.jpg"
+      },
+      {
+        "slug": "kyoudai-ken-byclosser",
+        "title": "Kyoudai Ken Byclosser",
+        "family": "tokusatsu",
+        "year": "1985",
+        "premiere": "1985-01-10",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2024/01/bycross-185x278.jpg"
+      },
+      {
+        "slug": "sukeban-deka",
+        "title": "Sukeban Deka",
+        "family": "tokusatsu",
+        "year": "1985",
+        "premiere": "1985-04-11",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2025/09/cd9GMvhn8VfjGSgaAfQ3ShH74Ms.jpg"
+      },
+      {
+        "slug": "sukeban-deka-ii-legend-of-the-iron-masked-girl",
+        "title": "Sukeban Deka II: Legend of the Iron-Masked Girl",
+        "family": "tokusatsu",
+        "year": "1985",
+        "premiere": "1985-11-08",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2025/09/kgVVilNyNvSS74B7rAJn0b0K9eQ.jpg"
+      },
+      {
+        "slug": "voicelugger",
+        "title": "Voicelugger",
+        "family": "tokusatsu",
+        "year": "1999",
+        "premiere": "1999-01-12",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2024/01/voice-185x278.jpg"
+      },
+      {
+        "slug": "chouseishin-series",
+        "title": "Chouseishin Gransazer",
+        "family": "tokusatsu",
+        "year": "2003",
+        "premiere": "2003-10-04",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2024/01/metal-185x278.jpg"
+      },
+      {
+        "slug": "evolver",
+        "title": "Evolver",
+        "family": "tokusatsu",
+        "year": "2004",
+        "premiere": "2004-06-25",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2025/09/yHKJDjImqluzxmczqowmg0IeK5i.jpg"
+      },
+      {
+        "slug": "sh15uya",
+        "title": "Sh15uya",
+        "family": "tokusatsu",
+        "year": "2005",
+        "premiere": "2005-01-10",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2024/01/shibuya-fifteen-185x278.jpg"
+      },
+      {
+        "slug": "cutie-honey-the-live",
+        "title": "Cutie Honey: The Live",
+        "family": "tokusatsu",
+        "year": "2007",
+        "premiere": "2007-10-02",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2024/01/cuty-185x278.jpg"
+      },
+      {
+        "slug": "fuma-no-kojiro",
+        "title": "Fuma no Kojiro",
+        "family": "tokusatsu",
+        "year": "2007",
+        "premiere": "2007-10-03",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2024/01/fumna-2-185x278.jpg"
+      },
+      {
+        "slug": "cellphone-investigator-7",
+        "title": "Cellphone Investigator 7",
+        "family": "tokusatsu",
+        "year": "2008",
+        "premiere": "2008-04-02",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2025/09/oHOZdaH8DeoyfeT3JXfkknj8mN8.jpg"
+      },
+      {
+        "slug": "kamen-rider-dragon-knight",
+        "title": "Kamen Rider: Dragon Knight",
+        "family": "tokusatsu",
+        "year": "2009",
+        "premiere": "2009-01-03",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2023/05/4iUza77ACk3cpCqs4z4Fk5joJr8-185x278.jpg"
+      },
+      {
+        "slug": "the-ancient-dogoo-girl",
+        "title": "The Ancient Dogoo Girl",
+        "family": "tokusatsu",
+        "year": "2009",
+        "premiere": "2009-10-07",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2023/05/5QvH4kMrb8PV3bIdi6hHvsPbxn8-185x278.jpg"
+      },
+      {
+        "slug": "daimajin-kanon",
+        "title": "Daimajin Kanon",
+        "family": "tokusatsu",
+        "year": "2010",
+        "premiere": "2010-04-02",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2024/01/wztJR0X263Wp0A5NnshH1659xEa-1-185x278.jpg"
+      },
+      {
+        "slug": "hikonin-sentai-akibaranger",
+        "title": "Hikonin Sentai Akibaranger – S1",
+        "family": "tokusatsu",
+        "year": "2012",
+        "premiere": "2012-04-06",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2023/05/S1-185x278.jpg"
+      },
+      {
+        "slug": "hikonin-sentai-akibaranger-s2",
+        "title": "Hikonin Sentai Akibaranger – S2",
+        "family": "tokusatsu",
+        "year": "2012",
+        "premiere": "2012-06-04",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2023/05/S2-185x278.webp"
+      },
+      {
+        "slug": "bima-satria-garuda",
+        "title": "BIMA Satria Garuda",
+        "family": "tokusatsu",
+        "year": "2013",
+        "premiere": "2013-06-30",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2024/01/l7lw85u4SbACQncEcRjPmrO5BNj-1-185x278.jpg"
+      },
+      {
+        "slug": "kanpai-senshi-after-v",
+        "title": "Kanpai Senshi After V",
+        "family": "tokusatsu",
+        "year": "2014",
+        "premiere": "2014-04-07",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2023/05/Kanpai_Senshi_After-V_Poster-185x278.jpg"
+      },
+      {
+        "slug": "shin-kanpai-senshi-after-v",
+        "title": "Shin Kanpai Senshi After V",
+        "family": "tokusatsu",
+        "year": "2014",
+        "premiere": "2014-04-07",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2023/05/a5b7605c4e4e67824be4a86e907e22061437024340_full-185x278.jpg"
+      },
+      {
+        "slug": "legend-hero-samgugjeon",
+        "title": "Legend Hero Samgugjeon",
+        "family": "tokusatsu",
+        "year": "2016",
+        "premiere": "2016-03-02",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2025/09/cww4DsasoIKoaA0ahA6svMWqcLL.jpg"
+      },
+      {
+        "slug": "power-rangers-dino-force-brave",
+        "title": "Zyuden Sentai Kyoryuger Brave",
+        "family": "tokusatsu",
+        "year": "2017",
+        "premiere": "2017-04-01",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2024/01/Kyoryuger_Brave_DVD-185x278.webp"
+      },
+      {
+        "slug": "tokusatsu-gagaga",
+        "title": "Tokusatsu GaGaGa",
+        "family": "tokusatsu",
+        "year": "2019",
+        "premiere": "2019-01-18",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2024/01/gagag-185x278.jpg"
+      },
+      {
+        "slug": "dogengers",
+        "title": "Dogengers",
+        "family": "tokusatsu",
+        "year": "2020",
+        "premiere": "2020-04-12",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2024/01/doge-185x278.jpg"
+      },
+      {
+        "slug": "girl-gun-lady",
+        "title": "Girl Gun Lady",
+        "family": "tokusatsu",
+        "year": "2021",
+        "premiere": "2021-04-05",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2024/01/lady-185x278.jpg"
+      },
+      {
+        "slug": "high-speed-parahero-gandeen",
+        "title": "High-Speed Parahero Gandeen",
+        "family": "tokusatsu",
+        "year": "2021",
+        "premiere": "2021-06-26",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2024/01/mrNdyDHmV1lnsB1WUac6a9Qduw6-1-185x278.jpg"
+      },
+      {
+        "slug": "juuko-tokusou-dinnovator",
+        "title": "Juuko Tokusou Dinnovator",
+        "family": "tokusatsu",
+        "year": "2021",
+        "premiere": "2021-08-20",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2024/01/demi-185x278.jpg"
+      },
+      {
+        "slug": "ayakashi-tometsu-den-kougaiger",
+        "title": "Ayakashi Tometsu-Den Kougaiger",
+        "family": "tokusatsu",
+        "year": "2021",
+        "premiere": "2021-09-17",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2024/01/XqdBp_4f-185x278.jpg"
+      },
+      {
+        "slug": "sentika-f8aba6-jisariz",
+        "title": "Sentika F8ABA6 Jisariz",
+        "family": "tokusatsu",
+        "year": "2023",
+        "premiere": "2023-04-21",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2024/01/022-185x278.jpg"
+      },
+      {
+        "slug": "wingman",
+        "title": "Wingman",
+        "family": "tokusatsu",
+        "year": "2024",
+        "premiere": "2024-10-23",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2025/09/vwGabCb15uYrkH7o1cSowmKTT57.jpg"
+      },
+      {
+        "slug": "super-space-sheriff-gavan-infinity",
+        "title": "Super Space Sheriff Gavan Infinity",
+        "family": "tokusatsu",
+        "year": "2026",
+        "premiere": "2026-02-15",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2026/02/5aPwK5nUwlmnGKNZnabWdWVyUy-185x278.jpg"
+      },
+      {
+        "slug": "kakuseihunter-omegahorn",
+        "title": "KakuseiHunter Omegahorn",
+        "family": "tokusatsu",
+        "year": "2026",
+        "premiere": "2026-07-26",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2026/07/AwAmCvdNBUuu0TriEmBb3ud6K1q-185x278.jpg"
+      },
+      {
+        "slug": "bima-satria-garuda-s2",
+        "title": "BIMA Satria Garuda – S2",
+        "family": "tokusatsu",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2025/09/2.jpg"
+      },
+      {
+        "slug": "dogengers-metropolis",
+        "title": "Dogengers Metropolis",
+        "family": "tokusatsu",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2025/09/dgm1.jpg"
+      },
+      {
+        "slug": "dogengers-high-school",
+        "title": "Dogengers: High School",
+        "family": "tokusatsu",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2025/09/d2.jpg"
+      },
+      {
+        "slug": "kankyou-chojin-ecogainder1",
+        "title": "Kankyou Chojin Ecogainder",
+        "family": "tokusatsu",
+        "poster": "https://shadowrangers.live/wp-content/uploads/2024/01/bvvvvvvvvvvvvvvvvvvv-185x278.jpg"
+      }
+    ]
+  }
+}

@@ -1,4 +1,4 @@
-# Toku Kino — 0.3.0
+# Toku Kino — 0.3.1
 
 Catálogos de **Super Sentai**, **Kamen Rider** y **Tokusatsu** de ShadowRangers, para **Kino 0.9.50 o superior**. Las categorías consultadas publican **49 series de Super Sentai**, **38 de Kamen Rider** y **37 de Tokusatsu**. Cada serie abre su propia ficha de capítulos.
 
@@ -20,24 +20,32 @@ Gavv en el catálogo y la búsqueda ahora abre **ShadowRangers**, con VOE y Shad
 
 Las portadas se incluyen en `assets/super-sentai.jpg`, `assets/kamen-rider.jpg` y `assets/tokusatsu.png`. La tercera usa la imagen adjunta de TOEI Tokusatsu sin modificarla. Sube también la carpeta `assets` al repositorio. Kino carga las imágenes desde esa carpeta pública en la rama predeterminada; no agrega permisos de red al plugin.
 
+## Corrección de la pantalla sin catálogos
+
+La 0.3.0 hacía depender el Inicio de una consulta de Super Sentai, y la apertura de la sección también perdía su respuesta completa si fallaba esa consulta. En la TV se observó «Este plugin no tiene catálogos para mostrar»; la foto no permite confirmar cuál fue el error de red concreto.
+
+En 0.3.1 ambas entradas conservan metadatos de las tres familias. Inicio las consulta en paralelo, hasta 18 segundos por respuesta, sin sumar tres esperas consecutivas. Una categoría que falle usa su última lista válida o la copia inicial incluida; las filas indican **lista guardada** o **copia inicial**, y la sección explica cómo actualizar. La configuración conserva el error y la fecha de la última actualización real: una copia inicial nunca equivale a un 100% cargado en la TV. Los botones de actualización siguen consultando la web y muestran un error si no pueden actualizar.
+
+Las fichas y los videos mantienen sus consultas originales. La copia inicial contiene únicamente títulos, años y portadas; no contiene capítulos inventados ni enlaces de reproducción. La apertura admite también una selección nula de pestaña.
+
 ## Qué cambia
 
 - Filas **Super Sentai · por año**, **Kamen Rider · por año** y **Tokusatsu · por año** en sus pestañas: una portada por serie, de la más antigua a la más nueva.
 - Cada portada abre los capítulos de esa serie, ordenados por temporada y número.
 - Búsqueda por nombre, año y títulos alternativos en las tres categorías; reconoce variantes como Avataro/Avatarō. Una serie compartida entre categorías aparece una sola vez en los resultados y conserva su referencia anterior. Las portadas de Categorías mantienen los catálogos separados según la web.
-- Las fichas se consultan al abrirlas. Cada pestaña carga solamente su lista de portadas; los capítulos se consultan al abrir una serie. El Inicio general conserva la fila de Super Sentai, y las otras familias se abren desde la sección propia o Categorías.
+- Las fichas se consultan al abrirlas. Cada pestaña carga solamente su lista de portadas; los capítulos se consultan al abrir una serie. El Inicio general y la página de catálogos del plugin muestran las tres familias; la sección propia conserva sus tres pestañas.
 - Se mantiene el resolvedor VOE que el usuario confirmó funcionando con varios capítulos de Timeranger en 0.1.6.
 - Se conservan el identificador `unlimitedsubs`, las referencias anteriores de Timeranger y Gavv, y la preferencia de servidor.
 
-El catálogo se obtiene de la categoría publicada por la fuente y se renueva tras cinco minutos; no se inventan series ausentes. Los años son los de estreno indicados en sus tarjetas. Los capítulos disponibles son los publicados por cada ficha, no una promesa de que todas las series estén completas.
+El catálogo se obtiene de la categoría publicada por la fuente y se renueva tras cinco minutos. Si la consulta falla, se muestra la última lista válida guardada, durante hasta siete días. Si no hay una, se usa una copia inicial de las tres categorías observadas el 2026-10-05, incluida en el plugin. No se inventan series ausentes. Los años son los de estreno indicados en sus tarjetas. Los capítulos disponibles son los publicados por cada ficha, no una promesa de que todas las series estén completas.
 
 ## Instalar o actualizar
 
-1. Descomprime **Toku-Kino-0.3.0.zip**.
+1. Descomprime **Toku-Kino-0.3.1.zip**.
 2. En [efraynns-stack/TokuKino](https://github.com/efraynns-stack/TokuKino), abre **Add file → Upload files**. Sube el contenido descomprimido: `kino-plugin.json` y `plugin.js` deben quedar en la raíz de la rama principal. No subas solamente el ZIP ni una carpeta contenedora adicional.
 3. Guarda con **Commit changes**.
-4. En la TV: **Ajustes → Plugins → Toku Kino → Buscar actualización de Toku Kino**. Comprueba que muestre **0.3.0**. Para instalar desde cero, agrega `efraynns-stack/TokuKino`.
-5. Abre **Toku Kino → Tokusatsu**. Si necesitas forzar una carga nueva, ve a **Ajustes → Toku Kino → Actualizar catálogo Tokusatsu**. Elige una serie y un capítulo.
+4. En la TV: **Ajustes → Plugins → Toku Kino → Buscar actualización de Toku Kino**. Comprueba que muestre **0.3.1**. Para instalar desde cero, agrega `efraynns-stack/TokuKino`.
+5. Sal de Toku Kino y vuelve a entrar; elige **Toku Kino → Tokusatsu**. Si necesitas forzar una carga nueva, ve a **Ajustes → Toku Kino → Actualizar catálogo Tokusatsu**. Elige una serie y un capítulo.
 
 Esta actualización conserva los dominios y permisos de 0.1.6.
 
@@ -91,15 +99,16 @@ Se entregan únicamente URLs públicas HTTPS de medios. La alternativa lleva una
 
 ## Verificación
 
-- **86 pruebas locales** y validador oficial de Kino: tres categorías, años desconocidos, capítulos propios, búsqueda global sin duplicados, estados independientes, caché, alternativas por servidor y regresiones de Timeranger y Gavv.
+- **0.3.1, consulta real desde cero:** Inicio devolvió las 124 series de las tres categorías en 12,9 segundos, sin descartes del SDK. `section(null)` devolvió las 49 de Super Sentai y sus pestañas; Categorías devolvió las tres portadas. Evidencia: `test/catalog-recovery-live-results.json`. No fue una prueba audiovisual en Android TV.
+- **94 pruebas locales** y validador oficial de Kino: tres categorías, años desconocidos, capítulos propios, búsqueda global sin duplicados, estados independientes, caché, alternativas por servidor y regresiones de Timeranger y Gavv.
 - HTML público mínimo real: 49 tarjetas de Super Sentai, 38 de Kamen Rider y 37 de Tokusatsu; fichas de Goranger (84 capítulos), Timeranger (50), Gozyuger (49), Kamen Rider (98), Gavv (50), MY-TH (5), Spider-Man (39 con huecos) y Gransazer (51). Los números describen las fichas observadas y pueden cambiar.
 - Las consultas reales aceptaron las 37 tarjetas, la pestaña Tokusatsu, las tres categorías, las fichas de Spider-Man (39) y Gransazer (51), el HLS de VOE del capítulo 1 de Spider-Man y el estado de actualización, sin datos descartados. Ver `test/tokusatsu-live-results.json` y el resumen en `test/validation-results.json`.
 - En esa prueba, las consultas de las otras dos categorías durante la búsqueda superaron los 12 segundos. Spider-Man siguió apareciendo desde la caché válida de Tokusatsu. Esos fallos se conservan en el informe y no se presentan como búsquedas completas; si no hay resultados y alguna familia falló, el plugin devuelve un error controlado.
 - Los otros informes conservan sus versiones originales como evidencia histórica.
 - Las pruebas offline de medios y sesiones usan datos sintéticos. No se incluyen enlaces firmados ni cookies de la fuente. La resolución HTTP no confirma imagen y sonido en Android TV.
-- **El usuario confirmó VOE en Timeranger con varios capítulos en Android TV, versión 0.1.6.** La versión 0.3.0 debe probarse en la TV. No se ha reproducido cada capítulo de cada serie. ShadowLiv sigue sin confirmación audiovisual.
+- **El usuario confirmó VOE en Timeranger con varios capítulos en Android TV, versión 0.1.6.** La versión 0.3.1 debe probarse en la TV; la 0.3.0 mostró una pantalla sin catálogos. No se ha reproducido cada capítulo de cada serie. ShadowLiv sigue sin confirmación audiovisual.
 
-La caché guarda metadatos durante cinco minutos, con un máximo de cuatro fichas y un límite de tamaño. Cada ficha tiene su propia fecha de vencimiento. Los enlaces de reproducción se consultan de nuevo al abrir el capítulo.
+La caché corriente guarda metadatos durante cinco minutos; se conserva además un respaldo de las listas de categorías durante siete días. Las fichas se guardan durante cinco minutos, con un máximo de cuatro fichas y un límite de tamaño. Cada ficha tiene su propia fecha de vencimiento. Los enlaces de reproducción se consultan de nuevo al abrir el capítulo.
 
 ## Diagnóstico
 
@@ -113,6 +122,7 @@ En **Ajustes → Toku Kino**, activa **Modo debug**, reproduce el capítulo y ab
 | `SHADOW_FETCH` | Estado de la consulta a la fuente |
 | `SHADOW_RESOLVE started` | Versión, capítulo y fuentes reconocidas |
 | `SHADOW_RESOLVE route=voe_hls` | VOE publicó HLS sin captura |
+| `SHADOW_DISPLAY` | Categoría recuperada de una lista guardada o de la copia inicial |
 | `SHADOW_CAPTURE` | Inicio o error de captura por proveedor |
 | `SHADOW_SOURCE failed` | Fallo de una fuente |
 | `SHADOW_RESOLVE success` | Medio entregado al reproductor |
@@ -133,6 +143,14 @@ node test/check-sentai-source.mjs --tokusatsu
 El plugin instalado es un único módulo JavaScript y utiliza solamente las APIs de Kino. Los scripts de pruebas usan Node y el SDK oficial. No se incorpora descarga, P2P, credenciales ni resolución de verificaciones humanas.
 
 ## Cambios
+
+### 0.3.1
+
+- Recuperación de Inicio, Categorías y sección propia ante fallas de consulta.
+- Tres catálogos en Inicio, consultados en paralelo.
+- Respaldo de la última lista válida durante siete días y copia inicial de metadatos públicos del 2026-10-05.
+- Estado y títulos distinguen un respaldo de una actualización exitosa.
+- Ocho regresiones nuevas, incluida la apertura con una pestaña nula; permisos y reproducción conservados.
 
 ### 0.3.0
 

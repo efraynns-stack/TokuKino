@@ -1,0 +1,84 @@
+{
+  "version": "0.3.1",
+  "checkedAt": "2026-10-05T05:10:25.485Z",
+  "transport": "Fresh HTTPS through official SDK host gate",
+  "calls": [
+    {
+      "function": "home",
+      "drops": 0,
+      "series": 124,
+      "catalogs": [
+        {
+          "title": "Super Sentai · por año",
+          "series": 49
+        },
+        {
+          "title": "Kamen Rider · por año",
+          "series": 38
+        },
+        {
+          "title": "Tokusatsu · por año",
+          "series": 37
+        }
+      ],
+      "outcome": "accepted",
+      "durationMs": 12906
+    },
+    {
+      "function": "section",
+      "argument": null,
+      "drops": 0,
+      "tab": "super-sentai",
+      "series": 49,
+      "message": "Series ordenadas por año de estreno.",
+      "outcome": "accepted",
+      "durationMs": 1
+    },
+    {
+      "function": "categories",
+      "drops": 0,
+      "categories": [
+        "Super Sentai",
+        "Kamen Rider",
+        "Tokusatsu"
+      ],
+      "outcome": "accepted",
+      "durationMs": 0
+    },
+    {
+      "function": "settingsStatus",
+      "drops": 0,
+      "status": {
+        "catalogStatus": "100% · 49 series · última carga completa",
+        "catalogUpdated": "2026-10-05 05:10:37 UTC",
+        "riderStatus": "100% · 38 series · última carga completa",
+        "riderUpdated": "2026-10-05 05:10:38 UTC",
+        "tokuStatus": "100% · 37 series · última carga completa",
+        "tokuUpdated": "2026-10-05 05:10:38 UTC"
+      },
+      "outcome": "accepted",
+      "durationMs": 0
+    }
+  ],
+  "androidTvPlayback": "0.1.6 VOE confirmed by user on Timeranger; current version 0.3.1 not yet verified on TV",
+  "requests": [
+    {
+      "host": "shadowrangers.live",
+      "path": "/genero/super-sentai/",
+      "status": 200,
+      "durationMs": 12433
+    },
+    {
+      "host": "shadowrangers.live",
+      "path": "/genero/kamen-rider/",
+      "status": 200,
+      "durationMs": 12895
+    },
+    {
+      "host": "shadowrangers.live",
+      "path": "/genero/tokusatsu/",
+      "status": 200,
+      "durationMs": 12720
+    }
+  ]
+}

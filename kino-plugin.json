@@ -1,7 +1,7 @@
 {
   "id": "unlimitedsubs",
   "name": "Toku Kino",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "apiVersion": 6,
   "entry": "plugin.js",
   "description": "Super Sentai, Kamen Rider y Tokusatsu de ShadowRangers, por serie y año, con VOE y ShadowLiv. Requiere Kino 0.9.50 o superior.",

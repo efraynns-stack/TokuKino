@@ -163,7 +163,7 @@ test("a series shared by categories appears once in global search, preserving it
 
 test("Tokusatsu refresh records its own count and timestamp, retaining the last good state on failure", async () => {
   const r = boot();
-  await plugin.home();
+  await plugin.section({ tab: "super-sentai" });
   await plugin.browse("category:kamen-rider");
   const before = checkedSettings("settingsStatus", await plugin.settingsStatus());
   assert.equal(before.tokuStatus, "0% · sin carga registrada");

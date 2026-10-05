@@ -44,7 +44,7 @@ test("settings status is immediate and offline before a catalog has been loaded"
 
 test("automatic catalog loading records a completed percentage, real count and timestamp", async () => {
   const r = boot();
-  await plugin.home();
+  await plugin.section({ tab: "super-sentai" });
   const s = settings("settingsStatus", await plugin.settingsStatus());
   assert.equal(s.catalogStatus, "100% · 49 series · última carga completa");
   assert.match(s.catalogUpdated, /^\d{4}-\d\d-\d\d \d\d:\d\d:\d\d UTC$/);
@@ -55,13 +55,13 @@ test("automatic catalog loading records a completed percentage, real count and t
 
 test("manual refresh bypasses a valid cache and reports the newly published count", async () => {
   const r = boot();
-  await plugin.home();
+  await plugin.section({ tab: "super-sentai" });
   // A recorded category card is withdrawn between the first load and the refresh.
   r.setReply(html.replace(/<article\b[\s\S]*?<\/article>/, ""));
   const answer = settings("action", await plugin.action("refreshCatalog"));
   assert.match(answer.message, /100% · 48 series/);
   assert.equal(r.requests.length, 2);
-  assert.equal((await plugin.home())[0].items.length, 48);
+  assert.equal((await plugin.section({ tab: "super-sentai" })).rows[0].items.length, 48);
   assert.equal((await plugin.settingsStatus()).catalogStatus, "100% · 48 series · última carga completa");
 });
 
@@ -78,20 +78,20 @@ test("a pending load is described without inventing intermediate percentages", a
 
 test("a failed refresh preserves the last good catalog and its successful timestamp", async () => {
   const r = boot();
-  await plugin.home();
+  await plugin.section({ tab: "super-sentai" });
   const before = await plugin.settingsStatus();
   r.fail();
   await assert.rejects(plugin.action("refreshCatalog"), { code: "unavailable" });
   const after = settings("settingsStatus", await plugin.settingsStatus());
   assert.equal(after.catalogStatus, "Error al actualizar · 49 series de la última carga");
   assert.equal(after.catalogUpdated, before.catalogUpdated);
-  assert.equal((await plugin.home())[0].items.length, 49);
+  assert.equal((await plugin.section({ tab: "super-sentai" })).rows[0].items.length, 49);
   assert.equal(r.requests.length, 2);
 });
 
 test("a malformed response cannot become 100 percent or replace the good catalog", async () => {
   const r = boot();
-  await plugin.home();
+  await plugin.section({ tab: "super-sentai" });
   r.setReply("<html>No series cards</html>");
   await assert.rejects(plugin.action("refreshCatalog"), { code: "unavailable" });
   assert.match((await plugin.settingsStatus()).catalogStatus, /^Error al actualizar/);

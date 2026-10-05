@@ -34,7 +34,8 @@ const statusCheck = process.argv.includes("--status");
 const riderCheck = process.argv.includes("--rider");
 const riderPlayCheck = process.argv.includes("--rider-play");
 const tokuCheck = process.argv.includes("--tokusatsu");
-const calls = tokuCheck ? [["settingsStatus", undefined], ["action", "refreshTokuCatalog"], ["categories", undefined],
+const recoveryCheck = process.argv.includes("--recovery");
+const calls = recoveryCheck ? [["home", undefined], ["section", null], ["categories", undefined], ["settingsStatus", undefined]] : tokuCheck ? [["settingsStatus", undefined], ["action", "refreshTokuCatalog"], ["categories", undefined],
   ["browse", "category:tokusatsu"], ["section", { tab: "tokusatsu" }], ["episodes", "shadow:tokusatsu:spider-man"],
   ["episodes", "shadow:tokusatsu:chouseishin-series"], ["resolve", "shadow:tokusatsu:spider-man:1x1:server:2"],
   ["search", { q: "Spider Man" }], ["settingsStatus", undefined]] : riderPlayCheck ? [["action", "refreshRiderCatalog"], ["episodes", "shadow:rider:kamen-rider-gavv"],
@@ -47,22 +48,26 @@ const calls = tokuCheck ? [["settingsStatus", undefined], ["action", "refreshTok
   ["resolve", "shadow:sentai:himitsu-sentai-goranger:1x1:server:2"]];
 for (const [fn, argument] of calls) {
   const entry = { function: fn, argument };
+  const started = Date.now();
   try {
     const answer = await plugin[fn](argument);
     const out = fn === "settingsStatus" || fn === "action" ? { value: checkSettingsOutput(fn, answer, manifest), drops: [] } : checkOutput(fn, answer, manifest, servers);
     entry.drops = out.drops.length;
     if (fn === "settingsStatus") entry.status = out.value;
     if (fn === "action") entry.message = out.value.message;
-    if (fn === "home") entry.series = out.value.flatMap((r) => r.items).length;
+    if (fn === "home") { entry.series = out.value.flatMap((r) => r.items).length;
+      if (recoveryCheck) entry.catalogs = out.value.map((row) => ({ title: row.title, series: row.items.length })); }
     if (fn === "search" || fn === "browse") entry.series = out.value.items.length;
     if (fn === "categories") entry.categories = out.value.map((c) => c.title);
-    if (fn === "section") { entry.tab = out.value.tab; entry.series = out.value.rows.flatMap((r) => r.items).length; }
+    if (fn === "section") { entry.tab = out.value.tab; entry.series = out.value.rows.flatMap((r) => r.items).length;
+      if (recoveryCheck) entry.message = out.value.hero?.text; }
     if (fn === "episodes") entry.episodes = out.value.episodes.length;
     if (fn === "resolve") { entry.mime = out.value.mime; entry.label = out.value.label; }
     entry.outcome = out.drops.length ? "output_dropped" : "accepted";
   } catch (e) { entry.outcome = "not_verified"; entry.code = e.code || "unknown"; }
+  entry.durationMs = Date.now() - started;
   report.calls.push(entry);
   console.log(JSON.stringify(entry));
 }
 report.requests = requests;
-writeFileSync(new URL(tokuCheck ? "tokusatsu-live-results.json" : riderPlayCheck ? "rider-play-live-results.json" : riderCheck ? "rider-live-results.json" : statusCheck ? "catalog-status-live-results.json" : categoryCheck ? "categories-live-results.json" : "sentai-live-results.json", import.meta.url), JSON.stringify(report, null, 2) + "\n");
+writeFileSync(new URL(recoveryCheck ? "catalog-recovery-live-results.json" : tokuCheck ? "tokusatsu-live-results.json" : riderPlayCheck ? "rider-play-live-results.json" : riderCheck ? "rider-live-results.json" : statusCheck ? "catalog-status-live-results.json" : categoryCheck ? "categories-live-results.json" : "sentai-live-results.json", import.meta.url), JSON.stringify(report, null, 2) + "\n");

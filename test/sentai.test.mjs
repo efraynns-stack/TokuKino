@@ -45,7 +45,7 @@ function checked(fn, value, servers) {
 test("all 49 recorded Sentai series appear individually, oldest first, without episode or player calls", async () => {
   const r = boot();
   const rows = checked("home", await plugin.home(), r.servers);
-  const items = rows.flatMap((row) => row.items);
+  const items = rows.filter((row) => row.ref === "category:super-sentai").flatMap((row) => row.items);
   assert.equal(items.length, 49);
   assert.equal(new Set(items.map((s) => s.id)).size, 49);
   assert.equal(new Set(items.map((s) => s.ref)).size, 49);
@@ -55,7 +55,7 @@ test("all 49 recorded Sentai series appear individually, oldest first, without e
   assert.equal(items.at(-1).year, "2025");
   assert.deepEqual(items.map((s) => Number(s.year)), items.map((s) => Number(s.year)).sort((a, b) => a - b));
   assert.equal(items.find((s) => s.year === "2000").ref, "shadow:timeranger");
-  assert.deepEqual(r.requests.map((x) => x.url), [CATEGORY]);
+  assert.deepEqual(r.requests.map((x) => x.url), [CATEGORY, ROOT + "/genero/kamen-rider/", ROOT + "/genero/tokusatsu/"]);
   assert.equal(r.captures.length, 0);
 });
 
@@ -97,7 +97,7 @@ test("each real series opens its own ordered chapters, and Timeranger refs remai
     assert.equal(data.episodes[0].ref, (slug === TIMERANGER ? "shadow:timeranger" : "shadow:sentai:" + slug) + ":1x1");
   }
   await plugin.episodes(cards[0].ref);
-  assert.equal(r.requests.length, 4);
+  assert.equal(r.requests.length, 6);
   assert.equal(r.captures.length, 0);
 });
 
@@ -161,10 +161,13 @@ test("an expired series is fetched again even when another series refreshes the 
   } finally { Date.now = now; }
 });
 
-test("missing or restricted genre pages give a controlled error rather than an empty catalog", async () => {
+test("missing or restricted genre pages retain display metadata and record a failed update", async () => {
   for (const catalog of ["<html>No catalog</html>", "<p>Verify you are human</p>", '<div class="content right full"></div>']) {
     const r = boot({ catalog });
-    await assert.rejects(plugin.home(), { code: "unavailable" });
+    const result = checked("section", await plugin.section({ tab: null }), r.servers);
+    assert.equal(result.rows[0].items.length, 49);
+    assert.match(result.hero.text, /Catálogo inicial/);
+    assert.match((await plugin.settingsStatus()).catalogStatus, /^Error al actualizar/);
     assert.equal(r.requests.length, 1);
     assert.equal(r.captures.length, 0);
   }
