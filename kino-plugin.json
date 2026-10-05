@@ -1,10 +1,10 @@
 {
   "id": "unlimitedsubs",
   "name": "Toku Kino",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "apiVersion": 6,
   "entry": "plugin.js",
-  "description": "Tokusatsu en Kino. Prueba de Mirai Sentai Timeranger de ShadowRangers, con 50 capítulos y fuentes VOE y ShadowLiv. Requiere Kino 0.9.50 o superior.",
+  "description": "Super Sentai de ShadowRangers: catálogo por serie y año, con capítulos y fuentes VOE y ShadowLiv. Requiere Kino 0.9.50 o superior.",
   "hosts": [
     "www.subsunlimiteds.com",
     "ulsapi.unlimiteds.workers.dev",
@@ -33,7 +33,7 @@
     {
       "key": "shadowServer",
       "type": "select",
-      "label": "Fuente preferida para Timeranger",
+      "label": "Fuente preferida",
       "default": "voe",
       "options": [
         {
