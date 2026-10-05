@@ -1,6 +1,6 @@
-// Toku Kino 0.1.4: UnlimitedSubs is the first source, with one series for the TV test.
+// Toku Kino 0.1.5: UnlimitedSubs is the first source, with one series for the TV test.
 // Public metadata only. Video addresses are discovered again at play time.
-const VERSION = "0.1.4";
+const VERSION = "0.1.5";
 const SITE = "https://www.subsunlimiteds.com";
 const API_URL = "https://ulsapi.unlimiteds.workers.dev/search?q=Gavv";
 const SERIES_ID = "kamen-rider-gavv";
@@ -249,88 +249,6 @@ function streamFromParams(params, referer) {
   return stream;
 }
 
-async function publicVkStream(episode) {
-  await null;
-  const video = new URL(episode.videoUrl);
-  const ids = /^\/video(-?\d+)_(\d+)\/?$/.exec(video.pathname);
-  const endpoint = new URL("/al_video.php", video.origin).href;
-  const body = new URLSearchParams({ act: "show", video: ids[1] + "_" + ids[2], al: "1" }).toString();
-  let response;
-  try {
-    response = await kino.fetch(endpoint, {
-      method: "POST", timeoutMs: 8000, body,
-      headers: { "Content-Type": "application/x-www-form-urlencoded", "X-Requested-With": "XMLHttpRequest", Referer: endpoint },
-    });
-  } catch (e) { log("warn", "ULS_VK_PUBLIC_FETCH " + (e.code || "network")); return null; }
-  log("info", "ULS_VK_PUBLIC_FETCH http=" + response.status);
-  if ([429, 451].includes(response.status)) throw statusError(response.status, "VK");
-  if (!response.ok) return null;
-  const raw = response.text();
-  const restriction = pageRestriction(raw);
-  if (restriction) {
-    if (restriction === "auth_required") throw error("unavailable", "VK solicita iniciar sesión para este video");
-    if (restriction === "blocked") throw error("unavailable", "VK está solicitando una verificación humana");
-    throw error(restriction, "VK restringió este capítulo");
-  }
-  let data;
-  try { data = JSON.parse(raw.replace(/^\s*<!--\s*/, "")); } catch {
-    log("info", "ULS_VK_PUBLIC format=non_json");
-    return null;
-  }
-  if (!data || !Array.isArray(data.payload) || data.payload.length < 2) {
-    log("info", "ULS_VK_PUBLIC format=unknown");
-    return null;
-  }
-  const rawCode = data.payload[0];
-  const code = ["string", "number"].includes(typeof rawCode) && /^\d{1,3}$/.test(String(rawCode)) ? String(rawCode) : "unknown";
-  const payload = data.payload[1];
-  const parts = Array.isArray(payload) ? payload : [];
-  // Inspect only public error text, never log the body, URLs or session values.
-  const message = parts.slice(0, 2).filter((p) => typeof p === "string").join(" ");
-  const challenge = /captcha|challenge\.html|security_check/i.test(JSON.stringify(parts.slice(0, 2)));
-  const reason = challenge ? "blocked" : publicErrorReason(message);
-  log("info", "ULS_VK_PUBLIC reply code=" + code + " reason=" + (reason || "none") + " parts=" + parts.length);
-  if (code === "3") {
-    log("warn", "ULS_VK_PUBLIC auth_required code=3");
-    throw error("unavailable", "VK solicita iniciar sesión para este video");
-  }
-  if (reason || code === "8") {
-    log("warn", "ULS_VK_PUBLIC refused code=" + code + " reason=" + (reason || "unclassified"));
-    const details = {
-      auth_required: "VK solicita iniciar sesión para este video",
-      followers: "VK indica que este video está disponible solo para seguidores",
-      blocked: "VK está solicitando una verificación humana",
-      not_found: "VK indica que este video fue retirado o ya no está disponible",
-      geo_blocked: "VK indica que este video no está disponible en tu región",
-      access_denied: "VK denegó el acceso a este video",
-      unavailable: "VK indica que el video está temporalmente no disponible",
-    };
-    const detail = details[reason] || "VK rechazó la consulta del reproductor público (código " + code + ")";
-    throw error(["not_found", "geo_blocked"].includes(reason) ? reason : "unavailable", detail);
-  }
-  // The public site's envelope is not the developer API. The reference VK
-  // extractor treats 3 and 8 as errors; a nonzero code alone is not a denial.
-  // Read supplied formats, or let the original page perform its normal load.
-  const options = parts[parts.length - 1];
-  const player = options && options.player;
-  const params = player && Array.isArray(player.params) ? player.params[0] : null;
-  const stream = streamFromParams(params && typeof params === "object" ? params : null, episode.videoUrl);
-  if (stream) log("info", "ULS_RESOLVE public_player");
-  else log("info", "ULS_VK_PUBLIC no_formats code=" + code);
-  return stream;
-}
-
-function publicErrorReason(message) {
-  const restriction = pageRestriction(message);
-  if (restriction) return restriction;
-  if (/captcha|challenge\.html|security_check/i.test(message)) return "blocked";
-  if (/only available to followers|only available (?:to|for) subscribers|только.{0,30}подписчик|solo.{0,30}seguidores/i.test(message)) return "followers";
-  if (/access denied|доступ запрещ|acceso denegado|acceso restringido/i.test(message)) return "access_denied";
-  if (/temporarily unavailable|временно недоступ/i.test(message)) return "unavailable";
-  if (/unknown error|does not exist|no longer available/i.test(message)) return "not_found";
-  return null;
-}
-
 async function captureStream(pageUrl, referer) {
   await null;
   let captured;
@@ -407,9 +325,7 @@ export async function resolve(ref) {
       if (stream) { log("info", "ULS_RESOLVE direct"); return stream; }
     }
   }
-  // The public web-player response is not VK's authenticated developer API.
-  const publicStream = await publicVkStream(episode);
-  if (publicStream) return publicStream;
+  log("info", "ULS_RESOLVE fallback=web_page version=" + VERSION);
   // Use the real embedding page so its iframe runs with its original context.
   // One ordinary capture; no retries or CAPTCHA handling.
   return await captureStream(referer, SITE + "/series/" + SERIES_ID);

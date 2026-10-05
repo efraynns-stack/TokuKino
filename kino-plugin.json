@@ -1,7 +1,7 @@
 {
   "id": "unlimitedsubs",
   "name": "Toku Kino",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "apiVersion": 6,
   "entry": "plugin.js",
   "description": "Tokusatsu en Kino. Primera fuente de prueba: Kamen Rider Gavv de UnlimitedSubs, con portada, capítulos y enlaces de VK. Necesita Kino 0.9.50 o superior.",
