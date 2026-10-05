@@ -1,0 +1,93 @@
+{
+  "version": "0.3.2",
+  "checkedAt": "2026-10-05T05:25:55.833Z",
+  "transport": "Fresh HTTPS through official SDK host gate",
+  "calls": [
+    {
+      "function": "action",
+      "argument": "refreshRiderCatalog",
+      "drops": 0,
+      "message": "100% · 38 series de Kamen Rider cargadas. Abre Toku Kino o Categorías para verlas.",
+      "outcome": "accepted",
+      "durationMs": 12439
+    },
+    {
+      "function": "episodes",
+      "argument": "shadow:rider:kamen-rider-v3",
+      "drops": 0,
+      "episodes": 52,
+      "outcome": "accepted",
+      "durationMs": 8322
+    },
+    {
+      "function": "episodes",
+      "argument": "shadow:rider:kamen-rider-den-o",
+      "drops": 0,
+      "episodes": 49,
+      "outcome": "accepted",
+      "durationMs": 10236
+    },
+    {
+      "function": "episodes",
+      "argument": "shadow:rider:kamen-rider-geats",
+      "drops": 0,
+      "episodes": 49,
+      "outcome": "accepted",
+      "durationMs": 10552
+    },
+    {
+      "function": "resolve",
+      "argument": "shadow:rider:kamen-rider-v3:1x1:server:2",
+      "drops": 0,
+      "mime": "application/vnd.apple.mpegurl",
+      "label": "Server 2 · VOE",
+      "outcome": "accepted",
+      "durationMs": 30883
+    }
+  ],
+  "androidTvPlayback": "0.1.6 VOE confirmed by user on Timeranger; current version 0.3.2 not yet verified on TV",
+  "requests": [
+    {
+      "host": "shadowrangers.live",
+      "path": "/genero/kamen-rider/",
+      "status": 200,
+      "durationMs": 12431
+    },
+    {
+      "host": "shadowrangers.live",
+      "path": "/series/kamen-rider-v3/",
+      "status": 200,
+      "durationMs": 8316
+    },
+    {
+      "host": "shadowrangers.live",
+      "path": "/series/kamen-rider-den-o/",
+      "status": 200,
+      "durationMs": 10232
+    },
+    {
+      "host": "shadowrangers.live",
+      "path": "/series/kamen-rider-geats/",
+      "status": 200,
+      "durationMs": 10547
+    },
+    {
+      "host": "shadowrangers.live",
+      "path": "/capitulos/kamen-rider-2x1/",
+      "status": 200,
+      "durationMs": 12229
+    },
+    {
+      "host": "voe.sx",
+      "path": "/e/etzqtz7gsgnh",
+      "status": 200,
+      "durationMs": 9407
+    },
+    {
+      "host": "teresapoliticallearn.com",
+      "path": "/e/etzqtz7gsgnh",
+      "status": 200,
+      "durationMs": 9238
+    }
+  ]
+}

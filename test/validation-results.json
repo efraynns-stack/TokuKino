@@ -1,12 +1,12 @@
 {
   "pluginName": "Toku Kino",
-  "pluginVersion": "0.3.1",
+  "pluginVersion": "0.3.2",
   "minimumKino": "0.9.50",
-  "checkedAt": "2026-10-05T05:11:57.952799+00:00",
+  "checkedAt": "2026-10-05T05:28:04.531221+00:00",
   "manifestAccepted": true,
   "offlineTests": {
-    "total": 94,
-    "passed": 94,
+    "total": 103,
+    "passed": 103,
     "failed": 0
   },
   "catalogSeriesCount": 124,
@@ -39,7 +39,9 @@
   "sourceFixtures": "Minimal real public category/series/player-option HTML; synthetic media and session data for offline tests",
   "sdkLiveEvidence": [
     "test/tokusatsu-live-results.json",
-    "test/catalog-recovery-live-results.json"
+    "test/catalog-recovery-live-results.json",
+    "test/rider-links-audit-results.json",
+    "test/rider-links-live-results.json"
   ],
   "primarySource": "VOE",
   "lazyAlternative": "ShadowLiv where published",
@@ -50,8 +52,8 @@
   "androidTvPlayback": {
     "previousVersion": "0.1.6",
     "TimerangerVOE": "confirmed_by_user_across_multiple_episodes",
-    "currentVersion": "0.3.1",
-    "expandedCatalog": "0.3.0 installed by user: empty catalog screen; 0.3.1 pending TV verification",
+    "currentVersion": "0.3.2",
+    "expandedCatalog": "0.3.0 user photo: some Rider episode pages unrecognized; 0.3.2 awaits TV verification",
     "shadowLiv": "not_confirmed",
     "categories": "0.3.0 empty catalog screenshot; 0.3.1 pending",
     "settingsStatus": "not_yet_verified_on_tv"
@@ -176,5 +178,64 @@
       "durationMs": 0
     },
     "noMediaCalls": true
+  },
+  "riderEpisodeReader": {
+    "sourcePages": 38,
+    "affectedSeries": 13,
+    "previouslyEmpty": 12,
+    "previouslyPartial": [
+      "kamen-rider-geats"
+    ],
+    "publishedEpisodes": 1767,
+    "fullSourceReplayAccepted": 38,
+    "chapterUrls": "Exact published paths, including franchise indices and percent-encoded Japanese names",
+    "displayNumbers": "Season/number from the owning episode list",
+    "cachedMetadataReaderVersion": 2,
+    "owningRegion": "div#episodes ul.episodios",
+    "legacyRefsPreserved": true,
+    "permissionChanges": false,
+    "liveSampleCalls": [
+      {
+        "function": "action",
+        "argument": "refreshRiderCatalog",
+        "drops": 0,
+        "message": "100% · 38 series de Kamen Rider cargadas. Abre Toku Kino o Categorías para verlas.",
+        "outcome": "accepted",
+        "durationMs": 12439
+      },
+      {
+        "function": "episodes",
+        "argument": "shadow:rider:kamen-rider-v3",
+        "drops": 0,
+        "episodes": 52,
+        "outcome": "accepted",
+        "durationMs": 8322
+      },
+      {
+        "function": "episodes",
+        "argument": "shadow:rider:kamen-rider-den-o",
+        "drops": 0,
+        "episodes": 49,
+        "outcome": "accepted",
+        "durationMs": 10236
+      },
+      {
+        "function": "episodes",
+        "argument": "shadow:rider:kamen-rider-geats",
+        "drops": 0,
+        "episodes": 49,
+        "outcome": "accepted",
+        "durationMs": 10552
+      },
+      {
+        "function": "resolve",
+        "argument": "shadow:rider:kamen-rider-v3:1x1:server:2",
+        "drops": 0,
+        "mime": "application/vnd.apple.mpegurl",
+        "label": "Server 2 · VOE",
+        "outcome": "accepted",
+        "durationMs": 30883
+      }
+    ]
   }
 }

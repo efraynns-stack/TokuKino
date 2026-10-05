@@ -158,7 +158,7 @@ test("one browser capture preserves playback headers and does not fetch the vide
   assert.equal(r.requests.length, 2);
   assert.ok(r.requests.every((request) => request.options.method === "GET"));
   assert.ok(r.requests.every((request) => !request.url.includes("al_video.php")));
-  assert.ok(r.logs.some((l) => l.message === "ULS_RESOLVE fallback=web_page version=0.3.1"));
+  assert.ok(r.logs.some((l) => l.message === "ULS_RESOLVE fallback=web_page version=0.3.2"));
   assert.ok(r.logs.some((l) => l.message.includes("ULS_CAPTURE started version=" + manifest.version + " mode=web")));
 });
 

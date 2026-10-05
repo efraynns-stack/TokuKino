@@ -35,7 +35,10 @@ const riderCheck = process.argv.includes("--rider");
 const riderPlayCheck = process.argv.includes("--rider-play");
 const tokuCheck = process.argv.includes("--tokusatsu");
 const recoveryCheck = process.argv.includes("--recovery");
-const calls = recoveryCheck ? [["home", undefined], ["section", null], ["categories", undefined], ["settingsStatus", undefined]] : tokuCheck ? [["settingsStatus", undefined], ["action", "refreshTokuCatalog"], ["categories", undefined],
+const riderLinksCheck = process.argv.includes("--rider-links");
+const calls = riderLinksCheck ? [["action", "refreshRiderCatalog"], ["episodes", "shadow:rider:kamen-rider-v3"],
+  ["episodes", "shadow:rider:kamen-rider-den-o"], ["episodes", "shadow:rider:kamen-rider-geats"],
+  ["resolve", "shadow:rider:kamen-rider-v3:1x1:server:2"]] : recoveryCheck ? [["home", undefined], ["section", null], ["categories", undefined], ["settingsStatus", undefined]] : tokuCheck ? [["settingsStatus", undefined], ["action", "refreshTokuCatalog"], ["categories", undefined],
   ["browse", "category:tokusatsu"], ["section", { tab: "tokusatsu" }], ["episodes", "shadow:tokusatsu:spider-man"],
   ["episodes", "shadow:tokusatsu:chouseishin-series"], ["resolve", "shadow:tokusatsu:spider-man:1x1:server:2"],
   ["search", { q: "Spider Man" }], ["settingsStatus", undefined]] : riderPlayCheck ? [["action", "refreshRiderCatalog"], ["episodes", "shadow:rider:kamen-rider-gavv"],
@@ -70,4 +73,4 @@ for (const [fn, argument] of calls) {
   console.log(JSON.stringify(entry));
 }
 report.requests = requests;
-writeFileSync(new URL(recoveryCheck ? "catalog-recovery-live-results.json" : tokuCheck ? "tokusatsu-live-results.json" : riderPlayCheck ? "rider-play-live-results.json" : riderCheck ? "rider-live-results.json" : statusCheck ? "catalog-status-live-results.json" : categoryCheck ? "categories-live-results.json" : "sentai-live-results.json", import.meta.url), JSON.stringify(report, null, 2) + "\n");
+writeFileSync(new URL(riderLinksCheck ? "rider-links-live-results.json" : recoveryCheck ? "catalog-recovery-live-results.json" : tokuCheck ? "tokusatsu-live-results.json" : riderPlayCheck ? "rider-play-live-results.json" : riderCheck ? "rider-live-results.json" : statusCheck ? "catalog-status-live-results.json" : categoryCheck ? "categories-live-results.json" : "sentai-live-results.json", import.meta.url), JSON.stringify(report, null, 2) + "\n");

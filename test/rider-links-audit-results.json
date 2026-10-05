@@ -1,0 +1,316 @@
+{
+  "pluginVersion": "0.3.2",
+  "checkedAt": "2026-10-05T05:25:54.555Z",
+  "method": "All 38 full public pages downloaded during this request (HTTP 200), replayed through the official SDK; no media requests",
+  "sourcePages": 38,
+  "accepted": 38,
+  "affectedSeries": 13,
+  "publishedEpisodes": 1767,
+  "androidTv": "Not yet verified for this release",
+  "results": [
+    {
+      "slug": "kamen-rider-555",
+      "sourceStatus": 200,
+      "episodes": 50,
+      "aliases": 0,
+      "drops": 0,
+      "outcome": "accepted"
+    },
+    {
+      "slug": "kamen-rider-agito",
+      "sourceStatus": 200,
+      "episodes": 51,
+      "aliases": 0,
+      "drops": 0,
+      "outcome": "accepted"
+    },
+    {
+      "slug": "kamen-rider-amazon",
+      "sourceStatus": 200,
+      "episodes": 24,
+      "aliases": 24,
+      "drops": 0,
+      "outcome": "accepted"
+    },
+    {
+      "slug": "kamen-rider-black-rx",
+      "sourceStatus": 200,
+      "episodes": 47,
+      "aliases": 47,
+      "drops": 0,
+      "outcome": "accepted"
+    },
+    {
+      "slug": "kamen-rider-black-sun",
+      "sourceStatus": 200,
+      "episodes": 10,
+      "aliases": 0,
+      "drops": 0,
+      "outcome": "accepted"
+    },
+    {
+      "slug": "kamen-rider-black",
+      "sourceStatus": 200,
+      "episodes": 52,
+      "aliases": 0,
+      "drops": 0,
+      "outcome": "accepted"
+    },
+    {
+      "slug": "kamen-rider-blade",
+      "sourceStatus": 200,
+      "episodes": 49,
+      "aliases": 0,
+      "drops": 0,
+      "outcome": "accepted"
+    },
+    {
+      "slug": "kamen-rider-build",
+      "sourceStatus": 200,
+      "episodes": 49,
+      "aliases": 0,
+      "drops": 0,
+      "outcome": "accepted"
+    },
+    {
+      "slug": "kamen-rider-decade",
+      "sourceStatus": 200,
+      "episodes": 31,
+      "aliases": 0,
+      "drops": 0,
+      "outcome": "accepted"
+    },
+    {
+      "slug": "kamen-rider-den-o",
+      "sourceStatus": 200,
+      "episodes": 49,
+      "aliases": 49,
+      "drops": 0,
+      "outcome": "accepted"
+    },
+    {
+      "slug": "kamen-rider-drive",
+      "sourceStatus": 200,
+      "episodes": 48,
+      "aliases": 0,
+      "drops": 0,
+      "outcome": "accepted"
+    },
+    {
+      "slug": "kamen-rider-ex-aid",
+      "sourceStatus": 200,
+      "episodes": 45,
+      "aliases": 0,
+      "drops": 0,
+      "outcome": "accepted"
+    },
+    {
+      "slug": "kamen-rider-fourze",
+      "sourceStatus": 200,
+      "episodes": 48,
+      "aliases": 0,
+      "drops": 0,
+      "outcome": "accepted"
+    },
+    {
+      "slug": "kamen-rider-gaim",
+      "sourceStatus": 200,
+      "episodes": 47,
+      "aliases": 0,
+      "drops": 0,
+      "outcome": "accepted"
+    },
+    {
+      "slug": "kamen-rider-gavv",
+      "sourceStatus": 200,
+      "episodes": 50,
+      "aliases": 0,
+      "drops": 0,
+      "outcome": "accepted"
+    },
+    {
+      "slug": "kamen-rider-geats",
+      "sourceStatus": 200,
+      "episodes": 49,
+      "aliases": 13,
+      "drops": 0,
+      "outcome": "accepted"
+    },
+    {
+      "slug": "kamen-rider-ghost",
+      "sourceStatus": 200,
+      "episodes": 50,
+      "aliases": 50,
+      "drops": 0,
+      "outcome": "accepted"
+    },
+    {
+      "slug": "kamen-rider-gotchard",
+      "sourceStatus": 200,
+      "episodes": 50,
+      "aliases": 0,
+      "drops": 0,
+      "outcome": "accepted"
+    },
+    {
+      "slug": "kamen-rider-hibiki",
+      "sourceStatus": 200,
+      "episodes": 48,
+      "aliases": 0,
+      "drops": 0,
+      "outcome": "accepted"
+    },
+    {
+      "slug": "kamen-rider-kabuto",
+      "sourceStatus": 200,
+      "episodes": 49,
+      "aliases": 0,
+      "drops": 0,
+      "outcome": "accepted"
+    },
+    {
+      "slug": "kamen-rider-kiva",
+      "sourceStatus": 200,
+      "episodes": 48,
+      "aliases": 0,
+      "drops": 0,
+      "outcome": "accepted"
+    },
+    {
+      "slug": "kamen-rider-kuuga",
+      "sourceStatus": 200,
+      "episodes": 49,
+      "aliases": 0,
+      "drops": 0,
+      "outcome": "accepted"
+    },
+    {
+      "slug": "kamen-rider-my-th",
+      "sourceStatus": 200,
+      "episodes": 5,
+      "aliases": 0,
+      "drops": 0,
+      "outcome": "accepted"
+    },
+    {
+      "slug": "kamen-rider-ooo",
+      "sourceStatus": 200,
+      "episodes": 48,
+      "aliases": 0,
+      "drops": 0,
+      "outcome": "accepted"
+    },
+    {
+      "slug": "kamen-rider-revice",
+      "sourceStatus": 200,
+      "episodes": 50,
+      "aliases": 0,
+      "drops": 0,
+      "outcome": "accepted"
+    },
+    {
+      "slug": "kamen-rider-ryuki",
+      "sourceStatus": 200,
+      "episodes": 50,
+      "aliases": 50,
+      "drops": 0,
+      "outcome": "accepted"
+    },
+    {
+      "slug": "kamen-rider-saber",
+      "sourceStatus": 200,
+      "episodes": 48,
+      "aliases": 0,
+      "drops": 0,
+      "outcome": "accepted"
+    },
+    {
+      "slug": "kamen-rider-skyrider",
+      "sourceStatus": 200,
+      "episodes": 54,
+      "aliases": 54,
+      "drops": 0,
+      "outcome": "accepted"
+    },
+    {
+      "slug": "kamen-rider-stronger",
+      "sourceStatus": 200,
+      "episodes": 39,
+      "aliases": 39,
+      "drops": 0,
+      "outcome": "accepted"
+    },
+    {
+      "slug": "kamen-rider-super-1",
+      "sourceStatus": 200,
+      "episodes": 48,
+      "aliases": 48,
+      "drops": 0,
+      "outcome": "accepted"
+    },
+    {
+      "slug": "kamen-rider-v3",
+      "sourceStatus": 200,
+      "episodes": 52,
+      "aliases": 52,
+      "drops": 0,
+      "outcome": "accepted"
+    },
+    {
+      "slug": "kamen-rider-w",
+      "sourceStatus": 200,
+      "episodes": 49,
+      "aliases": 0,
+      "drops": 0,
+      "outcome": "accepted"
+    },
+    {
+      "slug": "kamen-rider-wizard",
+      "sourceStatus": 200,
+      "episodes": 53,
+      "aliases": 53,
+      "drops": 0,
+      "outcome": "accepted"
+    },
+    {
+      "slug": "kamen-rider-x",
+      "sourceStatus": 200,
+      "episodes": 35,
+      "aliases": 35,
+      "drops": 0,
+      "outcome": "accepted"
+    },
+    {
+      "slug": "kamen-rider-zero-one",
+      "sourceStatus": 200,
+      "episodes": 46,
+      "aliases": 0,
+      "drops": 0,
+      "outcome": "accepted"
+    },
+    {
+      "slug": "kamen-rider-zeztz",
+      "sourceStatus": 200,
+      "episodes": 50,
+      "aliases": 0,
+      "drops": 0,
+      "outcome": "accepted"
+    },
+    {
+      "slug": "kamen-rider-zi-o",
+      "sourceStatus": 200,
+      "episodes": 49,
+      "aliases": 49,
+      "drops": 0,
+      "outcome": "accepted"
+    },
+    {
+      "slug": "kamen-rider",
+      "sourceStatus": 200,
+      "episodes": 98,
+      "aliases": 0,
+      "drops": 0,
+      "outcome": "accepted"
+    }
+  ]
+}
