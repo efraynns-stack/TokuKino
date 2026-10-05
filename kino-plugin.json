@@ -1,17 +1,21 @@
 {
   "id": "unlimitedsubs",
   "name": "Toku Kino",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "apiVersion": 6,
   "entry": "plugin.js",
-  "description": "Tokusatsu en Kino. Primera fuente de prueba: Kamen Rider Gavv de UnlimitedSubs, con portada, capítulos y enlaces de VK. Necesita Kino 0.9.50 o superior.",
+  "description": "Tokusatsu en Kino. Prueba de Mirai Sentai Timeranger de ShadowRangers, con 50 capítulos y fuentes VOE y ShadowLiv. Requiere Kino 0.9.50 o superior.",
   "hosts": [
     "www.subsunlimiteds.com",
     "ulsapi.unlimiteds.workers.dev",
     "vk.com",
     "*.vk.com",
     "vkvideo.ru",
-    "*.vkvideo.ru"
+    "*.vkvideo.ru",
+    "shadowrangers.live",
+    "voe.sx",
+    "teresapoliticallearn.com",
+    "shadowliv.xyz"
   ],
   "browser": true,
   "streamHosts": "any",
@@ -24,5 +28,23 @@
     "home",
     "episodes",
     "resolve"
+  ],
+  "settings": [
+    {
+      "key": "shadowServer",
+      "type": "select",
+      "label": "Fuente preferida para Timeranger",
+      "default": "voe",
+      "options": [
+        {
+          "value": "voe",
+          "label": "Server 2 · VOE"
+        },
+        {
+          "value": "shadowliv",
+          "label": "Server 3 · ShadowLiv"
+        }
+      ]
+    }
   ]
 }

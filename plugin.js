@@ -1,6 +1,6 @@
-// Toku Kino 0.1.5: UnlimitedSubs is the first source, with one series for the TV test.
+// Toku Kino 0.1.6: Timeranger on ShadowRangers, with individually resolved servers.
 // Public metadata only. Video addresses are discovered again at play time.
-const VERSION = "0.1.5";
+const VERSION = "0.1.6";
 const SITE = "https://www.subsunlimiteds.com";
 const API_URL = "https://ulsapi.unlimiteds.workers.dev/search?q=Gavv";
 const SERIES_ID = "kamen-rider-gavv";
@@ -13,6 +13,227 @@ const VIDEO_HOSTS = ["vk.com", "vkvideo.ru"];
 const VK_FILE_MATCH = "^https://vkvd[0-9]+\\.mycdn\\.me/(?:\\?(?=[^#]*\\bid=[0-9]+(?:&|$))(?=[^#]*\\bexpires=[0-9]+(?:&|$))[^#]*|expires/[0-9]+/[^#]*/id/[0-9]+(?:/[^#]*)?)$";
 const VIDEO_MATCH = "\\.(?:m3u8|mpd|mp4)(?:[/?#]|$)|master\\.txt|videoplayback|/hls/|" + VK_FILE_MATCH;
 const VK_FILE_RE = new RegExp(VK_FILE_MATCH, "i");
+const SHADOW_SITE = "https://shadowrangers.live";
+const SHADOW_SERIES = SHADOW_SITE + "/series/mirai-sentai-timeranger/";
+const SHADOW_REF = "shadow:timeranger";
+const SHADOW_CACHE = "shadow-timeranger-v1";
+const SHADOW_PLAYERS = ["voe.sx", "teresapoliticallearn.com", "shadowliv.xyz"];
+
+function unescapeHtml(value) {
+  return String(value || "").replace(/&(#x[0-9a-f]+|#\d+|amp|quot|apos|lt|gt|nbsp);/gi, (all, entity) => {
+    const e = entity.toLowerCase();
+    const named = { amp: "&", quot: '"', apos: "'", lt: "<", gt: ">", nbsp: " " };
+    if (e[0] !== "#") return named[e] || all;
+    const n = e[1] === "x" ? parseInt(e.slice(2), 16) : parseInt(e.slice(1), 10);
+    return n > 0 && n <= 0x10ffff && !(n >= 0xd800 && n <= 0xdfff) ? String.fromCodePoint(n) : "";
+  });
+}
+
+function htmlText(html, max = 200) {
+  return text(unescapeHtml(String(html || "").replace(/<[^>]*>/g, " ")).replace(/\s+/g, " "), max);
+}
+
+function attribute(tag, key) {
+  const m = new RegExp("\\b" + key + "\\s*=\\s*([\"'])((?:(?!\\1)[\\s\\S])*)\\1", "i").exec(tag);
+  return m ? unescapeHtml(m[2]).trim() : "";
+}
+
+function shadowEpisodeRef(e) { return "shadow:timeranger:" + e.season + "x" + e.number; }
+
+function shadowItem(data) {
+  return { id: "shadow-mirai-sentai-timeranger", ref: SHADOW_REF, title: data.title, kind: "series",
+    year: "2000", poster: data.poster, overview: data.overview, lang: "ja", badges: ["ShadowRangers"], genres: ["Tokusatsu"] };
+}
+
+function shadowTimeout(wanted, deadline) {
+  if (!deadline) return wanted;
+  const remaining = deadline - Date.now() - 1500;
+  if (remaining < 1000) throw error("unavailable", "Se agotó el tiempo de consulta de las fuentes del capítulo");
+  return Math.min(wanted, remaining);
+}
+
+async function shadowHtml(url, timeoutMs, referer, deadline) {
+  await null;
+  let r;
+  try { r = await kino.fetch(url, { timeoutMs: shadowTimeout(timeoutMs, deadline), headers: { Accept: "text/html", Referer: referer } }); }
+  catch (e) {
+    log("warn", "SHADOW_FETCH failed=" + (e.code || "network"));
+    throw error("unavailable", "No se pudo consultar la fuente de ShadowRangers");
+  }
+  log("info", "SHADOW_FETCH http=" + r.status + " host=" + new URL(url).hostname);
+  if (!r.ok) throw statusError(r.status, "ShadowRangers");
+  const html = r.text();
+  const restriction = pageRestriction(html);
+  if (restriction) throw error(restriction === "blocked" || restriction === "auth_required" ? "unavailable" : restriction,
+    "La fuente requiere una sesión, una verificación o tiene una restricción de acceso");
+  return html;
+}
+
+async function shadowSeries() {
+  await null;
+  try {
+    const cached = JSON.parse(kino.storage.get(SHADOW_CACHE) || "null");
+    if (cached && cached.title === "Mirai Sentai Timeranger" && Array.isArray(cached.episodes) && cached.episodes.length) return cached;
+  } catch { /* Metadata can always be fetched again. */ }
+  const html = await shadowHtml(SHADOW_SERIES, 12000, SHADOW_SITE + "/genero/super-sentai/");
+  const episodes = [], seen = new Set();
+  for (const m of html.matchAll(/<li\b[^>]*>[\s\S]*?<\/li>/gi)) {
+    const block = m[0];
+    const link = /<a\b[^>]*href\s*=\s*(["'])([^"']+)\1[^>]*>([\s\S]*?)<\/a>/i.exec(block);
+    if (!link) continue;
+    const url = safeHttps(unescapeHtml(link[2]));
+    if (!url) continue;
+    const u = new URL(url);
+    const ids = /^\/capitulos\/mirai-sentai-timeranger-(\d{1,2})x(\d{1,3})\/$/.exec(u.pathname);
+    if (u.hostname !== "shadowrangers.live" || u.search || u.hash || !ids) continue;
+    const season = Number(ids[1]), number = Number(ids[2]);
+    if (season < 1 || number < 1 || seen.has(season + ":" + number)) continue;
+    seen.add(season + ":" + number);
+    const img = /<img\b[^>]*>/i.exec(block);
+    episodes.push({ season, number, title: htmlText(link[3]) || "Capítulo " + number,
+      still: img ? safeHttps(attribute(img[0], "src")) || undefined : undefined });
+  }
+  if (!episodes.length) throw error("unavailable", "La ficha de Timeranger no contiene capítulos reconocibles");
+  episodes.sort((a, b) => a.season - b.season || a.number - b.number);
+  const poster = /<img\b[^>]*itemprop\s*=\s*(["'])image\1[^>]*>/i.exec(html);
+  const synopsis = /<div\b[^>]*class\s*=\s*(["'])wp-content\1[^>]*>\s*<p\b[^>]*>([\s\S]*?)<\/p>/i.exec(html);
+  const data = { title: "Mirai Sentai Timeranger", poster: poster ? safeHttps(attribute(poster[0], "src")) || undefined : undefined,
+    overview: synopsis ? htmlText(synopsis[2], 5000) : undefined, episodes: episodes.slice(0, 5000) };
+  try { kino.storage.set(SHADOW_CACHE, JSON.stringify(data), { ttlMs: CACHE_TTL }); } catch { /* Optional metadata cache. */ }
+  log("info", "SHADOW_CATALOG version=" + VERSION + " episodes=" + data.episodes.length);
+  return data;
+}
+
+function shadowSources(html) {
+  const options = new Map(), sources = [], seen = new Set();
+  for (const m of html.matchAll(/<li\b[^>]*>[\s\S]*?<\/li>/gi)) {
+    const n = attribute(m[0].slice(0, m[0].indexOf(">") + 1), "data-nume");
+    if (!/^\d{1,3}$/.test(n)) continue;
+    const title = /<span\b[^>]*class\s*=\s*(["'])title\1[^>]*>([\s\S]*?)<\/span>/i.exec(m[0]);
+    if (title) options.set(n, htmlText(title[2], 25));
+  }
+  // Match a source container to its iframe; never pair by DOM position or follow advertisements.
+  for (const m of html.matchAll(/<div\b[^>]*id\s*=\s*(["'])source-player-(\d{1,3})\1[^>]*>\s*<div\b[^>]*>\s*(<iframe\b[^>]*>)/gi)) {
+    const n = m[2], url = safeHttps(attribute(m[3], "src"));
+    if (!url || seen.has(n) || !options.has(n)) continue;
+    const u = new URL(url);
+    const provider = ["voe.sx", "teresapoliticallearn.com"].includes(u.hostname) && /^\/e\/[a-z0-9]{8,32}\/?$/i.test(u.pathname) ? "voe"
+      : u.hostname === "shadowliv.xyz" && u.pathname === "/" && /^#[a-z0-9]{3,40}$/i.test(u.hash) ? "shadowliv" : null;
+    if (!provider) continue;
+    seen.add(n);
+    sources.push({ key: n, url, provider, label: text(options.get(n) + " · " + (provider === "voe" ? "VOE" : "ShadowLiv"), 48) });
+  }
+  return sources.slice(0, 9);
+}
+
+function voeConfig(html) {
+  // Decode the data format used by the inspected public loader. Do not evaluate scripts.
+  for (const m of html.matchAll(/<script\b[^>]*type\s*=\s*(["'])application\/json\1[^>]*>([\s\S]*?)<\/script>/gi)) {
+    if (m[2].length > 200000) continue;
+    try {
+      const data = JSON.parse(m[2]);
+      if (!Array.isArray(data) || typeof data[0] !== "string" || data[0].length > 150000) continue;
+      let value = data[0].replace(/[a-zA-Z]/g, (c) => {
+        const n = c.charCodeAt(0), base = n <= 90 ? 65 : 97;
+        return String.fromCharCode(base + (n - base + 13) % 26);
+      });
+      for (const marker of ["@$", "^^", "~@", "%?", "*~", "!!", "#&"]) value = value.split(marker).join("");
+      value = value.split("_").join("");
+      value = atob(value).split("").map((c) => String.fromCharCode(c.charCodeAt(0) - 3)).reverse().join("");
+      const bytes = Uint8Array.from(atob(value), (c) => c.charCodeAt(0));
+      const config = JSON.parse(new TextDecoder().decode(bytes));
+      if (config && typeof config === "object" && !Array.isArray(config)) return config;
+    } catch { /* A changed data format is handled by ordinary browser capture. */ }
+  }
+  return null;
+}
+
+function voeStream(html, referer) {
+  const data = voeConfig(html);
+  if (!data || data.drm || data.licenseUrl) return null;
+  const url = safeHttps(data.source);
+  if (!url || !/\.m3u8(?:[?#]|$)/i.test(url)) return null;
+  const stream = { url, mime: "application/vnd.apple.mpegurl", headers: { Referer: referer }, expiresInSeconds: 180 };
+  const tracks = Array.isArray(data.captions) ? data.captions.map((c) => c && ({ url: c.file, lang: c.language })) : [];
+  const subs = subtitlesOf(tracks);
+  if (subs.length) stream.subtitles = subs;
+  return stream;
+}
+
+async function resolveShadowSource(source, pageUrl, deadline) {
+  await null;
+  let captureUrl = source.url;
+  if (source.provider === "voe") {
+    let html = await shadowHtml(source.url, 12000, pageUrl, deadline);
+    let stream = voeStream(html, source.url);
+    if (stream) return stream;
+    // VOE currently publishes this ordinary JS navigation before its player.
+    const redirect = /window\.location\.href\s*=\s*(["'])(https:\/\/[^"']+)\1/.exec(html);
+    const target = redirect && safeHttps(redirect[2]);
+    if (target) {
+      const a = new URL(source.url), b = new URL(target);
+      if (!SHADOW_PLAYERS.includes(b.hostname) || b.pathname !== a.pathname || b.search || b.hash) {
+        throw error("unavailable", "VOE cambió el dominio de su reproductor; hay que revisar la fuente");
+      }
+      captureUrl = target;
+      html = await shadowHtml(target, 12000, pageUrl, deadline);
+      stream = voeStream(html, target);
+      if (stream) { log("info", "SHADOW_RESOLVE route=voe_hls"); return stream; }
+    }
+  }
+  const timeoutMs = shadowTimeout(source.provider === "voe" ? 20000 : 25000, deadline);
+  log("info", "SHADOW_CAPTURE started version=" + VERSION + " provider=" + source.provider + " timeout_ms=" + timeoutMs);
+  let captured;
+  try { captured = await kino.browser.capture(captureUrl, { timeoutMs, autoplay: true, headers: { Referer: pageUrl },
+    match: "\\.(?:m3u8|mpd|mp4)(?:[/?#]|$)|/hls/|videoplayback" }); }
+  catch (e) {
+    log("warn", "SHADOW_CAPTURE provider=" + source.provider + " code=" + (e.code || "network"));
+    throw error("unavailable", "El reproductor de " + (source.provider === "voe" ? "VOE" : "ShadowLiv") + " no entregó video: " + text(e.code || "network", 40));
+  }
+  const media = (captured && Array.isArray(captured.media) ? captured.media : []).find((m) => m && safeHttps(m.url));
+  if (!media) throw error("unavailable", "El servidor no entregó un enlace de video compatible");
+  const stream = { url: safeHttps(media.url), headers: media.headers || {}, mime: media.mime, expiresInSeconds: 180 };
+  const subs = subtitlesOf(captured.subtitles);
+  if (subs.length) stream.subtitles = subs;
+  return stream;
+}
+
+async function resolveShadow(ref) {
+  await null;
+  const m = /^shadow:timeranger:([1-9]\d?)x([1-9]\d{0,2})(?::server:([1-9]\d{0,2}))?$/.exec(ref);
+  if (!m) throw error("not_found", "La referencia de Timeranger no es válida");
+  const deadline = Date.now() + 70000;
+  const data = await shadowSeries();
+  const episode = data.episodes.find((e) => e.season === Number(m[1]) && e.number === Number(m[2]));
+  if (!episode) throw error("not_found", "Este capítulo no está publicado en la ficha de Timeranger");
+  const pageUrl = SHADOW_SITE + "/capitulos/mirai-sentai-timeranger-" + episode.season + "x" + episode.number + "/";
+  const html = await shadowHtml(pageUrl, 18000, SHADOW_SERIES, deadline);
+  let sources = shadowSources(html);
+  log("info", "SHADOW_RESOLVE started version=" + VERSION + " episode=" + episode.number + " sources=" + sources.length);
+  if (m[3]) sources = sources.filter((s) => s.key === m[3]);
+  else {
+    const preferred = kino.config.get("shadowServer") === "shadowliv" ? "shadowliv" : "voe";
+    sources.sort((a, b) => Number(b.provider === preferred) - Number(a.provider === preferred));
+  }
+  if (!sources.length) throw error("not_found", "El capítulo no tiene una fuente compatible o la fuente elegida fue retirada");
+  let last;
+  // At most two providers. A lazy request resolves only its requested server.
+  for (const source of sources.slice(0, m[3] ? 1 : 2)) {
+    try {
+      const stream = await resolveShadowSource(source, pageUrl, deadline);
+      stream.label = source.label;
+      if (!m[3]) stream.alternatives = sources.filter((s) => s.key !== source.key).slice(0, 8)
+        .map((s) => ({ label: s.label, ref: shadowEpisodeRef(episode) + ":server:" + s.key }));
+      log("info", "SHADOW_RESOLVE success provider=" + source.provider);
+      return stream;
+    } catch (e) {
+      last = e;
+      log("warn", "SHADOW_SOURCE failed provider=" + source.provider + " code=" + (e.code || "network"));
+      if (e.code === "rate_limited" || e.code === "geo_blocked") throw e;
+    }
+  }
+  throw last || error("unavailable", "Las fuentes del capítulo no están disponibles");
+}
 
 function log(level, message) {
   try { kino.log(level, message); } catch { /* Logging must not break a call. */ }
@@ -119,8 +340,8 @@ function item(data) {
 }
 
 export async function home() {
-  const data = await seriesData();
-  return [{ id: "unlimitedsubs-series", title: "Toku Kino", genre: "series", items: [item(data)] }];
+  const data = await shadowSeries();
+  return [{ id: "shadowrangers-series", title: "Toku Kino · ShadowRangers", genre: "series", items: [shadowItem(data)] }];
 }
 
 export async function search(query) {
@@ -129,6 +350,11 @@ export async function search(query) {
     .concat(query && Array.isArray(query.altTitles) ? query.altTitles.slice(0, 5) : [])
     .filter((q) => typeof q === "string" && q.trim());
   if (!forms.length) return [];
+  const timeranger = forms.some((q) => {
+    const words = q.toLowerCase().replace(/[^a-z0-9 ]/g, " ").trim().split(/\s+/).filter(Boolean);
+    return words.length && words.every((w) => "mirai sentai timeranger".includes(w));
+  });
+  if (timeranger) return [shadowItem(await shadowSeries())];
   const matches = forms.some((q) => {
     const words = q.toLowerCase().replace(/[^a-z0-9 ]/g, " ").trim().split(/\s+/).filter(Boolean);
     return words.length > 0 && words.every((w) => "kamen rider gavv".includes(w));
@@ -139,6 +365,14 @@ export async function search(query) {
 
 export async function episodes(ref) {
   await null;
+  if (ref === SHADOW_REF) {
+    const data = await shadowSeries();
+    return {
+      series: { title: data.title, poster: data.poster, overview: data.overview, year: "2000" },
+      episodes: data.episodes.map((e) => ({ season: e.season, number: e.number,
+        ref: shadowEpisodeRef(e), title: e.title, still: e.still })),
+    };
+  }
   if (ref !== SERIES_REF) throw error("not_found", "Esta prueba incluye solamente Kamen Rider Gavv");
   const data = await seriesData();
   return {
@@ -300,6 +534,7 @@ async function captureStream(pageUrl, referer) {
 
 export async function resolve(ref) {
   await null;
+  if (typeof ref === "string" && ref.startsWith("shadow:")) return await resolveShadow(ref);
   const match = /^episode:(kamen-rider-gavv-[a-z0-9-]{1,80})$/.exec(String(ref || ""));
   if (!match) throw error("not_found", "Capítulo de prueba no válido");
   const data = await seriesData(true);
