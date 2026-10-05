@@ -21,6 +21,7 @@ function boot({ rider = read("rider-catalog.html"), failFamily = null } = {}) {
   const { kino, servers } = createKino(manifest, { fetchImpl: async (url, options) => {
     url = String(url); requests.push({ url, options });
     if ((url === RIDER && fail === "rider") || (url === SENTAI && fail === "sentai")) throw new Error("synthetic network failure");
+    if (url === ROOT + "/genero/tokusatsu/") return new Response(read("tokusatsu-catalog.html"));
     if (url === RIDER) return new Response(riderReply);
     if (url === SENTAI) return new Response(read("sentai-catalog.html"));
     for (const [slug, html] of Object.entries(fixtures)) if (url === ROOT + "/series/" + slug + "/") return new Response(html);
@@ -85,10 +86,10 @@ test("global searches include Rider and Sentai while Gavv routes to ShadowRanger
   const gavv = checked("search", await plugin.search({ q: "Gavv" }), r).items;
   assert.equal(gavv.length, 1);
   assert.equal(gavv[0].ref, "shadow:rider:kamen-rider-gavv");
-  assert.equal(checked("search", await plugin.search({ q: "Kamen Rider" }), r).items.length, 38);
+  assert.equal(checked("search", await plugin.search({ q: "Kamen Rider" }), r).items.length, 39);
   assert.equal(checked("search", await plugin.search({ q: "Super Sentai" }), r).items.length, 49);
   assert.equal(checked("search", await plugin.search({ q: "2000" }), r).items.length, 2);
-  assert.deepEqual(r.requests.map((x) => x.url), [SENTAI, RIDER]);
+  assert.deepEqual(r.requests.map((x) => x.url), [SENTAI, RIDER, ROOT + "/genero/tokusatsu/"]);
 });
 
 test("a temporary failure of one family leaves the other searchable and reports its failed state", async () => {
@@ -101,7 +102,7 @@ test("a temporary failure of one family leaves the other searchable and reports 
   assert.ok(r.logs.some((s) => /SHADOW_SEARCH partial family=sentai/.test(s.message)));
 });
 
-test("both unavailable catalogs produce a controlled search error rather than a fake empty result", async () => {
+test("all unavailable catalogs produce a controlled search error rather than a fake empty result", async () => {
   boot();
   globalThis.kino.fetch = async () => { throw new Error("synthetic offline"); };
   await assert.rejects(plugin.search({ q: "Gavv" }), { code: "unavailable" });

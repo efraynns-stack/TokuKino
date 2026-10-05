@@ -1,15 +1,15 @@
 {
   "pluginName": "Toku Kino",
-  "pluginVersion": "0.2.0",
+  "pluginVersion": "0.3.0",
   "minimumKino": "0.9.50",
-  "checkedAt": "2026-10-05T04:37:50.818124+00:00",
+  "checkedAt": "2026-10-05T04:50:39.596811+00:00",
   "manifestAccepted": true,
   "offlineTests": {
-    "total": 75,
-    "passed": 75,
+    "total": 86,
+    "passed": 86,
     "failed": 0
   },
-  "catalogSeriesCount": 87,
+  "catalogSeriesCount": 124,
   "catalogYears": {
     "Super Sentai": {
       "first": 1975,
@@ -18,6 +18,11 @@
     "Kamen Rider": {
       "first": 1971,
       "last": 2026
+    },
+    "Tokusatsu": {
+      "first": 1974,
+      "last": 2026,
+      "undated": 4
     }
   },
   "order": "Release year, premiere date within the same year, then title; dates as published by source",
@@ -27,13 +32,13 @@
     "No. 1 Sentai Gozyuger": 49,
     "Kamen Rider": 98,
     "Kamen Rider Gavv (ShadowRangers)": 50,
-    "Kamen Rider MY-TH": 5
+    "Kamen Rider MY-TH": 5,
+    "Spider-Man": 39,
+    "Chouseishin Gransazer": 51
   },
   "sourceFixtures": "Minimal real public category/series/player-option HTML; synthetic media and session data for offline tests",
   "sdkLiveEvidence": [
-    "test/rider-live-first-attempt.json",
-    "test/rider-live-results.json",
-    "test/rider-play-live-results.json"
+    "test/tokusatsu-live-results.json"
   ],
   "primarySource": "VOE",
   "lazyAlternative": "ShadowLiv where published",
@@ -44,26 +49,29 @@
   "androidTvPlayback": {
     "previousVersion": "0.1.6",
     "TimerangerVOE": "confirmed_by_user_across_multiple_episodes",
-    "currentVersion": "0.2.0",
+    "currentVersion": "0.3.0",
     "expandedCatalog": "not_yet_installed_by_user",
     "shadowLiv": "not_confirmed",
     "categories": "not_yet_verified_on_tv",
     "settingsStatus": "not_yet_verified_on_tv"
   },
-  "categoryCount": 2,
+  "categoryCount": 3,
   "categoryTitles": [
     "Super Sentai",
-    "Kamen Rider"
+    "Kamen Rider",
+    "Tokusatsu"
   ],
   "categoryItemCounts": {
     "Super Sentai": 49,
-    "Kamen Rider": 38
+    "Kamen Rider": 38,
+    "Tokusatsu": 37
   },
   "sectionTabs": [
     "super-sentai",
-    "kamen-rider"
+    "kamen-rider",
+    "tokusatsu"
   ],
-  "categoryArt": "Original user-provided JPEGs, unchanged, included in assets",
+  "categoryArt": "Original user-provided JPEGs and Tokusatsu PNG, unchanged, included in assets",
   "permissionsChangedFrom017": false,
   "settingsStatus": {
     "realTimeProgress": false,
@@ -74,18 +82,19 @@
     "preserveLastCatalogOnFailure": true,
     "independentFamilies": [
       "sentai",
-      "rider"
+      "rider",
+      "tokusatsu"
     ]
   },
   "permissionsChangedFrom018": false,
   "sdkLiveCalls": {
-    "riderCatalog": "38 accepted, zero drops",
-    "categoryTiles": "accepted, zero drops",
-    "riderSection": "38 accepted, zero drops",
-    "riderEpisodeSamples": "98/50/5 accepted, zero drops",
-    "gavvSearch": "accepted from Rider, while Sentai request timed out",
-    "gavvVOEChapter1": "HLS accepted, zero drops",
-    "failedAttempts": "Preserved in evidence files; initial series and VOE 12-second requests timed out before timeout adjustments"
+    "tokusatsuCatalog": "37 accepted, zero drops",
+    "categoryTiles": "all three accepted, zero drops",
+    "tokusatsuSection": "37 accepted, zero drops",
+    "tokusatsuEpisodeSamples": "39/51 accepted, zero drops",
+    "spiderManSearch": "accepted from Tokusatsu cache; Sentai and Rider HTTP requests timed out, recorded as partial",
+    "spiderManVOEChapter1": "HLS accepted, zero drops",
+    "tokusatsuSettings": "100%, 37 series and UTC date accepted"
   },
   "metadataFetchBudgetsMs": {
     "home": 18000,
@@ -96,5 +105,18 @@
     "voePlayer": "up to 18000 per fetch, clipped to the resolve deadline",
     "manualCatalogRefresh": 20000
   },
-  "permissionsChangedFrom019": false
+  "permissionsChangedFrom019": false,
+  "permissionsChangedFrom020": false,
+  "tokusatsuNotes": {
+    "unknownYears": "4 cards have no published date and are sorted last, without an invented year",
+    "spiderManMissingNumbers": [
+      8,
+      23
+    ],
+    "seriesOverlap": "No shared slugs in the three observed categories; global search additionally deduplicates shared slugs",
+    "adultMarkedSeries": [
+      "juuko-tokusou-dinnovator"
+    ],
+    "adultEvidence": "Public series synopsis identifies final episode as adults-only; whole series is marked for Kino native filtering"
+  }
 }

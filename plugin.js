@@ -1,6 +1,6 @@
-// Toku Kino 0.2.0: Super Sentai and Kamen Rider catalogs from ShadowRangers.
+// Toku Kino 0.3.0: Super Sentai, Kamen Rider and general Tokusatsu catalogs.
 // Public metadata only. Video addresses are discovered again at play time.
-const VERSION = "0.2.0";
+const VERSION = "0.3.0";
 const SITE = "https://www.subsunlimiteds.com";
 const API_URL = "https://ulsapi.unlimiteds.workers.dev/search?q=Gavv";
 const SERIES_ID = "kamen-rider-gavv";
@@ -23,10 +23,15 @@ const SERIES_CACHE = "shadow-sentai-series-v1";
 const TIMERANGER = "mirai-sentai-timeranger";
 const SENTAI_CATEGORY = "category:super-sentai";
 const RIDER_CATEGORY = "category:kamen-rider";
+const TOKU_CATEGORY = "category:tokusatsu";
 const CATEGORY_ART = "https://raw.githubusercontent.com/efraynns-stack/TokuKino/HEAD/assets/";
 const CATALOGS = {
-  sentai: { title: "Super Sentai", url: SENTAI_URL, cache: SENTAI_CACHE, state: CATALOG_STATE },
-  rider: { title: "Kamen Rider", url: SHADOW_SITE + "/genero/kamen-rider/", cache: "shadow-rider-catalog-v1", state: "shadow-rider-load-state-v1" },
+  sentai: { title: "Super Sentai", url: SENTAI_URL, cache: SENTAI_CACHE, state: CATALOG_STATE,
+    tab: "super-sentai", ref: SENTAI_CATEGORY, art: "super-sentai.jpg", row: "shadowrangers-series" },
+  rider: { title: "Kamen Rider", url: SHADOW_SITE + "/genero/kamen-rider/", cache: "shadow-rider-catalog-v1", state: "shadow-rider-load-state-v1",
+    tab: "kamen-rider", ref: RIDER_CATEGORY, art: "kamen-rider.jpg", row: "kamen-rider-series" },
+  tokusatsu: { title: "Tokusatsu", url: SHADOW_SITE + "/genero/tokusatsu/", cache: "shadow-tokusatsu-catalog-v1", state: "shadow-tokusatsu-load-state-v1",
+    tab: "tokusatsu", ref: TOKU_CATEGORY, art: "tokusatsu.png", row: "tokusatsu-series" },
 };
 const SHADOW_PLAYERS = ["voe.sx", "teresapoliticallearn.com", "shadowliv.xyz"];
 
@@ -53,8 +58,12 @@ function shadowSeriesRef(slug, family = "sentai") { return slug === TIMERANGER &
 function shadowEpisodeRef(e, slug = TIMERANGER, family = "sentai") { return shadowSeriesRef(slug, family) + ":" + e.season + "x" + e.number; }
 
 function shadowItem(data) {
+  const family = data.family || "sentai";
   return { id: "shadow-" + data.slug, ref: shadowSeriesRef(data.slug, data.family || "sentai"), title: data.title, kind: "series",
-    year: data.year, poster: data.poster, overview: data.overview, lang: "ja", badges: ["ShadowRangers"], genres: [CATALOGS[data.family || "sentai"].title, "Tokusatsu"] };
+    year: data.year, poster: data.poster, overview: data.overview, lang: family === "tokusatsu" ? undefined : "ja",
+    badges: ["ShadowRangers"], genres: [...new Set([CATALOGS[family].title, "Tokusatsu"])],
+    // The source identifies Dinnovator's final episode as adults-only.
+    adult: data.slug === "juuko-tokusou-dinnovator" ? true : undefined };
 }
 
 function catalogState(family = "sentai") {
@@ -158,14 +167,16 @@ function catalogStatusText(family) {
 
 export async function settingsStatus() {
   await null;
-  const sentai = catalogStatusText("sentai"), rider = catalogStatusText("rider");
+  const sentai = catalogStatusText("sentai"), rider = catalogStatusText("rider"), toku = catalogStatusText("tokusatsu");
   return { catalogStatus: sentai.status, catalogUpdated: sentai.updated,
-    riderStatus: rider.status, riderUpdated: rider.updated };
+    riderStatus: rider.status, riderUpdated: rider.updated,
+    tokuStatus: toku.status, tokuUpdated: toku.updated };
 }
 
 export async function action(key) {
   await null;
-  const family = key === "refreshCatalog" ? "sentai" : key === "refreshRiderCatalog" ? "rider" : null;
+  const family = key === "refreshCatalog" ? "sentai" : key === "refreshRiderCatalog" ? "rider"
+    : key === "refreshTokuCatalog" ? "tokusatsu" : null;
   if (!family) throw error("not_found", "La acción no existe");
   const items = await shadowCatalog(family, true, 20000);
   return { message: "100% · " + items.length + " series de " + CATALOGS[family].title + " cargadas. Abre Toku Kino o Categorías para verlas." };
@@ -344,7 +355,7 @@ async function resolveShadowSource(source, pageUrl, deadline) {
 async function resolveShadow(ref) {
   await null;
   const legacy = /^shadow:timeranger:([1-9]\d?)x([1-9]\d{0,2})(?::server:([1-9]\d{0,2}))?$/.exec(ref);
-  const generic = /^shadow:(sentai|rider):([a-z0-9-]{1,110}):([1-9]\d?)x([1-9]\d{0,2})(?::server:([1-9]\d{0,2}))?$/.exec(ref);
+  const generic = /^shadow:(sentai|rider|tokusatsu):([a-z0-9-]{1,110}):([1-9]\d?)x([1-9]\d{0,2})(?::server:([1-9]\d{0,2}))?$/.exec(ref);
   if (!legacy && !generic) throw error("not_found", "La referencia del capítulo no es válida");
   const family = legacy ? "sentai" : generic[1];
   const slug = legacy ? TIMERANGER : generic[2];
@@ -487,8 +498,7 @@ function item(data) {
 }
 
 function catalogRows(catalog, family) {
-  const rows = [], ref = family === "sentai" ? SENTAI_CATEGORY : RIDER_CATEGORY;
-  const prefix = family === "sentai" ? "shadowrangers-series" : "kamen-rider-series";
+  const rows = [], ref = CATALOGS[family].ref, prefix = CATALOGS[family].row;
   for (let i = 0; i < catalog.length && rows.length < 20; i += 60) {
     rows.push({ id: i === 0 ? prefix : prefix + "-" + i,
       title: CATALOGS[family].title + " · por año" + (i ? " · continuación" : ""), genre: "series", ref,
@@ -503,34 +513,29 @@ export async function home() {
 
 export async function categories() {
   await null;
-  return [
-    { id: "super-sentai", title: "Super Sentai", ref: SENTAI_CATEGORY, art: CATEGORY_ART + "super-sentai.jpg" },
-    { id: "kamen-rider", title: "Kamen Rider", ref: RIDER_CATEGORY, art: CATEGORY_ART + "kamen-rider.jpg" },
-  ];
+  return Object.values(CATALOGS).map((c) => ({ id: c.tab, title: c.title, ref: c.ref, art: CATEGORY_ART + c.art }));
 }
 
 export async function browse(ref, cursor = null) {
   await null;
-  if (ref !== SENTAI_CATEGORY && ref !== RIDER_CATEGORY) throw error("not_found", "La categoría no existe");
+  const family = Object.keys(CATALOGS).find((f) => CATALOGS[f].ref === ref);
+  if (!family) throw error("not_found", "La categoría no existe");
   // Category-bound cursors cannot accidentally continue into the other catalog.
   const prefix = ref + ":offset:";
   if (cursor !== null && (typeof cursor !== "string" || !cursor.startsWith(prefix) || !/^(0|[1-9]\d{0,5})$/.test(cursor.slice(prefix.length))))
     throw error("not_found", "La página de la categoría no es válida");
   const offset = cursor === null ? 0 : Number(cursor.slice(prefix.length));
-  const items = (await shadowCatalog(ref === SENTAI_CATEGORY ? "sentai" : "rider", false, 18000)).map(shadowItem);
+  const items = (await shadowCatalog(family, false, 18000)).map(shadowItem);
   return { items: items.slice(offset, offset + 100), next: offset + 100 < items.length ? prefix + (offset + 100) : null };
 }
 
 export async function section({ tab } = {}) {
   await null;
-  const chosen = tab === "kamen-rider" ? "kamen-rider" : "super-sentai";
-  const tabs = [{ id: "super-sentai", label: "Super Sentai" }, { id: "kamen-rider", label: "Kamen Rider" }];
-  if (chosen === "super-sentai") return { tabs, tab: chosen,
-    hero: { title: "Super Sentai", image: CATEGORY_ART + "super-sentai.jpg", text: "Series ordenadas por año de estreno." },
-    rows: await home() };
-  return { tabs, tab: chosen,
-    hero: { title: "Kamen Rider", image: CATEGORY_ART + "kamen-rider.jpg", text: "Series de Kamen Rider." },
-    rows: catalogRows(await riderCatalog(false, 18000), "rider") };
+  const family = Object.keys(CATALOGS).find((f) => CATALOGS[f].tab === tab) || "sentai", catalog = CATALOGS[family];
+  const tabs = Object.values(CATALOGS).map((c) => ({ id: c.tab, label: c.title }));
+  return { tabs, tab: catalog.tab,
+    hero: { title: catalog.title, image: CATEGORY_ART + catalog.art, text: "Series ordenadas por año de estreno." },
+    rows: catalogRows(await shadowCatalog(family, false, 18000), family) };
 }
 
 function searchWords(value) {
@@ -549,23 +554,31 @@ export async function search(query) {
   if (!forms.length) return [];
   const words = forms.map(searchWords).filter((w) => w.length);
   if (!words.length) return [];
-  const results = await Promise.allSettled([sentaiCatalog(), riderCatalog()]);
+  const families = Object.keys(CATALOGS);
+  const results = await Promise.allSettled(families.map((f) => shadowCatalog(f)));
   if (results.every((r) => r.status === "rejected")) throw results[0].reason;
   const catalogs = results.flatMap((r, i) => {
     if (r.status === "fulfilled") return r.value;
-    log("warn", "SHADOW_SEARCH partial family=" + (i ? "rider" : "sentai"));
+    log("warn", "SHADOW_SEARCH partial family=" + families[i]);
     return [];
   });
-  return catalogs.filter((s) => {
+  const seen = new Set();
+  const items = catalogs.filter((s) => {
     const haystack = searchWords(s.title).join(" ") + " " + s.year;
-    return words.some((w) => w.every((v) => haystack.includes(v))) ||
-      words.some((w) => w.join(" ") === (s.family === "rider" ? "kamen rider" : "super sentai"));
+    const matches = words.some((w) => w.every((v) => haystack.includes(v))) ||
+      words.some((w) => w.join(" ") === searchWords(CATALOGS[s.family].title).join(" "));
+    if (!matches || seen.has(s.slug)) return false;
+    seen.add(s.slug);
+    return true;
   }).slice(0, 100).map(shadowItem);
+  // A partial search cannot prove absence in a category that did not respond.
+  if (!items.length && results.some((r) => r.status === "rejected")) throw results.find((r) => r.status === "rejected").reason;
+  return items;
 }
 
 export async function episodes(ref) {
   await null;
-  const sentai = typeof ref === "string" && /^shadow:(sentai|rider):([a-z0-9-]{1,110})$/.exec(ref);
+  const sentai = typeof ref === "string" && /^shadow:(sentai|rider|tokusatsu):([a-z0-9-]{1,110})$/.exec(ref);
   if (ref === SHADOW_REF || sentai) {
     const data = await shadowSeries(sentai ? sentai[2] : TIMERANGER, sentai ? sentai[1] : "sentai");
     return {

@@ -1,0 +1,149 @@
+{
+  "version": "0.3.0",
+  "checkedAt": "2026-10-05T04:46:58.465Z",
+  "transport": "Fresh HTTPS through official SDK host gate",
+  "calls": [
+    {
+      "function": "settingsStatus",
+      "drops": 0,
+      "status": {
+        "catalogStatus": "0% · sin carga registrada",
+        "catalogUpdated": "Sin fecha registrada",
+        "riderStatus": "0% · sin carga registrada",
+        "riderUpdated": "Sin fecha registrada",
+        "tokuStatus": "0% · sin carga registrada",
+        "tokuUpdated": "Sin fecha registrada"
+      },
+      "outcome": "accepted"
+    },
+    {
+      "function": "action",
+      "argument": "refreshTokuCatalog",
+      "drops": 0,
+      "message": "100% · 37 series de Tokusatsu cargadas. Abre Toku Kino o Categorías para verlas.",
+      "outcome": "accepted"
+    },
+    {
+      "function": "categories",
+      "drops": 0,
+      "categories": [
+        "Super Sentai",
+        "Kamen Rider",
+        "Tokusatsu"
+      ],
+      "outcome": "accepted"
+    },
+    {
+      "function": "browse",
+      "argument": "category:tokusatsu",
+      "drops": 0,
+      "series": 37,
+      "outcome": "accepted"
+    },
+    {
+      "function": "section",
+      "argument": {
+        "tab": "tokusatsu"
+      },
+      "drops": 0,
+      "tab": "tokusatsu",
+      "series": 37,
+      "outcome": "accepted"
+    },
+    {
+      "function": "episodes",
+      "argument": "shadow:tokusatsu:spider-man",
+      "drops": 0,
+      "episodes": 39,
+      "outcome": "accepted"
+    },
+    {
+      "function": "episodes",
+      "argument": "shadow:tokusatsu:chouseishin-series",
+      "drops": 0,
+      "episodes": 51,
+      "outcome": "accepted"
+    },
+    {
+      "function": "resolve",
+      "argument": "shadow:tokusatsu:spider-man:1x1:server:2",
+      "drops": 0,
+      "mime": "application/vnd.apple.mpegurl",
+      "label": "Server 2 · VOE",
+      "outcome": "accepted"
+    },
+    {
+      "function": "search",
+      "argument": {
+        "q": "Spider Man"
+      },
+      "drops": 0,
+      "series": 1,
+      "outcome": "accepted"
+    },
+    {
+      "function": "settingsStatus",
+      "drops": 0,
+      "status": {
+        "catalogStatus": "Error al actualizar · sin catálogo cargado",
+        "catalogUpdated": "Sin fecha registrada",
+        "riderStatus": "Error al actualizar · sin catálogo cargado",
+        "riderUpdated": "Sin fecha registrada",
+        "tokuStatus": "100% · 37 series · última carga completa",
+        "tokuUpdated": "2026-10-05 04:47:07 UTC"
+      },
+      "outcome": "accepted"
+    }
+  ],
+  "androidTvPlayback": "0.1.6 VOE confirmed by user on Timeranger; current version 0.3.0 not yet verified on TV",
+  "requests": [
+    {
+      "host": "shadowrangers.live",
+      "path": "/genero/tokusatsu/",
+      "status": 200,
+      "durationMs": 8998
+    },
+    {
+      "host": "shadowrangers.live",
+      "path": "/series/spider-man/",
+      "status": 200,
+      "durationMs": 11537
+    },
+    {
+      "host": "shadowrangers.live",
+      "path": "/series/chouseishin-series/",
+      "status": 200,
+      "durationMs": 11848
+    },
+    {
+      "host": "shadowrangers.live",
+      "path": "/capitulos/spider-man-1x1/",
+      "status": 200,
+      "durationMs": 13138
+    },
+    {
+      "host": "voe.sx",
+      "path": "/e/etauvojcman9",
+      "status": 200,
+      "durationMs": 11807
+    },
+    {
+      "host": "teresapoliticallearn.com",
+      "path": "/e/etauvojcman9",
+      "status": 200,
+      "durationMs": 11941
+    },
+    {
+      "host": "shadowrangers.live",
+      "path": "/genero/super-sentai/",
+      "outcome": "network_or_timeout",
+      "durationMs": 12000
+    },
+    {
+      "host": "shadowrangers.live",
+      "path": "/genero/kamen-rider/",
+      "outcome": "network_or_timeout",
+      "durationMs": 12002
+    }
+  ]
+}

@@ -20,6 +20,7 @@ function boot({ catalog = read("sentai-catalog.html"), pages = {}, onFetch } = {
     url = String(url); requests.push({ url, options });
     if (onFetch) onFetch(url);
     if (url === ROOT + "/genero/kamen-rider/") return new Response(read("rider-catalog.html"));
+    if (url === ROOT + "/genero/tokusatsu/") return new Response(read("tokusatsu-catalog.html"));
     if (url === CATEGORY) return new Response(catalog);
     if (url === "https://ulsapi.unlimiteds.workers.dev/search?q=Gavv") return new Response(gavv);
     if (pages[url] !== undefined) return new Response(pages[url]);
@@ -80,7 +81,7 @@ test("search finds every series and romanization variants, reusing category meta
   }
   assert.equal(checked("search", await plugin.search({ q: "Super Sentai" }), r.servers).items.length, 49);
   assert.equal((await plugin.search({ q: "Unknown", altTitles: ["Timeranger"] }))[0].ref, "shadow:timeranger");
-  assert.deepEqual(r.requests.map((x) => x.url), [CATEGORY, ROOT + "/genero/kamen-rider/"]);
+  assert.deepEqual(r.requests.map((x) => x.url), [CATEGORY, ROOT + "/genero/kamen-rider/", ROOT + "/genero/tokusatsu/"]);
 });
 
 test("each real series opens its own ordered chapters, and Timeranger refs remain stable", async () => {
@@ -169,10 +170,10 @@ test("missing or restricted genre pages give a controlled error rather than an e
   }
 });
 
-test("the two category tiles expose the supplied artwork without any network call", async () => {
+test("the three category tiles expose the supplied artwork without any network call", async () => {
   const r = boot();
   const tiles = checked("categories", await plugin.categories(), r.servers);
-  assert.deepEqual(tiles.map((t) => [t.title, t.ref]), [["Super Sentai", "category:super-sentai"], ["Kamen Rider", "category:kamen-rider"]]);
+  assert.deepEqual(tiles.map((t) => [t.title, t.ref]), [["Super Sentai", "category:super-sentai"], ["Kamen Rider", "category:kamen-rider"], ["Tokusatsu", "category:tokusatsu"]]);
   assert.ok(tiles[0].art.endsWith("/assets/super-sentai.jpg"));
   assert.ok(tiles[1].art.endsWith("/assets/kamen-rider.jpg"));
   assert.equal(r.requests.length, 0);
@@ -205,7 +206,7 @@ test("the Toku Kino section has separate tabs with category-specific rows and ar
   const r = boot();
   const sentai = checked("section", await plugin.section({ tab: null }), r.servers);
   const rider = checked("section", await plugin.section({ tab: "kamen-rider" }), r.servers);
-  assert.deepEqual(sentai.tabs.map((t) => t.label), ["Super Sentai", "Kamen Rider"]);
+  assert.deepEqual(sentai.tabs.map((t) => t.label), ["Super Sentai", "Kamen Rider", "Tokusatsu"]);
   assert.equal(sentai.tab, "super-sentai");
   assert.equal(sentai.rows[0].items.length, 49);
   assert.equal(sentai.rows[0].ref, "category:super-sentai");

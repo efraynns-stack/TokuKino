@@ -33,7 +33,11 @@ const categoryCheck = process.argv.includes("--categories");
 const statusCheck = process.argv.includes("--status");
 const riderCheck = process.argv.includes("--rider");
 const riderPlayCheck = process.argv.includes("--rider-play");
-const calls = riderPlayCheck ? [["action", "refreshRiderCatalog"], ["episodes", "shadow:rider:kamen-rider-gavv"],
+const tokuCheck = process.argv.includes("--tokusatsu");
+const calls = tokuCheck ? [["settingsStatus", undefined], ["action", "refreshTokuCatalog"], ["categories", undefined],
+  ["browse", "category:tokusatsu"], ["section", { tab: "tokusatsu" }], ["episodes", "shadow:tokusatsu:spider-man"],
+  ["episodes", "shadow:tokusatsu:chouseishin-series"], ["resolve", "shadow:tokusatsu:spider-man:1x1:server:2"],
+  ["search", { q: "Spider Man" }], ["settingsStatus", undefined]] : riderPlayCheck ? [["action", "refreshRiderCatalog"], ["episodes", "shadow:rider:kamen-rider-gavv"],
   ["resolve", "shadow:rider:kamen-rider-gavv:1x1:server:2"]] : riderCheck ? [["settingsStatus", undefined], ["action", "refreshRiderCatalog"],
   ["categories", undefined], ["browse", "category:kamen-rider"], ["section", { tab: "kamen-rider" }],
   ["episodes", "shadow:rider:kamen-rider"], ["episodes", "shadow:rider:kamen-rider-gavv"],
@@ -61,4 +65,4 @@ for (const [fn, argument] of calls) {
   console.log(JSON.stringify(entry));
 }
 report.requests = requests;
-writeFileSync(new URL(riderPlayCheck ? "rider-play-live-results.json" : riderCheck ? "rider-live-results.json" : statusCheck ? "catalog-status-live-results.json" : categoryCheck ? "categories-live-results.json" : "sentai-live-results.json", import.meta.url), JSON.stringify(report, null, 2) + "\n");
+writeFileSync(new URL(tokuCheck ? "tokusatsu-live-results.json" : riderPlayCheck ? "rider-play-live-results.json" : riderCheck ? "rider-live-results.json" : statusCheck ? "catalog-status-live-results.json" : categoryCheck ? "categories-live-results.json" : "sentai-live-results.json", import.meta.url), JSON.stringify(report, null, 2) + "\n");

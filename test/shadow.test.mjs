@@ -38,6 +38,7 @@ function boot({ series = seriesHtml, page = episodeHtml, config, targetStatus = 
     url = String(url); requests.push({ url, options });
     if (url === "https://shadowrangers.live/genero/super-sentai/") return new Response(catalogHtml);
     if (url === "https://shadowrangers.live/genero/kamen-rider/") return new Response(readFileSync(new URL("rider-catalog.html", import.meta.url), "utf8"));
+    if (url === "https://shadowrangers.live/genero/tokusatsu/") return new Response(readFileSync(new URL("tokusatsu-catalog.html", import.meta.url), "utf8"));
     if (url === SERIES) return new Response(series);
     if (url === PAGE || url === PAGE.replace("1x1", "1x2")) return new Response(page);
     if (url === VOE) return new Response('<script>window.location.href = ' + JSON.stringify(redirect) + ';</script>', { status: voeStatus });
@@ -77,7 +78,7 @@ test("recorded Timeranger metadata exposes 50 stable episodes without media requ
   assert.equal(eps.episodes.length, 50);
   assert.deepEqual(eps.episodes.map((e) => e.number), Array.from({ length: 50 }, (_, i) => i + 1));
   assert.equal(eps.episodes[0].ref, EP);
-  assert.equal(r.requests.length, 3);
+  assert.equal(r.requests.length, 4);
   assert.equal(r.captures.length, 0);
 });
 

@@ -25,6 +25,7 @@ function boot({ html = "<html>Dynamic player</html>", status = 200, browser, api
   const fetchImpl = async (url, options) => {
     requests.push({ url: String(url), options });
     if (String(url) === "https://shadowrangers.live/genero/kamen-rider/") return new Response(riderCatalog);
+    if (String(url) === "https://shadowrangers.live/genero/tokusatsu/") return new Response(readFileSync(root + "test/tokusatsu-catalog.html", "utf8"));
     if (String(url) === API) return new Response(api, { status: apiStatus, headers: { "Content-Type": "application/json" } });
     if (String(url) === "https://shadowrangers.live/series/mirai-sentai-timeranger/") return new Response(shadowSeries);
     if (String(url) === "https://shadowrangers.live/genero/super-sentai/") return new Response(sentaiCatalog);
@@ -79,13 +80,13 @@ for (const [fn, args] of [["search", ["Gavv"]], ["home", []], ["episodes", ["ser
   });
 }
 
-test("empty searches make no requests; irrelevant searches query both categories", async () => {
+test("empty searches make no requests; irrelevant searches query all three categories", async () => {
   const r = boot();
   assert.deepEqual(await plugin.search({ q: "" }), []);
   assert.deepEqual(await plugin.search({ q: "***" }), []);
   assert.equal(r.requests.length, 0);
   assert.deepEqual(await plugin.search({ q: "Ultraman" }), []);
-  assert.equal(r.requests.length, 2);
+  assert.equal(r.requests.length, 3);
 });
 
 test("stable refs and metadata cache; playback refreshes the public source", async () => {
@@ -157,7 +158,7 @@ test("one browser capture preserves playback headers and does not fetch the vide
   assert.equal(r.requests.length, 2);
   assert.ok(r.requests.every((request) => request.options.method === "GET"));
   assert.ok(r.requests.every((request) => !request.url.includes("al_video.php")));
-  assert.ok(r.logs.some((l) => l.message === "ULS_RESOLVE fallback=web_page version=0.2.0"));
+  assert.ok(r.logs.some((l) => l.message === "ULS_RESOLVE fallback=web_page version=0.3.0"));
   assert.ok(r.logs.some((l) => l.message.includes("ULS_CAPTURE started version=" + manifest.version + " mode=web")));
 });
 
