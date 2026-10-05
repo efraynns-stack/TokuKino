@@ -1,5 +1,6 @@
-// Toku Kino 0.1.3: UnlimitedSubs is the first source, with one series for the TV test.
+// Toku Kino 0.1.4: UnlimitedSubs is the first source, with one series for the TV test.
 // Public metadata only. Video addresses are discovered again at play time.
+const VERSION = "0.1.4";
 const SITE = "https://www.subsunlimiteds.com";
 const API_URL = "https://ulsapi.unlimiteds.workers.dev/search?q=Gavv";
 const SERIES_ID = "kamen-rider-gavv";
@@ -272,43 +273,80 @@ async function publicVkStream(episode) {
     throw error(restriction, "VK restringió este capítulo");
   }
   let data;
-  try { data = JSON.parse(raw.replace(/^\s*<!--\s*/, "")); } catch { return null; }
-  if (!data || !Array.isArray(data.payload) || data.payload.length < 2) return null;
-  const code = String(data.payload[0]);
+  try { data = JSON.parse(raw.replace(/^\s*<!--\s*/, "")); } catch {
+    log("info", "ULS_VK_PUBLIC format=non_json");
+    return null;
+  }
+  if (!data || !Array.isArray(data.payload) || data.payload.length < 2) {
+    log("info", "ULS_VK_PUBLIC format=unknown");
+    return null;
+  }
+  const rawCode = data.payload[0];
+  const code = ["string", "number"].includes(typeof rawCode) && /^\d{1,3}$/.test(String(rawCode)) ? String(rawCode) : "unknown";
+  const payload = data.payload[1];
+  const parts = Array.isArray(payload) ? payload : [];
+  // Inspect only public error text, never log the body, URLs or session values.
+  const message = parts.slice(0, 2).filter((p) => typeof p === "string").join(" ");
+  const challenge = /captcha|challenge\.html|security_check/i.test(JSON.stringify(parts.slice(0, 2)));
+  const reason = challenge ? "blocked" : publicErrorReason(message);
+  log("info", "ULS_VK_PUBLIC reply code=" + code + " reason=" + (reason || "none") + " parts=" + parts.length);
   if (code === "3") {
-    log("warn", "ULS_VK_PUBLIC auth_required");
+    log("warn", "ULS_VK_PUBLIC auth_required code=3");
     throw error("unavailable", "VK solicita iniciar sesión para este video");
   }
-  if (code !== "0") {
-    log("warn", "ULS_VK_PUBLIC refused");
-    throw error("unavailable", "VK no permitió abrir este capítulo desde su reproductor público");
+  if (reason || code === "8") {
+    log("warn", "ULS_VK_PUBLIC refused code=" + code + " reason=" + (reason || "unclassified"));
+    const details = {
+      auth_required: "VK solicita iniciar sesión para este video",
+      followers: "VK indica que este video está disponible solo para seguidores",
+      blocked: "VK está solicitando una verificación humana",
+      not_found: "VK indica que este video fue retirado o ya no está disponible",
+      geo_blocked: "VK indica que este video no está disponible en tu región",
+      access_denied: "VK denegó el acceso a este video",
+      unavailable: "VK indica que el video está temporalmente no disponible",
+    };
+    const detail = details[reason] || "VK rechazó la consulta del reproductor público (código " + code + ")";
+    throw error(["not_found", "geo_blocked"].includes(reason) ? reason : "unavailable", detail);
   }
-  const payload = data.payload[1];
-  if (!Array.isArray(payload) || !payload.length) return null;
-  const options = payload[payload.length - 1];
+  // The public site's envelope is not the developer API. The reference VK
+  // extractor treats 3 and 8 as errors; a nonzero code alone is not a denial.
+  // Read supplied formats, or let the original page perform its normal load.
+  const options = parts[parts.length - 1];
   const player = options && options.player;
   const params = player && Array.isArray(player.params) ? player.params[0] : null;
   const stream = streamFromParams(params && typeof params === "object" ? params : null, episode.videoUrl);
   if (stream) log("info", "ULS_RESOLVE public_player");
+  else log("info", "ULS_VK_PUBLIC no_formats code=" + code);
   return stream;
+}
+
+function publicErrorReason(message) {
+  const restriction = pageRestriction(message);
+  if (restriction) return restriction;
+  if (/captcha|challenge\.html|security_check/i.test(message)) return "blocked";
+  if (/only available to followers|only available (?:to|for) subscribers|только.{0,30}подписчик|solo.{0,30}seguidores/i.test(message)) return "followers";
+  if (/access denied|доступ запрещ|acceso denegado|acceso restringido/i.test(message)) return "access_denied";
+  if (/temporarily unavailable|временно недоступ/i.test(message)) return "unavailable";
+  if (/unknown error|does not exist|no longer available/i.test(message)) return "not_found";
+  return null;
 }
 
 async function captureStream(pageUrl, referer) {
   await null;
   let captured;
   try {
-    log("info", "ULS_CAPTURE started version=0.1.3 mode=web timeout_ms=25000");
+    log("info", "ULS_CAPTURE started version=" + VERSION + " mode=web timeout_ms=25000");
     captured = await kino.browser.capture(pageUrl, {
       timeoutMs: 25000, autoplay: true, match: VIDEO_MATCH, headers: { Referer: referer },
     });
   } catch (e) {
     const code = e.code || "network";
-    log("warn", "ULS_CAPTURE " + code + " version=0.1.3 mode=web");
+    log("warn", "ULS_CAPTURE " + code + " version=" + VERSION + " mode=web");
     const details = {
       browser_unavailable: "Este dispositivo no dispone del navegador integrado necesario para VK",
       blocked: "VK no permite abrir este reproductor automáticamente",
       busy: "El navegador integrado está ocupado; intenta nuevamente",
-      timeout: "Prueba 0.1.3: la página del capítulo no inició un video dentro del tiempo disponible",
+      timeout: "Prueba " + VERSION + ": la página del capítulo no inició un video dentro del tiempo disponible",
       not_allowed: "El permiso de navegador del plugin no está activo",
     };
     const detail = details[code] || "No se pudo abrir el video de VK";
@@ -349,6 +387,7 @@ export async function resolve(ref) {
   const data = await seriesData(true);
   const episode = data.episodes.find((e) => e.id === match[1]);
   if (!episode) throw error("not_found", "Ese capítulo ya no está disponible");
+  log("info", "ULS_RESOLVE started version=" + VERSION + " episode=" + episode.number + " host=" + new URL(episode.videoUrl).hostname);
   const embed = embedUrl(episode);
   const referer = SITE + "/series/" + SERIES_ID + "/" + episode.id;
   let response;

@@ -1,4 +1,4 @@
-# Toku Kino — prueba 0.1.3
+# Toku Kino — prueba 0.1.4
 
 Plugin de tokusatsu para Kino. Su primera fuente de prueba es **Kamen Rider Gavv** de [UnlimitedSubs](https://www.subsunlimiteds.com/series/kamen-rider-gavv).
 Consulta los datos de la propia web para mostrar portada, sinopsis y capítulos. La consulta verificada el 4 de octubre de 2026 devolvió 50 capítulos con enlaces de VK/VK Video.
@@ -11,11 +11,11 @@ El nombre es **Toku Kino** para poder incorporar otras fuentes después de compr
 
 1. Actualiza Kino desde la [publicación oficial 0.9.50](https://github.com/kinotvapp/kino-light/releases/tag/v0.9.50). El archivo `kino.apk` es la versión universal para Android y Android TV.
 2. Descomprime este ZIP en el computador.
-3. Si ya subiste la prueba anterior, abre ese mismo repositorio en GitHub. Si todavía no lo hiciste, crea uno **Public** en tu cuenta; por ejemplo, `KinoUnlimitedSubs`.
+3. Abre el repositorio existente [efraynns-stack/TokuKino](https://github.com/efraynns-stack/TokuKino). Conserva ese repositorio para actualizar el plugin instalado.
 4. Dentro del repositorio, pulsa **Add file → Upload files**. Sube los archivos descomprimidos y sus carpetas. `kino-plugin.json` y `plugin.js` deben quedar directamente en la raíz de la rama principal; no subas el ZIP como único archivo ni los dejes dentro de otra carpeta.
 5. Guarda con **Commit changes**.
-6. Si el plugin ya está instalado, en **Ajustes → Plugins** busca actualizaciones y aplica la versión **0.1.3**. Para una instalación nueva, usa **Ajustes → Plugins → Agregar**, escribe `efraynns-stack/KinoUnlimitedSubs` y continúa con **Agregar → Instalar**. Si elegiste otro nombre para el repositorio, usa ese nombre. El repositorio puede conservar su nombre aunque el plugin ahora se llame Toku Kino.
-7. En una instalación nueva, la pantalla de consentimiento de Kino incluye **«Puede abrir páginas web ocultas para encontrar el video»**. Se aprueba al instalar; no hay un permiso de navegador separado de Android. También muestra el permiso para reproducir video de cualquier servidor. La versión 0.1.3 conserva estos permisos de la 0.1.0, por lo que esa actualización no los vuelve a pedir.
+6. Si el plugin ya está instalado, en **Ajustes → Plugins → Toku Kino → Buscar actualización de Toku Kino** aplica la versión **0.1.4**. Para una instalación nueva, usa **Ajustes → Plugins → Agregar**, escribe `efraynns-stack/TokuKino` y continúa con **Agregar → Instalar**.
+7. En una instalación nueva, la pantalla de consentimiento de Kino incluye **«Puede abrir páginas web ocultas para encontrar el video»**. Se aprueba al instalar; no hay un permiso de navegador separado de Android. También muestra el permiso para reproducir video de cualquier servidor. La versión 0.1.4 conserva estos permisos de la 0.1.0, por lo que esa actualización no los vuelve a pedir.
 8. Busca **Gavv** o abre la fila **Toku Kino** del inicio.
 
 No hace falta configurar una cuenta ni escribir URLs para esta prueba.
@@ -34,7 +34,7 @@ Los subtítulos pueden estar incrustados en la imagen. En ese caso no habrá una
 
 Al iniciar un capítulo, consulta nuevamente los datos públicos de UnlimitedSubs. Construye el mismo reproductor incrustado de VK con el identificador y el hash publicados por la fuente.
 
-Primero lee el JSON `playerParams` del reproductor. Si hay HLS o MP4, entrega ese enlace a Kino con su Referer y las copias disponibles. Si no aparecen formatos, consulta una vez la respuesta pública del reproductor web de VK (`al_video.php`, `act=show`), un método usado por la implementación VK de yt-dlp. Si la respuesta ofrece formatos públicos, entrega el video sin abrir el navegador. Una respuesta que pide sesión, rechaza el acceso o indica una verificación termina con un error.
+Primero lee el JSON `playerParams` del reproductor. Si hay HLS o MP4, entrega ese enlace a Kino con su Referer y las copias disponibles. Si no aparecen formatos, consulta una vez la respuesta pública del reproductor web de VK (`al_video.php`, `act=show`), un método usado por la implementación VK de yt-dlp. Si la respuesta ofrece formatos públicos, entrega el video sin abrir el navegador. Los códigos explícitos de sesión y error, y los mensajes de restricción, terminan con un error. Un código diferente de cero por sí solo ya no se interpreta como rechazo: si no contiene formatos ni una restricción explícita, se continúa con la página original.
 
 Si ninguna consulta ofrece un video, intenta **una captura de la página original del capítulo en UnlimitedSubs**, con su iframe de VK, inicio automático y hasta 25 segundos de espera. Así el iframe se abre dentro de su página original, en lugar de cargarlo como documento principal. Conserva las cabeceras que devuelve la captura. No hace otra captura ni reintenta una página bloqueada.
 
@@ -51,8 +51,8 @@ Los enlaces temporales de video y las sesiones de la captura no se guardan. Solo
 - Las pruebas sin conexión comprueban los datos grabados, el parser de VK, las referencias estables, las cabeceras de captura y los errores.
 - Las muestras de un reproductor VK que contiene HLS/MP4 y las respuestas de captura en las pruebas son **sintéticas**, no grabaciones de una reproducción real.
 - Desde el entorno de desarrollo, VK responde `Site Unavailable`; además, el SDK de Node no implementa el navegador Android y responde `browser_unavailable`. **La captura real, la reproducción y los controles en Android TV quedan pendientes de esta prueba.**
-- La prueba de la versión 0.1.1 en la TV llegó a la captura y terminó con `timeout`, según el panel de debug enviado. Tras entregar la 0.1.2 se recibió otro panel con el mismo timeout; ese panel no permite confirmar la versión instalada. La 0.1.3 cambia el método de consulta y la página que captura; todavía no se ha comprobado en la TV.
-- Las pruebas del JSON del reproductor público son sintéticas. En la consulta real desde este entorno, la petición respondió HTTP 405 y no entregó el JSON del video. El SDK pasó entonces a la captura de la página original, que requiere Android. No se afirma que el nuevo método entregue un video real para estos capítulos.
+- Las pruebas 0.1.1 y 0.1.2 en la TV terminaron con `timeout`. El registro enviado a las 21:29 del 4 de octubre muestra que la 0.1.3 obtuvo HTTP 200 del reproductor público y se detuvo en `ULS_VK_PUBLIC refused`, sin llegar a la captura. Ese evento no guardó el código de respuesta; por tanto no permite conocer el motivo del rechazo. La 0.1.4 corrige la interpretación de códigos y añade ese diagnóstico. Su reproducción en TV sigue pendiente.
+- Las pruebas del JSON del reproductor público son sintéticas. La última consulta con el SDK agotó su límite de ocho segundos; una consulta separada con curl respondió HTTP 405. Ninguna entregó el JSON del video. El SDK pasó entonces a la captura de la página original, que requiere Android. No se afirma que el nuevo método entregue un video real para estos capítulos.
 
 Los resultados de la consulta real están en `test/source-results.json`. Los datos públicos grabados están en `test/source-fixtures.json`. La observación de la prueba en TV está en `test/android-tv-observation.json`.
 
@@ -60,7 +60,9 @@ Los resultados de la consulta real están en `test/source-results.json`. Los dat
 
 Comprueba la versión de Kino y la del plugin. Anota el mensaje completo que muestra Kino y el capítulo probado. En **Ajustes → Toku Kino**, activa **Modo debug**, vuelve a probar y revisa **Registro**. Todos los plugins habilitados tienen su propia pestaña en Ajustes desde Kino 0.9.50.
 
-Los eventos propios del plugin son `ULS_CATALOG`, `ULS_API_FETCH`, `ULS_VK_FETCH`, `ULS_VK_PUBLIC_FETCH`, `ULS_VK_PUBLIC`, `ULS_RESOLVE` y `ULS_CAPTURE`. Solo registran etapas, cantidades y códigos de error. No incluyen cookies, hashes de video ni direcciones temporales.
+Los eventos propios del plugin son `ULS_CATALOG`, `ULS_API_FETCH`, `ULS_VK_FETCH`, `ULS_VK_PUBLIC_FETCH`, `ULS_VK_PUBLIC`, `ULS_RESOLVE` y `ULS_CAPTURE`. Solo registran etapas, cantidades, versión, número de capítulo, host de VK y códigos de respuesta o error. No incluyen el texto arbitrario del servidor, cookies, hashes de video ni direcciones temporales.
+
+La línea `ULS_VK_PUBLIC reply code=… reason=…` identifica la respuesta del sitio. Los motivos reconocidos incluyen `auth_required`, `followers`, `blocked`, `not_found`, `geo_blocked`, `access_denied` y `unavailable`. `refused code=8 reason=unclassified` indica un error de VK cuyo mensaje no reconoce esta prueba; no se reintenta. `no_formats` indica que no se obtuvo video de esa consulta y se pasará a una captura normal de la página original.
 
 | Último evento de captura | Qué significa |
 | --- | --- |
@@ -73,7 +75,7 @@ Los eventos propios del plugin son `ULS_CATALOG`, `ULS_API_FETCH`, `ULS_VK_FETCH
 
 Kino no muestra frases personalizadas de error cuando el nombre del plugin contiene la palabra «Kino». Por eso Toku Kino conserva el detalle del fallo en el panel de debug y en Registro, en lugar de depender de una frase personalizada que la app descartaría.
 
-Después de subir los archivos y actualizar, el detalle del plugin debe indicar **0.1.3**. Si reproduce desde los datos públicos, el registro incluirá `ULS_RESOLVE public_player`. Si usa el navegador, incluirá `ULS_CAPTURE started version=0.1.3 mode=web timeout_ms=25000`. En caso de timeout, el propio detalle del error también dice «Prueba 0.1.3».
+Después de subir los archivos y actualizar, el detalle del plugin debe indicar **0.1.4**. Al abrir un capítulo, el registro incluirá `ULS_RESOLVE started version=0.1.4 episode=…`. Si reproduce desde los datos públicos, aparecerá `ULS_RESOLVE public_player`. Si usa el navegador, aparecerá `ULS_CAPTURE started version=0.1.4 mode=web timeout_ms=25000`. En caso de timeout, el propio detalle del error también dice «Prueba 0.1.4».
 
 El panel rojo solo muestra las últimas líneas. Para enviar el diagnóstico completo: ciérralo con **Atrás**, abre **Ajustes → Toku Kino → Ver registro** y toma una foto de las líneas anteriores al fallo, o copia el registro. Deja debug activado: apagarlo borra el registro. Anota el capítulo probado. No desinstales ni cambies los permisos por este timeout.
 
@@ -101,6 +103,14 @@ node --test test/plugin.test.mjs
 El SDK y el contrato incluidos proceden de `kinotvapp/kino-plugin-own-server`, referencia `94d80528ae78509a4d3905464857218b1c2de7e6`. El formato público del reproductor se contrastó con la implementación VK de yt-dlp. El plugin usa código propio, sin ejecutar scripts extraídos del sitio.
 
 ## Cambios
+
+### 0.1.4
+
+- Corrige la interpretación que consideraba rechazo cualquier código público distinto de cero.
+- Mantiene el fin de la llamada cuando VK pide sesión, devuelve su código de error o indica una restricción explícita.
+- Añade código de respuesta y motivo clasificado al registro, sin copiar datos del servidor.
+- Identifica versión, capítulo y host al inicio de cada reproducción.
+- Pruebas de respuestas no reconocidas, restricciones y ausencia de datos sensibles en los registros.
 
 ### 0.1.3
 
