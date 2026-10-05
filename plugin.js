@@ -1,4 +1,4 @@
-// Toku Kino 0.1.2: UnlimitedSubs is the first source, with one series for the TV test.
+// Toku Kino 0.1.3: UnlimitedSubs is the first source, with one series for the TV test.
 // Public metadata only. Video addresses are discovered again at play time.
 const SITE = "https://www.subsunlimiteds.com";
 const API_URL = "https://ulsapi.unlimiteds.workers.dev/search?q=Gavv";
@@ -217,11 +217,14 @@ function subtitlesOf(entries) {
 }
 
 function directStream(html, embed) {
-  const params = playerData(html);
+  return streamFromParams(playerData(html), embed);
+}
+
+function streamFromParams(params, referer) {
   if (!params) return null;
   if (params.drm || params.licenseUrl) throw kino.error("unavailable", "Este reproductor requiere un tipo de video protegido que la prueba no admite");
   const formats = [], seen = new Set();
-  const headers = { Referer: embed };
+  const headers = { Referer: referer };
   for (const key of Object.keys(params)) {
     let mime, priority;
     if (/^hls(?:$|_)/.test(key) && !/live/.test(key)) { mime = "application/vnd.apple.mpegurl"; priority = 0; }
@@ -245,22 +248,67 @@ function directStream(html, embed) {
   return stream;
 }
 
-async function captureStream(embed, referer) {
+async function publicVkStream(episode) {
+  await null;
+  const video = new URL(episode.videoUrl);
+  const ids = /^\/video(-?\d+)_(\d+)\/?$/.exec(video.pathname);
+  const endpoint = new URL("/al_video.php", video.origin).href;
+  const body = new URLSearchParams({ act: "show", video: ids[1] + "_" + ids[2], al: "1" }).toString();
+  let response;
+  try {
+    response = await kino.fetch(endpoint, {
+      method: "POST", timeoutMs: 8000, body,
+      headers: { "Content-Type": "application/x-www-form-urlencoded", "X-Requested-With": "XMLHttpRequest", Referer: endpoint },
+    });
+  } catch (e) { log("warn", "ULS_VK_PUBLIC_FETCH " + (e.code || "network")); return null; }
+  log("info", "ULS_VK_PUBLIC_FETCH http=" + response.status);
+  if ([429, 451].includes(response.status)) throw statusError(response.status, "VK");
+  if (!response.ok) return null;
+  const raw = response.text();
+  const restriction = pageRestriction(raw);
+  if (restriction) {
+    if (restriction === "auth_required") throw error("unavailable", "VK solicita iniciar sesión para este video");
+    if (restriction === "blocked") throw error("unavailable", "VK está solicitando una verificación humana");
+    throw error(restriction, "VK restringió este capítulo");
+  }
+  let data;
+  try { data = JSON.parse(raw.replace(/^\s*<!--\s*/, "")); } catch { return null; }
+  if (!data || !Array.isArray(data.payload) || data.payload.length < 2) return null;
+  const code = String(data.payload[0]);
+  if (code === "3") {
+    log("warn", "ULS_VK_PUBLIC auth_required");
+    throw error("unavailable", "VK solicita iniciar sesión para este video");
+  }
+  if (code !== "0") {
+    log("warn", "ULS_VK_PUBLIC refused");
+    throw error("unavailable", "VK no permitió abrir este capítulo desde su reproductor público");
+  }
+  const payload = data.payload[1];
+  if (!Array.isArray(payload) || !payload.length) return null;
+  const options = payload[payload.length - 1];
+  const player = options && options.player;
+  const params = player && Array.isArray(player.params) ? player.params[0] : null;
+  const stream = streamFromParams(params && typeof params === "object" ? params : null, episode.videoUrl);
+  if (stream) log("info", "ULS_RESOLVE public_player");
+  return stream;
+}
+
+async function captureStream(pageUrl, referer) {
   await null;
   let captured;
   try {
-    log("info", "ULS_CAPTURE started version=0.1.2 filter=vk timeout_ms=25000");
-    captured = await kino.browser.capture(embed, {
+    log("info", "ULS_CAPTURE started version=0.1.3 mode=web timeout_ms=25000");
+    captured = await kino.browser.capture(pageUrl, {
       timeoutMs: 25000, autoplay: true, match: VIDEO_MATCH, headers: { Referer: referer },
     });
   } catch (e) {
     const code = e.code || "network";
-    log("warn", "ULS_CAPTURE " + code);
+    log("warn", "ULS_CAPTURE " + code + " version=0.1.3 mode=web");
     const details = {
       browser_unavailable: "Este dispositivo no dispone del navegador integrado necesario para VK",
       blocked: "VK no permite abrir este reproductor automáticamente",
       busy: "El navegador integrado está ocupado; intenta nuevamente",
-      timeout: "VK no inició el video dentro del tiempo disponible",
+      timeout: "Prueba 0.1.3: la página del capítulo no inició un video dentro del tiempo disponible",
       not_allowed: "El permiso de navegador del plugin no está activo",
     };
     const detail = details[code] || "No se pudo abrir el video de VK";
@@ -320,6 +368,10 @@ export async function resolve(ref) {
       if (stream) { log("info", "ULS_RESOLVE direct"); return stream; }
     }
   }
-  // One ordinary capture of the same public embed; no retries or CAPTCHA handling.
-  return await captureStream(embed, referer);
+  // The public web-player response is not VK's authenticated developer API.
+  const publicStream = await publicVkStream(episode);
+  if (publicStream) return publicStream;
+  // Use the real embedding page so its iframe runs with its original context.
+  // One ordinary capture; no retries or CAPTCHA handling.
+  return await captureStream(referer, SITE + "/series/" + SERIES_ID);
 }
