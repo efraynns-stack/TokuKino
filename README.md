@@ -1,6 +1,24 @@
-# Toku Kino — 0.3.2
+# Toku Kino — 0.3.3
 
 Catálogos de **Super Sentai**, **Kamen Rider** y **Tokusatsu** de ShadowRangers, para **Kino 0.9.50 o superior**. Las categorías consultadas publican **49 series de Super Sentai**, **38 de Kamen Rider** y **37 de Tokusatsu**. Cada serie abre su propia ficha de capítulos.
+
+## Imágenes independientes de Super Sentai
+
+La 0.3.3 prepara dos carpetas para tus JPG de 1920 × 1080:
+
+| Uso | Ejemplo |
+| --- | --- |
+| Logo horizontal, preparado para soporte futuro de la app | `assets/sentai/mirai-sentai-timeranger.jpg` |
+| Fondo propio | `assets/sentai/backgrounds/mirai-sentai-timeranger.jpg` |
+| Póster vertical | Se conserva el de ShadowRangers |
+
+Los 49 nombres exactos están en `assets/sentai/nombres.txt`. Puedes subir JPG por partes, siempre con el nombre en minúsculas y extensión `.jpg`. No es necesario modificar el código o mantener un listado a mano.
+
+Después de subirlos al repositorio, ve a **Ajustes → Toku Kino → Actualizar imágenes de Sentai**. Se muestran los contadores de fondos disponibles y logos preparados. La revisión consulta una sola lista de archivos de GitHub; no descarga las imágenes y no añade consultas al abrir el catálogo o reproducir. El registro dura hasta 30 días; vuelve a pulsar el botón cuando añadas, reemplaces o elimines JPG. GitHub puede tardar unos minutos en servir los cambios.
+
+**Límite de Kino 0.9.50:** el contrato solo admite `poster` y `backdrop`. La 0.3.3 envía el fondo propio como `backdrop`, tanto en las tarjetas del catálogo como en los metadatos de la ficha, y conserva el póster de ShadowRangers. Si no hay fondo propio registrado, usa ese póster como respaldo. Los logos se detectan por separado, pero **todavía no se muestran como una tercera imagen**. Para distinguir logo horizontal, póster vertical y fondo en todas las pantallas, hace falta ampliar el contrato y el dibujo de las tarjetas en la app. El plugin no decide qué campo utiliza cada pantalla nativa; el cambio de fondo debe comprobarse en Android TV.
+
+Esta actualización agrega **`api.github.com`** a los dominios permitidos para revisar los nombres de los archivos. Kino pedirá aceptar la actualización con ese dominio. No se utilizan credenciales ni se escribe en GitHub. Si GitHub falla o limita la consulta, se conserva el último registro válido; una respuesta incompleta no borra tus imágenes.
 
 ## Categorías
 
@@ -49,13 +67,13 @@ El catálogo se obtiene de la categoría publicada por la fuente y se renueva tr
 
 ## Instalar o actualizar
 
-1. Descomprime **Toku-Kino-0.3.2.zip**.
+1. Descomprime **Toku-Kino-0.3.3.zip**.
 2. En [efraynns-stack/TokuKino](https://github.com/efraynns-stack/TokuKino), abre **Add file → Upload files**. Sube el contenido descomprimido: `kino-plugin.json` y `plugin.js` deben quedar en la raíz de la rama principal. No subas solamente el ZIP ni una carpeta contenedora adicional.
 3. Guarda con **Commit changes**.
-4. En la TV: **Ajustes → Plugins → Toku Kino → Buscar actualización de Toku Kino**. Comprueba que muestre **0.3.2**. Para instalar desde cero, agrega `efraynns-stack/TokuKino`.
+4. En la TV: **Ajustes → Plugins → Toku Kino → Buscar actualización de Toku Kino**. Acepta el dominio GitHub añadido y comprueba que muestre **0.3.3**. Para instalar desde cero, agrega `efraynns-stack/TokuKino`.
 5. Sal de Toku Kino y vuelve a entrar; elige **Toku Kino → Tokusatsu**. Si necesitas forzar una carga nueva, ve a **Ajustes → Toku Kino → Actualizar catálogo Tokusatsu**. Elige una serie y un capítulo.
 
-Esta actualización conserva los dominios y permisos de 0.1.6.
+Los permisos de reproducción se conservan. La 0.3.3 agrega solo `api.github.com` para la revisión manual de imágenes.
 
 ## Estado y actualización del catálogo
 
@@ -109,7 +127,7 @@ Se entregan únicamente URLs públicas HTTPS de medios. La alternativa lleva una
 
 - **0.3.1, consulta real desde cero:** Inicio devolvió las 124 series de las tres categorías en 12,9 segundos, sin descartes del SDK. `section(null)` devolvió las 49 de Super Sentai y sus pestañas; Categorías devolvió las tres portadas. Evidencia: `test/catalog-recovery-live-results.json`. No fue una prueba audiovisual en Android TV.
 - **0.3.2, consulta real:** V3 devolvió 52 capítulos, Den-O 49 y Geats 49, sin descartes. El capítulo 1 de V3 se resolvió por VOE y entregó HLS aceptado por el SDK. Evidencia: `test/rider-links-live-results.json`. El análisis de las 38 páginas completas está en `test/rider-links-audit-results.json`; aún falta la comprobación audiovisual en la TV.
-- **103 pruebas locales** y validador oficial de Kino: tres categorías, años desconocidos, capítulos propios, búsqueda global sin duplicados, estados independientes, caché, alternativas por servidor y regresiones de Timeranger y Gavv.
+- **110 pruebas locales** y validador oficial de Kino: tres categorías, años desconocidos, capítulos propios, búsqueda global sin duplicados, estados independientes, caché, alternativas por servidor y regresiones de Timeranger y Gavv. Las siete pruebas nuevas verifican fondos separados de logos, pósters conservados, actualización/eliminación de archivos, respaldo, límites de GitHub y registros inválidos.
 - HTML público mínimo real: 49 tarjetas de Super Sentai, 38 de Kamen Rider y 37 de Tokusatsu; fichas de Goranger (84 capítulos), Timeranger (50), Gozyuger (49), Kamen Rider (98), Gavv (50), MY-TH (5), Spider-Man (39 con huecos) y Gransazer (51). Los números describen las fichas observadas y pueden cambiar.
 - Las consultas reales aceptaron las 37 tarjetas, la pestaña Tokusatsu, las tres categorías, las fichas de Spider-Man (39) y Gransazer (51), el HLS de VOE del capítulo 1 de Spider-Man y el estado de actualización, sin datos descartados. Ver `test/tokusatsu-live-results.json` y el resumen en `test/validation-results.json`.
 - En esa prueba, las consultas de las otras dos categorías durante la búsqueda superaron los 12 segundos. Spider-Man siguió apareciendo desde la caché válida de Tokusatsu. Esos fallos se conservan en el informe y no se presentan como búsquedas completas; si no hay resultados y alguna familia falló, el plugin devuelve un error controlado.

@@ -1,10 +1,10 @@
 {
   "name": "kino-plugin-toku-kino",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "private": true,
   "type": "module",
   "scripts": {
     "validate": "node sdk/validate.mjs .",
-    "test": "node --test test/plugin.test.mjs test/shadow.test.mjs test/sentai.test.mjs test/catalog-status.test.mjs test/rider.test.mjs test/tokusatsu.test.mjs test/catalog-recovery.test.mjs test/rider-links.test.mjs"
+    "test": "node --test test/plugin.test.mjs test/shadow.test.mjs test/sentai.test.mjs test/catalog-status.test.mjs test/rider.test.mjs test/tokusatsu.test.mjs test/catalog-recovery.test.mjs test/rider-links.test.mjs test/sentai-artwork.test.mjs"
   }
 }

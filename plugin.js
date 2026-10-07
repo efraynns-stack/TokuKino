@@ -1,6 +1,6 @@
-// Toku Kino 0.3.2: use the episode URLs and numbering published by each series.
+// Toku Kino 0.3.3: independent Sentai backgrounds, with source posters retained.
 // Public metadata only. Video addresses are discovered again at play time.
-const VERSION = "0.3.2";
+const VERSION = "0.3.3";
 const SITE = "https://www.subsunlimiteds.com";
 const API_URL = "https://ulsapi.unlimiteds.workers.dev/search?q=Gavv";
 const SERIES_ID = "kamen-rider-gavv";
@@ -25,6 +25,9 @@ const SENTAI_CATEGORY = "category:super-sentai";
 const RIDER_CATEGORY = "category:kamen-rider";
 const TOKU_CATEGORY = "category:tokusatsu";
 const CATEGORY_ART = "https://raw.githubusercontent.com/efraynns-stack/TokuKino/HEAD/assets/";
+const SENTAI_ART_TREE = "https://api.github.com/repos/efraynns-stack/TokuKino/git/trees/HEAD?recursive=1";
+const SENTAI_ART_CACHE = "sentai-artwork-v1";
+const SENTAI_ART_ERROR = "sentai-artwork-error-v1";
 const CATALOGS = {
   sentai: { title: "Super Sentai", url: SENTAI_URL, cache: SENTAI_CACHE, state: CATALOG_STATE,
     tab: "super-sentai", ref: SENTAI_CATEGORY, art: "super-sentai.jpg", row: "shadowrangers-series" },
@@ -61,10 +64,76 @@ function attribute(tag, key) {
 function shadowSeriesRef(slug, family = "sentai") { return slug === TIMERANGER && family === "sentai" ? SHADOW_REF : "shadow:" + family + ":" + slug; }
 function shadowEpisodeRef(e, slug = TIMERANGER, family = "sentai") { return shadowSeriesRef(slug, family) + ":" + e.season + "x" + e.number; }
 
+function sentaiArtwork() {
+  try {
+    const saved = JSON.parse(kino.storage.get(SENTAI_ART_CACHE) || "null");
+    if (!saved || saved.schema !== 1 || !Number.isFinite(saved.checkedAt)
+      || saved.checkedAt > Date.now() || Date.now() - saved.checkedAt >= 30 * 24 * 60 * 60 * 1000) return null;
+    const result = { checkedAt: saved.checkedAt, logos: {}, backgrounds: {} };
+    for (const kind of ["logos", "backgrounds"]) {
+      const entries = saved[kind];
+      if (!entries || typeof entries !== "object" || Array.isArray(entries)) return null;
+      for (const item of BOOTSTRAP_CATALOGS.sentai) {
+        if (typeof entries[item.slug] === "string" && /^[a-f0-9]{40}$/.test(entries[item.slug])) result[kind][item.slug] = entries[item.slug];
+      }
+    }
+    return result;
+  } catch { return null; }
+}
+
+function shadowBackdrop(data) {
+  if ((data.family || "sentai") !== "sentai") return undefined;
+  const sha = sentaiArtwork()?.backgrounds[data.slug];
+  // Image URLs are constructed here; never trust URLs from GitHub's response.
+  // A logo is NOT a backdrop. Kino 0.9.50 has no third series-image field.
+  return sha ? CATEGORY_ART + "sentai/backgrounds/" + data.slug + ".jpg?v=" + sha : data.poster;
+}
+
+function sentaiArtworkStatus() {
+  const saved = sentaiArtwork();
+  let failed = false;
+  try { failed = kino.storage.get(SENTAI_ART_ERROR) === "failed"; } catch { /* Optional status. */ }
+  if (!saved) return failed ? "No se pudieron revisar las imágenes. Intenta actualizar de nuevo."
+    : "Sin revisar. Sube tus JPG y pulsa Actualizar imágenes de Sentai.";
+  return (failed ? "Error al revisar · último registro: " : "") + Object.keys(saved.backgrounds).length
+    + "/49 fondos · " + Object.keys(saved.logos).length + "/49 logos preparados";
+}
+
+async function refreshSentaiArtwork() {
+  await null;
+  try {
+    const response = await kino.fetch(SENTAI_ART_TREE, { timeoutMs: 12000, headers: { Accept: "application/vnd.github+json" } });
+    if (!response.ok) throw statusError(response.status, "GitHub");
+    const body = response.text();
+    if (body.length > 1000000) throw error("unavailable", "El registro de imágenes es demasiado grande");
+    const tree = JSON.parse(body);
+    if (tree.truncated !== false || !Array.isArray(tree.tree) || tree.tree.length > 10000)
+      throw error("unavailable", "No se pudo leer el registro completo de imágenes");
+    const known = new Set(BOOTSTRAP_CATALOGS.sentai.map((s) => s.slug));
+    const saved = { schema: 1, checkedAt: Date.now(), logos: {}, backgrounds: {} };
+    for (const entry of tree.tree) {
+      if (!entry || entry.type !== "blob" || !Number.isInteger(entry.size) || entry.size <= 0
+        || typeof entry.sha !== "string" || !/^[a-f0-9]{40}$/.test(entry.sha) || typeof entry.path !== "string") continue;
+      const match = /^assets\/sentai\/(backgrounds\/)?([a-z0-9-]{1,110})\.jpg$/.exec(entry.path);
+      if (match && known.has(match[2])) saved[match[1] ? "backgrounds" : "logos"][match[2]] = entry.sha;
+    }
+    kino.storage.set(SENTAI_ART_CACHE, JSON.stringify(saved), { ttlMs: 30 * 24 * 60 * 60 * 1000 });
+    try { kino.storage.remove(SENTAI_ART_ERROR); } catch { /* The saved registry remains usable. */ }
+    log("info", "SENTAI_ARTWORK backgrounds=" + Object.keys(saved.backgrounds).length + " logos=" + Object.keys(saved.logos).length);
+    return { message: "Imágenes revisadas: " + Object.keys(saved.backgrounds).length + " fondos disponibles y "
+      + Object.keys(saved.logos).length + " logos preparados. Vuelve a abrir una serie para ver su fondo." };
+  } catch (e) {
+    try { kino.storage.set(SENTAI_ART_ERROR, "failed", { ttlMs: 30 * 24 * 60 * 60 * 1000 }); } catch { /* Preserve previous registry. */ }
+    log("warn", "SENTAI_ARTWORK failed=" + (e.code || "invalid_response"));
+    if (e.code === "rate_limited") throw e;
+    throw error("unavailable", "No se pudieron revisar las imágenes de Sentai; se conserva el registro anterior");
+  }
+}
+
 function shadowItem(data) {
   const family = data.family || "sentai";
   return { id: "shadow-" + data.slug, ref: shadowSeriesRef(data.slug, data.family || "sentai"), title: data.title, kind: "series",
-    year: data.year, poster: data.poster, overview: data.overview, lang: family === "tokusatsu" ? undefined : "ja",
+    year: data.year, poster: data.poster, backdrop: shadowBackdrop(data), overview: data.overview, lang: family === "tokusatsu" ? undefined : "ja",
     badges: ["ShadowRangers"], genres: [...new Set([CATALOGS[family].title, "Tokusatsu"])],
     // The source identifies Dinnovator's final episode as adults-only.
     adult: data.slug === "juuko-tokusou-dinnovator" ? true : undefined };
@@ -200,11 +269,12 @@ export async function settingsStatus() {
   const sentai = catalogStatusText("sentai"), rider = catalogStatusText("rider"), toku = catalogStatusText("tokusatsu");
   return { catalogStatus: sentai.status, catalogUpdated: sentai.updated,
     riderStatus: rider.status, riderUpdated: rider.updated,
-    tokuStatus: toku.status, tokuUpdated: toku.updated };
+    tokuStatus: toku.status, tokuUpdated: toku.updated, sentaiArtworkStatus: sentaiArtworkStatus() };
 }
 
 export async function action(key) {
   await null;
+  if (key === "refreshSentaiArtwork") return refreshSentaiArtwork();
   const family = key === "refreshCatalog" ? "sentai" : key === "refreshRiderCatalog" ? "rider"
     : key === "refreshTokuCatalog" ? "tokusatsu" : null;
   if (!family) throw error("not_found", "La acción no existe");
@@ -662,7 +732,7 @@ export async function episodes(ref) {
   if (ref === SHADOW_REF || sentai) {
     const data = await shadowSeries(sentai ? sentai[2] : TIMERANGER, sentai ? sentai[1] : "sentai");
     return {
-      series: { title: data.title, poster: data.poster, overview: data.overview, year: data.year },
+      series: { title: data.title, poster: data.poster, backdrop: shadowBackdrop(data), overview: data.overview, year: data.year },
       episodes: data.episodes.map((e) => ({ season: e.season, number: e.number,
         ref: shadowEpisodeRef(e, data.slug, data.family || "sentai"), title: e.title, still: e.still })),
     };

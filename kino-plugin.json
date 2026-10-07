@@ -1,7 +1,7 @@
 {
   "id": "unlimitedsubs",
   "name": "Toku Kino",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "apiVersion": 6,
   "entry": "plugin.js",
   "description": "Super Sentai, Kamen Rider y Tokusatsu de ShadowRangers, por serie y año, con VOE y ShadowLiv. Requiere Kino 0.9.50 o superior.",
@@ -15,7 +15,8 @@
     "shadowrangers.live",
     "voe.sx",
     "teresapoliticallearn.com",
-    "shadowliv.xyz"
+    "shadowliv.xyz",
+    "api.github.com"
   ],
   "browser": true,
   "streamHosts": "any",
@@ -81,6 +82,22 @@
       "key": "refreshTokuCatalog",
       "type": "action",
       "label": "Actualizar catálogo Tokusatsu"
+    },
+    {
+      "key": "sentaiArtworkSection",
+      "type": "section",
+      "label": "Imágenes de Sentai",
+      "hint": "Fondos propios. Logos preparados, pendientes de soporte en Kino."
+    },
+    {
+      "key": "sentaiArtworkStatus",
+      "type": "status",
+      "label": "Fondos y logos disponibles"
+    },
+    {
+      "key": "refreshSentaiArtwork",
+      "type": "action",
+      "label": "Actualizar imágenes de Sentai"
     },
     {
       "key": "shadowServer",

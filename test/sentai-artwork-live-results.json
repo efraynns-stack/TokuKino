@@ -1,0 +1,21 @@
+{
+  "version": "0.3.3",
+  "checkedAt": "2026-10-07T04:19:36.092Z",
+  "requests": [
+    {
+      "host": "api.github.com",
+      "path": "/repos/efraynns-stack/TokuKino/git/trees/HEAD",
+      "status": 200,
+      "durationMs": 7697
+    }
+  ],
+  "audiovisualPlayback": "Not tested; this change concerns artwork metadata only",
+  "action": {
+    "message": "Imágenes revisadas: 0 fondos disponibles y 0 logos preparados. Vuelve a abrir una serie para ver su fondo.",
+    "refresh": false,
+    "clearSettings": []
+  },
+  "status": "0/49 fondos · 0/49 logos preparados",
+  "drops": [],
+  "outcome": "accepted"
+}

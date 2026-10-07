@@ -1,12 +1,12 @@
 {
   "pluginName": "Toku Kino",
-  "pluginVersion": "0.3.2",
+  "pluginVersion": "0.3.3",
   "minimumKino": "0.9.50",
-  "checkedAt": "2026-10-05T05:28:04.531221+00:00",
+  "checkedAt": "2026-10-07T04:20:12.390869+00:00",
   "manifestAccepted": true,
   "offlineTests": {
-    "total": 103,
-    "passed": 103,
+    "total": 110,
+    "passed": 110,
     "failed": 0
   },
   "catalogSeriesCount": 124,
@@ -41,19 +41,20 @@
     "test/tokusatsu-live-results.json",
     "test/catalog-recovery-live-results.json",
     "test/rider-links-audit-results.json",
-    "test/rider-links-live-results.json"
+    "test/rider-links-live-results.json",
+    "test/sentai-artwork-live-results.json"
   ],
   "primarySource": "VOE",
   "lazyAlternative": "ShadowLiv where published",
   "resolveBudgetMs": 70000,
   "legacyTimerangerRefsPreserved": true,
   "legacyGavvRefsPreserved": true,
-  "permissionsChangedFrom016": false,
+  "permissionsChangedFrom016": true,
   "androidTvPlayback": {
     "previousVersion": "0.1.6",
     "TimerangerVOE": "confirmed_by_user_across_multiple_episodes",
-    "currentVersion": "0.3.2",
-    "expandedCatalog": "0.3.0 user photo: some Rider episode pages unrecognized; 0.3.2 awaits TV verification",
+    "currentVersion": "0.3.3",
+    "expandedCatalog": "0.3.2 episode reader verified with source and SDK; 0.3.3 awaits TV verification",
     "shadowLiv": "not_confirmed",
     "categories": "0.3.0 empty catalog screenshot; 0.3.1 pending",
     "settingsStatus": "not_yet_verified_on_tv"
@@ -237,5 +238,19 @@
         "durationMs": 30883
       }
     ]
+  },
+  "permissionAddition033": [
+    "api.github.com"
+  ],
+  "sentaiArtwork": {
+    "imageFolders": [
+      "assets/sentai/",
+      "assets/sentai/backgrounds/"
+    ],
+    "posters": "Source poster retained",
+    "backgrounds": "Custom when listed, source poster otherwise",
+    "logos": "Detected separately; displaying a third series image requires a native app change",
+    "refresh": "Manual, one GitHub tree call; no artwork network calls during catalogs or playback",
+    "androidTvArtwork": "Pending user images and native screen verification"
   }
 }
