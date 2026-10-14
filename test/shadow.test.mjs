@@ -12,6 +12,7 @@ const PAGE = "https://shadowrangers.live/capitulos/mirai-sentai-timeranger-1x1/"
 const VOE = "https://voe.sx/e/r3lca9vuu12y";
 const TARGET = "https://megankiddifference.com/e/r3lca9vuu12y";
 const FORMER = "https://teresapoliticallearn.com/e/r3lca9vuu12y";
+const FUTURE = "https://next-voe.example.com/e/r3lca9vuu12y";
 const LIV = "https://shadowliv.xyz/#i66uf";
 const seriesHtml = readFileSync(new URL("shadow-series.html", import.meta.url), "utf8");
 const catalogHtml = readFileSync(new URL("sentai-catalog.html", import.meta.url), "utf8");
@@ -31,7 +32,8 @@ function encoded(config) {
 }
 
 function boot({ series = seriesHtml, page = episodeHtml, config, targetStatus = 200, targetHtml,
-  redirect = TARGET, preferred = "voe", capture, captureError, voeStatus = 200, onTarget } = {}) {
+  redirect = TARGET, preferred = "voe", capture, captureError, voeStatus = 200, onTarget,
+  anyHost = false, futureHtml, httpLocation, futureStatus = 200, futureError } = {}) {
   const requests = [], captures = [], logs = [];
   const data = config || { source: "https://media.example.com/timeranger/master.m3u8?token=synthetic",
     title: "01.mp4", captions: [], check: false };
@@ -42,7 +44,13 @@ function boot({ series = seriesHtml, page = episodeHtml, config, targetStatus = 
     if (url === "https://shadowrangers.live/genero/tokusatsu/") return new Response(readFileSync(new URL("tokusatsu-catalog.html", import.meta.url), "utf8"));
     if (url === SERIES) return new Response(series);
     if (url === PAGE || url === PAGE.replace("1x1", "1x2")) return new Response(page);
-    if (url === VOE) return new Response('<script>window.location.href = ' + JSON.stringify(redirect) + ';</script>', { status: voeStatus });
+    if (url === VOE) return httpLocation
+      ? new Response("", { status: 302, headers: { Location: httpLocation } })
+      : new Response('<script>window.location.href = ' + JSON.stringify(redirect) + ';</script>', { status: voeStatus });
+    if (url === FUTURE) {
+      if (futureError) throw Object.assign(new Error("synthetic grant failure"), { code: futureError });
+      return new Response(futureHtml === undefined ? encoded(data) : futureHtml, { status: futureStatus });
+    }
     if (url === FORMER) return new Response('<script>window.location.href = ' + JSON.stringify(TARGET) + ';</script>');
     if (url === TARGET) {
       if (onTarget) onTarget();
@@ -50,8 +58,18 @@ function boot({ series = seriesHtml, page = episodeHtml, config, targetStatus = 
     }
     throw new Error("Unexpected request");
   };
-  const { kino, servers } = createKino(manifest, { fetchImpl });
-  globalThis.kino = { ...kino, config: { get: () => preferred },
+  // The bundled older shim has no native API 9 grant. Model approval explicitly,
+  // with only the synthetic fixture host; production uses Kino's own host gate.
+  const { kino, servers } = createKino(anyHost ? { ...manifest, hosts: [...manifest.hosts, "next-voe.example.com"] } : manifest, { fetchImpl });
+  globalThis.kino = { ...kino, fetchAnyHost: anyHost,
+    fetch: async (url, options) => {
+      // Rate limiting is a native gate error, before the HTTP transport is called.
+      if (String(url) === FUTURE && futureError) {
+        requests.push({ url: String(url), options });
+        throw Object.assign(new Error("synthetic native gate failure"), { code: futureError });
+      }
+      return kino.fetch(url, options);
+    }, config: { get: () => preferred },
     log: (level, message) => logs.push({ level, message }), browser: {
       capture: async (url, options) => {
         captures.push({ url, options });
@@ -209,6 +227,100 @@ test("unrecognized redirect domains are not fetched", async () => {
   await assert.rejects(plugin.resolve(EP + ":server:1"), { code: "unavailable" });
   assert.equal(r.requests.length, 3);
   assert.ok(!r.requests.some((x) => x.url.includes("unrecognized.example")));
+});
+
+test("approved general permission follows a future VOE domain without a manifest edit", async () => {
+  const r = boot({ redirect: FUTURE, anyHost: true });
+  const s = checked("resolve", await plugin.resolve(EP + ":server:1"), r.servers);
+  assert.equal(s.headers.Referer, FUTURE);
+  assert.ok(!manifest.hosts.includes("next-voe.example.com"));
+  assert.equal(r.requests.filter((x) => x.url === FUTURE).length, 1);
+  assert.equal(r.captures.length, 0);
+});
+
+for (const permission of [false, undefined]) {
+  test("an unapproved or unavailable general permission never follows a new host: " + permission, async () => {
+    const r = boot({ redirect: FUTURE, anyHost: permission });
+    globalThis.kino.fetchAnyHost = permission;
+    await assert.rejects(plugin.resolve(EP + ":server:1"), { code: "unavailable" });
+    assert.equal(r.requests.filter((x) => x.url === FUTURE).length, 0);
+    assert.equal(r.captures.length, 0);
+  });
+}
+
+test("HTTP navigation is inspected manually and retains the video's current Referer", async () => {
+  const r = boot({ httpLocation: FUTURE, anyHost: true });
+  const s = checked("resolve", await plugin.resolve(EP + ":server:1"), r.servers);
+  assert.equal(s.headers.Referer, FUTURE);
+  assert.ok(r.requests.filter((x) => [VOE, FUTURE].includes(x.url)).every((x) => x.options.redirect === "manual"));
+});
+
+test("a relative HTTP navigation stays on the same video", async () => {
+  const r = boot({ httpLocation: "//megankiddifference.com/e/r3lca9vuu12y" });
+  assert.equal((await plugin.resolve(EP + ":server:1")).headers.Referer, TARGET);
+});
+
+for (const target of ["http://next-voe.example.com/e/r3lca9vuu12y", "https://next-voe.example.com:8443/e/r3lca9vuu12y",
+  "https://127.0.0.1/e/r3lca9vuu12y", "https://router.local/e/r3lca9vuu12y",
+  "https://next-voe.example.com/e/zzzzzzzzzzzz", FUTURE + "?ad=1", FUTURE + "#ad"]) {
+  test("even an approved grant refuses an unrelated or unsafe HTTP navigation: " + target, async () => {
+    const r = boot({ httpLocation: target, anyHost: true });
+    await assert.rejects(plugin.resolve(EP + ":server:1"), { code: "unavailable" });
+    assert.equal(r.requests.length, 3);
+    assert.equal(r.captures.length, 0);
+  });
+}
+
+test("a cycle back from a new mirror does not repeat a request or start capture", async () => {
+  const r = boot({ redirect: FUTURE, anyHost: true,
+    futureHtml: '<script>window.location.href = ' + JSON.stringify(VOE) + ';</script>' });
+  await assert.rejects(plugin.resolve(EP + ":server:1"), { code: "unavailable" });
+  assert.equal(r.requests.filter((x) => x.url === VOE).length, 1);
+  assert.equal(r.requests.filter((x) => x.url === FUTURE).length, 1);
+  assert.equal(r.captures.length, 0);
+});
+
+test("a dynamic player on the discovered domain captures only after approval", async () => {
+  const r = boot({ redirect: FUTURE, anyHost: true, futureHtml: "<p>Dynamic player</p>" });
+  await plugin.resolve(EP + ":server:1");
+  assert.equal(r.captures.length, 1);
+  assert.equal(r.captures[0].url, FUTURE);
+});
+
+test("native rate limits on a new host stop resolution without retrying", async () => {
+  const r = boot({ redirect: FUTURE, anyHost: true, futureError: "rate_limited" });
+  await assert.rejects(plugin.resolve(EP), { code: "rate_limited" });
+  assert.equal(r.captures.length, 0);
+  assert.equal(r.requests.filter((x) => x.url === FUTURE).length, 1);
+});
+
+test("a new-domain player still refuses a human verification page", async () => {
+  const r = boot({ redirect: FUTURE, anyHost: true, futureHtml: "<p>Verify you are human</p>" });
+  await assert.rejects(plugin.resolve(EP + ":server:1"), { code: "unavailable" });
+  assert.equal(r.captures.length, 0);
+});
+
+test("a new iframe explicitly labelled VOE is recognized only with the general grant", async () => {
+  const page = episodeHtml.replace(VOE, FUTURE).replace(">Server 2</span>", ">VOE</span>");
+  const r = boot({ page, anyHost: true });
+  const s = checked("resolve", await plugin.resolve(EP + ":server:1"), r.servers);
+  assert.equal(s.headers.Referer, FUTURE);
+  assert.ok(!r.requests.some((x) => x.url === VOE));
+  boot({ page, anyHost: false });
+  await assert.rejects(plugin.resolve(EP + ":server:1"), { code: "not_found" });
+});
+
+test("a generic iframe label never identifies an unknown site as VOE", async () => {
+  const r = boot({ page: episodeHtml.replace(VOE, FUTURE), anyHost: true });
+  await assert.rejects(plugin.resolve(EP + ":server:1"), { code: "not_found" });
+  assert.equal(r.requests.length, 2);
+});
+
+test("a native host rejection remains a rejection even with the general grant", async () => {
+  const r = boot({ redirect: FUTURE, anyHost: true, futureError: "host_not_allowed" });
+  await assert.rejects(plugin.resolve(EP + ":server:1"), { code: "unavailable" });
+  assert.equal(r.captures.length, 0);
+  assert.equal(r.requests.filter((x) => x.url === FUTURE).length, 1);
 });
 
 test("unknown, duplicated and unsafe iframe sources are not followed", async () => {

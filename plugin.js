@@ -1,6 +1,6 @@
-// Toku Kino 0.3.4: VOE player-domain update; catalog and artwork references retained.
+// Toku Kino 0.3.5: follow VOE domain rotations with Kino's approved API 9 permission.
 // Public metadata only. Video addresses are discovered again at play time.
-const VERSION = "0.3.4";
+const VERSION = "0.3.5";
 const SITE = "https://www.subsunlimiteds.com";
 const API_URL = "https://ulsapi.unlimiteds.workers.dev/search?q=Gavv";
 const SERIES_ID = "kamen-rider-gavv";
@@ -408,7 +408,11 @@ function shadowSources(html) {
     const n = m[2], url = safeHttps(attribute(m[3], "src"));
     if (!url || seen.has(n) || !options.has(n)) continue;
     const u = new URL(url);
-    const provider = VOE_PLAYER_HOSTS.includes(u.hostname) && /^\/e\/[a-z0-9]{8,32}\/?$/i.test(u.pathname) ? "voe"
+    // An unrecognized embed is VOE only when this source explicitly names VOE.
+    // Generic Server labels never identify an arbitrary iframe as a VOE player.
+    const provider = (VOE_PLAYER_HOSTS.includes(u.hostname)
+      || (kino.fetchAnyHost === true && /\bvoe\b/i.test(options.get(n))))
+      && /^\/e\/[a-z0-9]{8,32}\/?$/i.test(u.pathname) && !u.search && !u.hash ? "voe"
       : u.hostname === "shadowliv.xyz" && u.pathname === "/" && /^#[a-z0-9]{3,40}$/i.test(u.hash) ? "shadowliv" : null;
     if (!provider) continue;
     seen.add(n);
@@ -466,19 +470,39 @@ async function resolveShadowSource(source, pageUrl, deadline) {
   if (source.provider === "voe") {
     const initialPath = new URL(source.url).pathname;
     const visited = new Set();
-    // At most three public pages: share/embed, a former mirror, and the current player.
-    // A navigation is accepted only for the same video on a declared VOE host.
+    // At most three public pages. Follow only navigations of this exact video.
+    // Kino owns the general grant: the plugin never grants itself permissions.
     for (let hop = 0; hop < 3; hop++) {
       visited.add(captureUrl);
-      const html = await shadowHtml(captureUrl, 18000, pageUrl, deadline);
+      let response;
+      try {
+        response = await kino.fetch(captureUrl, { timeoutMs: shadowTimeout(18000, deadline),
+          redirect: "manual", headers: { Accept: "text/html", Referer: pageUrl } });
+      } catch (e) {
+        log("warn", "SHADOW_VOE_FETCH code=" + (e.code || "network"));
+        if (e.code === "rate_limited") throw error("rate_limited", "Se alcanzó el límite de consultas del reproductor");
+        throw error("unavailable", "No se pudo consultar el reproductor de VOE; revisa su permiso de conexión");
+      }
+      log("info", "SHADOW_VOE_FETCH http=" + response.status);
+      const isRedirect = [301, 302, 303, 307, 308].includes(response.status);
+      if (!response.ok && !isRedirect) throw statusError(response.status, "VOE");
+      const html = isRedirect ? "" : response.text();
+      const restriction = pageRestriction(html);
+      if (restriction) throw error(restriction === "blocked" || restriction === "auth_required" ? "unavailable" : restriction,
+        "La fuente requiere una sesión, una verificación o tiene una restricción de acceso");
       const stream = voeStream(html, captureUrl);
       if (stream) { log("info", "SHADOW_RESOLVE route=voe_hls"); return stream; }
       const redirect = /window\.location\.href\s*=\s*(["'])(https:\/\/[^"']+)\1/.exec(html);
-      if (!redirect) break;
-      const target = safeHttps(redirect[2]);
+      const location = isRedirect ? response.headers.location : redirect && redirect[2];
+      if (!location && !isRedirect) break;
+      let target = null;
+      try { target = safeHttps(new URL(location, captureUrl).href); } catch { /* Refused below. */ }
       const b = target && new URL(target);
-      if (!b || !VOE_PLAYER_HOSTS.includes(b.hostname) || b.pathname !== initialPath || b.search || b.hash) {
-        throw error("unavailable", "VOE cambió el dominio de su reproductor; hay que revisar la fuente");
+      if (!b || !location || b.pathname !== initialPath || b.search || b.hash) {
+        throw error("unavailable", "La redirección de VOE no corresponde al mismo video por HTTPS");
+      }
+      if (!VOE_PLAYER_HOSTS.includes(b.hostname) && kino.fetchAnyHost !== true) {
+        throw error("unavailable", "Para el nuevo dominio de VOE, acepta el permiso general al actualizar el plugin");
       }
       if (visited.has(target) || hop === 2) {
         throw error("unavailable", "VOE no entregó el reproductor dentro de las navegaciones permitidas");

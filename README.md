@@ -1,22 +1,29 @@
-# Toku Kino — 0.3.4
+# Toku Kino — 0.3.5
 
-## Actualización de VOE · 13 de octubre de 2026
+## Dominios de VOE · 0.3.5
 
-La 0.3.4 incorpora `megankiddifference.com`, el dominio público al que VOE dirige ahora sus
-enlaces. Reconoce tanto un iframe del nuevo dominio como una navegación desde `voe.sx` o
-el dominio anterior. La cadena está limitada a tres páginas y debe mantener el mismo video;
-no se siguen publicidad ni direcciones de otros videos.
+Requiere **Kino 0.9.55 o superior** (`apiVersion: 9`). Actualiza primero la app y después
+Toku Kino. En el aviso de actualización acepta una vez el permiso en rojo:
+**Puede conectarse a cualquier servidor público de internet (solo https, nunca tu red local)**.
 
-Se conservan el identificador `unlimitedsubs`, los catálogos, las imágenes, las referencias
-de series y capítulos, la preferencia de servidor y las alternativas de ShadowLiv. También
-se resuelven los enlaces relativos de subtítulos entregados por VOE, con su idioma disponible.
+Con ese permiso activo, la resolución sigue los nuevos dominios de VOE sin cambiar el manifiesto.
+Se inspeccionan las redirecciones HTTP y la navegación JavaScript del reproductor, con un máximo
+de tres páginas por intento, conservando la ruta del mismo video. Las direcciones temporales de
+reproducción se resuelven de nuevo al abrir cada capítulo. No se conceden permisos desde el código.
 
-Para actualizar, sube los archivos al mismo repositorio y busca la actualización en Kino.
-Kino pedirá aceptar el nuevo dominio; comprueba que muestre **0.3.4**. La compatibilidad
-sigue siendo Kino **0.9.50 o superior**.
+Si ShadowRangers publica un iframe de un dominio desconocido, se reconoce como VOE solamente si
+su fuente está etiquetada explícitamente como VOE. Una etiqueta genérica como «Server 2» no basta
+para identificar un sitio desconocido. Se mantienen los dominios principales declarados.
 
+Kino aplica el permiso, los límites de consultas y el bloqueo de direcciones locales. Si el permiso
+no está activo, el plugin mantiene las fuentes conocidas y no consulta un nuevo dominio.
+Los cambios en el formato del reproductor, verificaciones humanas o contenido retirado todavía
+pueden impedir reproducir: esta mejora cubre cambios de dirección.
 
-Catálogos de **Super Sentai**, **Kamen Rider** y **Tokusatsu** de ShadowRangers, para **Kino 0.9.50 o superior**. Las categorías consultadas publican **49 series de Super Sentai**, **38 de Kamen Rider** y **37 de Tokusatsu**. Cada serie abre su propia ficha de capítulos.
+Se conservan catálogos, identificadores, imágenes, favoritos, referencias, preferencia de servidor
+y las alternativas de ShadowLiv.
+
+Catálogos de **Super Sentai**, **Kamen Rider** y **Tokusatsu** de ShadowRangers, para **Kino 0.9.55 o superior**. Las categorías consultadas publican **49 series de Super Sentai**, **38 de Kamen Rider** y **37 de Tokusatsu**. Cada serie abre su propia ficha de capítulos.
 
 ## Imágenes independientes de Super Sentai
 
@@ -83,13 +90,12 @@ El catálogo se obtiene de la categoría publicada por la fuente y se renueva tr
 
 ## Instalar o actualizar
 
-1. Descomprime **Toku-Kino-0.3.4.zip**.
-2. En [efraynns-stack/TokuKino](https://github.com/efraynns-stack/TokuKino), abre **Add file → Upload files**. Sube el contenido descomprimido: `kino-plugin.json` y `plugin.js` deben quedar en la raíz de la rama principal. No subas solamente el ZIP ni una carpeta contenedora adicional.
-3. Guarda con **Commit changes**.
-4. En la TV: **Ajustes → Plugins → Toku Kino → Buscar actualización de Toku Kino**. Acepta el nuevo dominio de VOE y comprueba que muestre **0.3.4**. Para instalar desde cero, agrega `efraynns-stack/TokuKino`.
-5. Sal de Toku Kino y vuelve a entrar; elige **Toku Kino → Tokusatsu**. Si necesitas forzar una carga nueva, ve a **Ajustes → Toku Kino → Actualizar catálogo Tokusatsu**. Elige una serie y un capítulo.
+1. Actualiza Kino a **0.9.55 o superior**.
+2. En la TV: **Ajustes → Plugins → Toku Kino → Buscar actualización de Toku Kino**.
+3. Acepta el permiso general de conexión HTTPS y comprueba que muestre **0.3.5**.
+4. Vuelve a abrir una serie y prueba un capítulo. Para instalar desde cero, agrega `efraynns-stack/TokuKino`.
 
-Los permisos de reproducción se conservan. La 0.3.3 añadió `api.github.com` para la revisión manual de imágenes; la 0.3.4 añade `megankiddifference.com` para el reproductor público de VOE.
+La 0.3.5 añade `fetchHosts: "any"`, con aprobación explícita y Kino 0.9.55+. Los permisos de reproducción se conservan. La 0.3.3 añadió `api.github.com` para imágenes y la 0.3.4 incorporó `megankiddifference.com`.
 
 ## Estado y actualización del catálogo
 
@@ -131,9 +137,9 @@ Se admiten los reproductores VOE y ShadowLiv observados. Otros servidores public
 
 La ficha se consulta con `kino.fetch` y sus metadatos se conservan cinco minutos. Cada reproducción consulta nuevamente la página del capítulo y asocia el identificador `source-player` con su opción de servidor; no usa los iframes publicitarios ni reutiliza el enlace de otro capítulo.
 
-**VOE:** se lee el iframe publicado y, si aparece, su redirección normal por JavaScript al dominio observado `teresapoliticallearn.com`, conservando la ruta del video. Se interpreta el JSON codificado con el mismo formato que utiliza el cargador público inspeccionado: rotación de letras, eliminación de separadores, Base64 y reversión de caracteres. No se ejecutan scripts extraídos de la web. El campo `source` entrega HLS al reproductor, con el Referer del iframe. No se utiliza la URL de descarga directa ni se interpreta una URL de publicidad como video.
+**VOE:** se lee el iframe publicado y, si aparece, su redirección normal por JavaScript a su dominio público, conservando la ruta del mismo video. Se interpreta el JSON codificado con el mismo formato que utiliza el cargador público inspeccionado: rotación de letras, eliminación de separadores, Base64 y reversión de caracteres. No se ejecutan scripts extraídos de la web. El campo `source` entrega HLS al reproductor, con el Referer del iframe. No se utiliza la URL de descarga directa ni se interpreta una URL de publicidad como video.
 
-Si el formato de los datos cambia sin una restricción explícita, VOE puede usar una captura de hasta 20 segundos. Un nuevo dominio de redirección requiere revisar el plugin; no se consulta un dominio desconocido automáticamente.
+Si el formato de los datos cambia sin una restricción explícita, VOE puede usar una captura de hasta 20 segundos. Con el permiso general activo, una redirección al mismo video puede usar un dominio nuevo sin actualizar el plugin. Si cambia el formato del reproductor, aún puede requerirse una corrección.
 
 **ShadowLiv:** el reproductor arma sus medios mediante scripts. Esta prueba usa una captura de hasta 25 segundos del iframe publicado y conserva las cabeceras que entrega Kino. Su API pública observada devuelve datos codificados o rechaza peticiones incompletas; esta versión no implementa esa API, sus verificaciones ni sus sesiones.
 

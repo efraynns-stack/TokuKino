@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { validate } from "../sdk/validate.mjs";
+import { consentLines } from "../sdk/validate.mjs";
 import { createKino } from "../sdk/kino-shim.mjs";
 import { checkOutput, validateManifest } from "../sdk/contract.mjs";
 import * as plugin from "../plugin.js";
@@ -63,8 +64,17 @@ function player(params, suffix = "") {
 test("manifest and declared exports are accepted", async () => {
   const result = await validate(root);
   assert.deepEqual(result.problems, []);
-  assert.equal(manifest.apiVersion, 6);
+  assert.equal(manifest.apiVersion, 9);
+  assert.equal(manifest.fetchHosts, "any");
   assert.equal(manifest.browser, true);
+});
+
+test("API 9 general fetching requires an explicit red consent line", async () => {
+  const result = await validate(root);
+  assert.ok(consentLines(manifest).some((line) => line.danger
+    && line.text === "Puede conectarse a cualquier servidor público de internet (solo https, nunca tu red local)"));
+  assert.ok(!result.notes.some((note) => note.includes("fetchHosts") && note.includes("se ignora")));
+  assert.ok(result.notes.some((note) => note.includes("Kino 0.9.55")));
 });
 
 for (const [fn, args] of [["search", ["Gavv"]], ["home", []], ["episodes", ["series:kamen-rider-gavv"]]]) {

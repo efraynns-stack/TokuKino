@@ -1,10 +1,10 @@
 {
   "id": "unlimitedsubs",
   "name": "Toku Kino",
-  "version": "0.3.4",
-  "apiVersion": 6,
+  "version": "0.3.5",
+  "apiVersion": 9,
   "entry": "plugin.js",
-  "description": "Super Sentai, Kamen Rider y Tokusatsu de ShadowRangers, por serie y año, con VOE y ShadowLiv. Requiere Kino 0.9.50 o superior.",
+  "description": "Super Sentai, Kamen Rider y Tokusatsu de ShadowRangers, por serie y año, con VOE y ShadowLiv. Requiere Kino 0.9.55 o superior.",
   "hosts": [
     "www.subsunlimiteds.com",
     "ulsapi.unlimiteds.workers.dev",
@@ -119,5 +119,6 @@
   ],
   "section": {
     "label": "Toku Kino"
-  }
+  },
+  "fetchHosts": "any"
 }

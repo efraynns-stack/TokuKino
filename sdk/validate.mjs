@@ -58,6 +58,8 @@ export function consentLines(m, { authorFingerprint = null } = {}) {
   // apiVersion 6 "browser": true (kino.browser.capture): the same red line as the app's PluginConsent.BROWSER_LINE;
   // "browser": "pages" also reads pages (kino.browser.page): PluginConsent.BROWSER_PAGE_LINE (manifest.browser.pageConsentLine).
   if (m.browser) line(m.browserPages ? contract.manifest.browser.pageConsentLine : contract.manifest.browser.consentLine, true);
+  if (m.fetchHostsAny && m.apiVersion >= contract.manifest.fetchHosts.handWrittenApiVersion)
+    line(contract.manifest.fetchHosts.consentLine, true);
   if (m.streamHostsAny) {
     const onlySubtitles = m.capabilities.length === 1 && m.capabilities[0] === "subtitles";
     line(onlySubtitles ? "Puede traer subtítulos desde cualquier servidor que indique"
@@ -115,7 +117,8 @@ export async function validate(dirArg, { run = null, args = [], config = {}, rep
       ? "kino.browser.capture y kino.browser.page solo funcionan en la app (un WebView oculto); aquí responden browser_unavailable, así que prueba en un aparato. Kino nunca resuelve captchas: una página que pide confirmar que eres humano responde blocked"
       : "kino.browser.capture solo funciona en la app (un WebView oculto); aquí responde browser_unavailable, así que prueba resolve en un aparato. Para leer páginas con kino.browser.page declara \"browser\": \"pages\"");
   }
-  if (m.fetchHostsAny) notes.push("fetchHosts solo tiene efecto en plugins convertidos desde Nuvio; en tu plugin se ignora");
+  if (m.fetchHostsAny && m.apiVersion < contract.manifest.fetchHosts.handWrittenApiVersion)
+    notes.push("fetchHosts solo tiene efecto en plugins convertidos desde Nuvio o desde apiVersion 9; en tu plugin se ignora");
   if (m.secrets && Object.keys(m.secrets).length) {
     notes.push("No se puede comprobar aquí para qué repositorio se sellaron los secretos: Kino lo comprueba al instalar. Además, solo se abren si la persona instala el plugin desde su rama principal, sin @rama. Y desde una URL del manifest (kino-plugin.json fuera de GitHub) Kino rechaza el plugin: los sellos son de un repositorio.");
   }
