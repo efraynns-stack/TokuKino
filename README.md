@@ -1,4 +1,20 @@
-# Toku Kino — 0.3.3
+# Toku Kino — 0.3.4
+
+## Actualización de VOE · 13 de octubre de 2026
+
+La 0.3.4 incorpora `megankiddifference.com`, el dominio público al que VOE dirige ahora sus
+enlaces. Reconoce tanto un iframe del nuevo dominio como una navegación desde `voe.sx` o
+el dominio anterior. La cadena está limitada a tres páginas y debe mantener el mismo video;
+no se siguen publicidad ni direcciones de otros videos.
+
+Se conservan el identificador `unlimitedsubs`, los catálogos, las imágenes, las referencias
+de series y capítulos, la preferencia de servidor y las alternativas de ShadowLiv. También
+se resuelven los enlaces relativos de subtítulos entregados por VOE, con su idioma disponible.
+
+Para actualizar, sube los archivos al mismo repositorio y busca la actualización en Kino.
+Kino pedirá aceptar el nuevo dominio; comprueba que muestre **0.3.4**. La compatibilidad
+sigue siendo Kino **0.9.50 o superior**.
+
 
 Catálogos de **Super Sentai**, **Kamen Rider** y **Tokusatsu** de ShadowRangers, para **Kino 0.9.50 o superior**. Las categorías consultadas publican **49 series de Super Sentai**, **38 de Kamen Rider** y **37 de Tokusatsu**. Cada serie abre su propia ficha de capítulos.
 
@@ -67,13 +83,13 @@ El catálogo se obtiene de la categoría publicada por la fuente y se renueva tr
 
 ## Instalar o actualizar
 
-1. Descomprime **Toku-Kino-0.3.3.zip**.
+1. Descomprime **Toku-Kino-0.3.4.zip**.
 2. En [efraynns-stack/TokuKino](https://github.com/efraynns-stack/TokuKino), abre **Add file → Upload files**. Sube el contenido descomprimido: `kino-plugin.json` y `plugin.js` deben quedar en la raíz de la rama principal. No subas solamente el ZIP ni una carpeta contenedora adicional.
 3. Guarda con **Commit changes**.
-4. En la TV: **Ajustes → Plugins → Toku Kino → Buscar actualización de Toku Kino**. Acepta el dominio GitHub añadido y comprueba que muestre **0.3.3**. Para instalar desde cero, agrega `efraynns-stack/TokuKino`.
+4. En la TV: **Ajustes → Plugins → Toku Kino → Buscar actualización de Toku Kino**. Acepta el nuevo dominio de VOE y comprueba que muestre **0.3.4**. Para instalar desde cero, agrega `efraynns-stack/TokuKino`.
 5. Sal de Toku Kino y vuelve a entrar; elige **Toku Kino → Tokusatsu**. Si necesitas forzar una carga nueva, ve a **Ajustes → Toku Kino → Actualizar catálogo Tokusatsu**. Elige una serie y un capítulo.
 
-Los permisos de reproducción se conservan. La 0.3.3 agrega solo `api.github.com` para la revisión manual de imágenes.
+Los permisos de reproducción se conservan. La 0.3.3 añadió `api.github.com` para la revisión manual de imágenes; la 0.3.4 añade `megankiddifference.com` para el reproductor público de VOE.
 
 ## Estado y actualización del catálogo
 

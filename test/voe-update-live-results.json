@@ -1,0 +1,36 @@
+{
+  "version": "0.3.4",
+  "checkedAt": "2026-10-13T19:48:56.710Z",
+  "automatedTests": {
+    "passed": 114,
+    "failed": 0
+  },
+  "samples": [
+    {
+      "project": "toku",
+      "ref": "shadow:timeranger:1x1:server:1",
+      "playerHost": "megankiddifference.com",
+      "mime": "application/vnd.apple.mpegurl",
+      "masterStatus": 200,
+      "variantStatus": 200,
+      "vod": true,
+      "segmentStatus": 206,
+      "subtitles": [],
+      "outcome": "ok"
+    },
+    {
+      "project": "toku",
+      "ref": "shadow:rider:kamen-rider-gavv:1x1:server:2",
+      "playerHost": "megankiddifference.com",
+      "mime": "application/vnd.apple.mpegurl",
+      "masterStatus": 200,
+      "variantStatus": 200,
+      "vod": true,
+      "segmentStatus": 206,
+      "subtitles": [],
+      "outcome": "ok"
+    }
+  ],
+  "androidTvPlayback": "pendiente de prueba por el usuario",
+  "shadowLivBrowserPlayback": "el navegador de Android no se ejecuta en el SDK; no se modificó ShadowLiv"
+}

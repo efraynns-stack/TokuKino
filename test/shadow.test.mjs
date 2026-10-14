@@ -10,7 +10,8 @@ const SERIES = "https://shadowrangers.live/series/mirai-sentai-timeranger/";
 const EP = "shadow:timeranger:1x1";
 const PAGE = "https://shadowrangers.live/capitulos/mirai-sentai-timeranger-1x1/";
 const VOE = "https://voe.sx/e/r3lca9vuu12y";
-const TARGET = "https://teresapoliticallearn.com/e/r3lca9vuu12y";
+const TARGET = "https://megankiddifference.com/e/r3lca9vuu12y";
+const FORMER = "https://teresapoliticallearn.com/e/r3lca9vuu12y";
 const LIV = "https://shadowliv.xyz/#i66uf";
 const seriesHtml = readFileSync(new URL("shadow-series.html", import.meta.url), "utf8");
 const catalogHtml = readFileSync(new URL("sentai-catalog.html", import.meta.url), "utf8");
@@ -42,6 +43,7 @@ function boot({ series = seriesHtml, page = episodeHtml, config, targetStatus = 
     if (url === SERIES) return new Response(series);
     if (url === PAGE || url === PAGE.replace("1x1", "1x2")) return new Response(page);
     if (url === VOE) return new Response('<script>window.location.href = ' + JSON.stringify(redirect) + ';</script>', { status: voeStatus });
+    if (url === FORMER) return new Response('<script>window.location.href = ' + JSON.stringify(TARGET) + ';</script>');
     if (url === TARGET) {
       if (onTarget) onTarget();
       return new Response(targetHtml === undefined ? encoded(data) : targetHtml, { status: targetStatus });
@@ -95,6 +97,35 @@ test("VOE data decoding returns HLS and leaves ShadowLiv as a lazy labelled copy
   assert.equal(r.requests.length, 4);
   assert.ok(r.requests.every((x) => !x.url.includes("media.example.com")));
   assert.ok(!JSON.stringify(r.logs).includes("token=synthetic"));
+});
+
+test("a former VOE mirror navigates to the new public player within three pages", async () => {
+  const r = boot({ redirect: FORMER });
+  const s = checked("resolve", await plugin.resolve(EP + ":server:1"), r.servers);
+  assert.equal(s.headers.Referer, TARGET);
+  assert.equal(r.requests.filter((x) => [VOE, FORMER, TARGET].includes(x.url)).length, 3);
+  assert.equal(r.captures.length, 0);
+});
+
+test("the new domain is recognized when ShadowRangers embeds it directly", async () => {
+  const r = boot({ page: episodeHtml.replace(VOE, TARGET) });
+  const s = checked("resolve", await plugin.resolve(EP + ":server:1"), r.servers);
+  assert.equal(s.headers.Referer, TARGET);
+  assert.equal(r.requests.filter((x) => x.url === VOE).length, 0);
+  assert.equal(r.captures.length, 0);
+});
+
+test("VOE subtitles relative to the new player keep their Spanish label", async () => {
+  const r = boot({ config: { source: "https://media.example.com/main.m3u8",
+    captions: [{ file: "/captions/episode_es.srt", label: "Spanish, Castilian" }] } });
+  const s = checked("resolve", await plugin.resolve(EP + ":server:1"), r.servers);
+  assert.deepEqual(s.subtitles, [{ url: "https://megankiddifference.com/captions/episode_es.srt", lang: "es", format: "srt" }]);
+});
+
+test("a new-domain redirect cannot switch to a different video", async () => {
+  const r = boot({ redirect: "https://megankiddifference.com/e/zzzzzzzzzzzz" });
+  await assert.rejects(plugin.resolve(EP + ":server:1"), { code: "unavailable" });
+  assert.equal(r.requests.filter((x) => x.url.includes("zzzzzzzzzzzz")).length, 0);
 });
 
 test("a selected lazy server loads only ShadowLiv and preserves captured headers", async () => {
